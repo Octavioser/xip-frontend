@@ -23,7 +23,6 @@ export class ImgBtn extends Component {
 
     render() {
         const classNames = this.props.className ? ('imgBtn ' + this.props.className) : 'imgBtn'
-        console.log(this.props.style)
         return (
             <img 
                 className = {classNames} 
