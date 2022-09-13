@@ -3,9 +3,11 @@ import '../../../../App.css';
 import YouTube from "react-youtube";
 import { isMobile } from 'react-device-detect';
 import { ImgBtn } from '../REDCommon/CommonStyle';
-import kang from './airlogo.png';
-import master from './oldkey.png';
 
+
+
+const kang = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/video/Night+Kids+Mv.png';
+const master ='https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/video/masterinnovation.png';
 // 뮤직비디오
 export default class Video extends Component {
 
@@ -24,8 +26,8 @@ export default class Video extends Component {
             },
         }
         const opts = {
-            width: "960",
-            height: "540",
+            width: "1280",
+            height: "720",
             playerVars: {
               autoplay: 1,
             },

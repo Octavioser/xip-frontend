@@ -11,15 +11,19 @@ body {
   width: 100%;
 }
 
+html{
+  cursor: url("https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/cursor-7.cur"), default;
+}
+
 header {
   position: fixed;
   z-index: 1;
 }
 
 /* 이미지 버튼 사용시 커서 이미지 변경 */
-/* .imgBtn{  
-  cursor: url("./image/sperm.CUR"), pointer;
-} */
+.imgBtnNoHover{  
+  
+}
 
 /* 이미지 버튼클래서에 마우스 올릴시 나타나는 이벤트  */
 .imgBtn:hover {
@@ -66,4 +70,16 @@ header {
   width: 100%;
   display: flex;
   justify-content: space-around;
+}
+
+ /* 처음화면 배경 */
+.beforeStart {  
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  background-size: cover;
+  z-index: 5;
 }
