@@ -7,10 +7,8 @@ import { ImgBtn } from '../REDCommon/CommonStyle';
 // import model from '../REDCommon/3D/cheeseBurger.glb'
 
 const startBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/start.png'
-const soundBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/soundControl.png'
-export default class Home extends Component {
 
-    backgroundMusic = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/m/wow.wav'
+export default class Home extends Component {
 
     state = {
 
@@ -23,9 +21,6 @@ export default class Home extends Component {
 
         // 시작화면 0 일때는 처음 1일이면 스타트버튼클릭상태
         startValue: '0',
-
-        // 음악
-        backgroundMusic: ''
     }
 
     componentDidMount() {
@@ -53,10 +48,6 @@ export default class Home extends Component {
                 })
             })
         } 
-
-        this.setState({ // 음악 생성자
-            backgroundMusic : new Audio(this.backgroundMusic), // 배경 음악
-        })
     }
 
     calculateRotate(oldX, oldY, x, y) {   // 마우스 커서 꼬리 방향 구하기
@@ -86,25 +77,16 @@ export default class Home extends Component {
     }
 
     music = {
-        play: () =>{ // 음악 재생
-            let {play, backgroundMusic} = this.state;
-            let playValue = play === true ? false : true ;
-            this.setState({ play: playValue})
-            if(playValue) {
-                backgroundMusic.play();   //재생
-            }
-            else{
-                backgroundMusic.pause();  //멈춤
-            }		
-            backgroundMusic.loop = true;  // 반복
-        },
         // 스타트 버튼 클릭 이벤트
         clickStartBtn: () => {
             this.setState({
                 startValue: '1'     // 홈화면 보이기
             },() => {
                 setTimeout(() => {
-                    this.music.play(); //배경음악 2초뒤 실행
+                    // this.music.play(); //배경음악 2초뒤 실행
+                    // this.props.sounBtn()
+                    const {soundBtn} = this.props;
+                    soundBtn();
                 },1500)
             })
         }
@@ -142,16 +124,7 @@ export default class Home extends Component {
                         {isMobile ? <></> : <this.spermCursor></this.spermCursor>} 
                     </div>
 
-                    <ImgBtn  
-                        style={{width: isMobile ?'6vw':'3vw', position: 'absolute', right: '20px', bottom: '20px'}}
-                        src= {soundBtn} 
-                        alt='startBtn' 
-                        onClick={()=>{
-                            this.music.play();
-                        }}
-                        hover = {false}
-                        >
-                    </ImgBtn>
+                    
                 </> 
                 }
             </div>

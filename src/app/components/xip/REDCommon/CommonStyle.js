@@ -19,6 +19,7 @@ class Btn extends Component{
  * @param style     ex)style={{top:0, left:0, width:'100px'}}
  * @param onMouseOver
  * @param hover     false로 주면 hover 안됨
+ * @param ref       ref
  */
 export class ImgBtn extends Component {
 
@@ -34,6 +35,7 @@ export class ImgBtn extends Component {
                 alt={this.props.alt} 
                 onClick={this.props.onClick}
                 style={this.props.style}
+                ref={this.props.ref || null}
             ></img>
         )
     }

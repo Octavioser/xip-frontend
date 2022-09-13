@@ -20,6 +20,12 @@ header {
   z-index: 1;
 }
 
+.soundBtn{
+  position: fixed;
+  z-index: 1;
+}
+
+
 /* 이미지 버튼 사용시 커서 이미지 변경 */
 .imgBtnNoHover{  
   
