@@ -30,7 +30,7 @@ export default class Works extends Component {
 
     constructor(props) {
         super(props);
-        this.props = props;
+        this.props = props
     }
 
     render() {
@@ -38,8 +38,8 @@ export default class Works extends Component {
         const menuSize = {height: isMobile ? '3vh':'6vh'}
         return (
             <>
-            <div style={{position:'relative', width:'10vw', top: isMobile ? '15vh':'10vh'}}>
-                <ImgBtn
+            <div style={{position:'fixed', width:'10vw', top: isMobile ? '16vh':'11vh'}}>
+                 <ImgBtn
                     src={inUteroBtn}
                     alt='inUteroBtn'
                     onClick={()=>{
@@ -98,14 +98,14 @@ export default class Works extends Component {
                 </ImgBtn>
             </div>
 
-            <div style={{position:'relative', 'overflow-x': 'scroll', width:'10vw'}}>
-                <img src={Fetus}
+            {/* <div style={{position:'relative', 'overflow-x': 'scroll', width:'10vw'}}> */}
+                {/* <img src={Fetus}
                     alt='Fetus'>
                 </img>
                 <img src={Fetus}
                     alt='Fetus'>
-                </img>
-            </div>
+                </img> */}
+            {/* </div> */}
             </>
         )
     }
