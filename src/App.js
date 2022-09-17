@@ -1,12 +1,13 @@
-import React, { Component, useEffect} from 'react';
-import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import React, { Component} from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import './index.css';
 import './App.js';
 import {ImgBtn} from './app/components/xip/REDCommon/CommonStyle';
 import Home from './app/components/xip/RED/Home';
 import Video from './app/components/xip/RED/Video';
 import NotFound from './app/components/xip/RED/NotFound'
-import Works from './app/components/xip/RED/Works'  
+import Works from './app/components/xip/RED/Works'
+import Credit from './app/components/xip/RED/Credit'  
 import { isMobile } from 'react-device-detect';
 
 
@@ -198,6 +199,7 @@ export default class App extends Component {
                 <Route path="/" element={<Home startClickValue={this.state.startClickValue} soundBtn={this.music.play}/>}></Route>
                 <Route path="/video" element={<Video/>}></Route>
                 <Route path="/works" element={<Works/>}></Route>
+                <Route path="/credit" element={<Credit/>}></Route>
                 {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
                 <Route path="*" element={<NotFound />}></Route>
             </Routes>
