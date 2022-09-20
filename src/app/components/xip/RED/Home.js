@@ -4,9 +4,9 @@ import ModelViewer from '../REDCommon/3D/ModelViewer'
 import model from '../REDCommon/3D/XIP_ALUMINUM_EMISSION4.glb'
 import { isMobile } from 'react-device-detect';
 import { ImgBtn } from '../REDCommon/CommonStyle';
-// import model from '../REDCommon/3D/cheeseBurger.glb'
 
-const startBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/start.png'
+
+const startBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/startBtn.png'
 
 export default class Home extends Component {
 
@@ -101,7 +101,7 @@ export default class Home extends Component {
                 <div className='beforeStart'>
                     <ImgBtn 
                         className='logoImage'
-                        style={{width: isMobile ?'20vw':'10vw', height: 'auto'}}
+                        style={{width: isMobile ?'30vw':'20vw', height: 'auto'}}
                         src= {startBtn} 
                         alt='startBtn' 
                         onClick={()=>{
