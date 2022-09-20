@@ -1,16 +1,16 @@
-import React, { Component} from 'react';
+import React from 'react';
 
-const videoBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/coming+soon.png'
-export default class NotFound extends Component {
+const comingSoon = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/coming+soon.png'
 
-    render() {
-        return(
-            <img
-                className='logoImage' 
-                src={videoBtn} 
-                alt='commingSoon'
-                style={{width: '20%', height:'20%'}}>
-            </img>
-        )
-    }
-}
+const NotFound = () => {
+
+    return(
+        <img
+            className='logoImage' 
+            src={comingSoon} 
+            alt='commingSoon'
+            style={{width: '50vw', height:'auto'}}>
+        </img>
+    )
+};
+export default NotFound

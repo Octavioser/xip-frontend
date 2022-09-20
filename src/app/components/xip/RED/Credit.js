@@ -22,7 +22,7 @@ const Credit = () => {
                     <div style={{width:'3vw',height:'3vw', float:'left'}}>
                         
                     </div>
-                    <div style={{width:'10vw',height:'10vw', float:'left',display:'flex',alignItems: 'center', color:'white', fontSize:'3vw', fontWeight:'bold'}}>
+                    <div style={{width:'10vw',height:'10vw', float:'left',display:'flex',alignItems: 'center', color:'white', fontFamily: 'HelveticaNeue', fontSize:'3vw', fontWeight:'bold'}}>
                         www.xip.red<br></br>xxipchang@gmail.com
                     </div>
                 </div>
