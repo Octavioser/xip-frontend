@@ -6,10 +6,11 @@ import { isMobile } from 'react-device-detect';
 import { ImgBtn } from '../REDCommon/CommonStyle';
 
 
-const startBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/startBtn.png'
+
 
 export default class Home extends Component {
 
+    startBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/startBtn.png'
     state = {
 
         // 정자 커서 관련
@@ -102,7 +103,7 @@ export default class Home extends Component {
                     <ImgBtn 
                         className='logoImage'
                         style={{width: isMobile ?'30vw':'20vw', height: 'auto'}}
-                        src= {startBtn} 
+                        src= {this.startBtn} 
                         alt='startBtn' 
                         onClick={()=>{
                             this.music.clickStartBtn();
