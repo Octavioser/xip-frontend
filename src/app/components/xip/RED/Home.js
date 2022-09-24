@@ -102,7 +102,7 @@ export default class Home extends Component {
                 <div className='beforeStart'>
                     <ImgBtn 
                         className='logoImage'
-                        style={{width: isMobile ?'30vw':'20vw', height: 'auto'}}
+                        style={{width: isMobile ?'80vw':'50vw', height: 'auto'}}
                         src= {this.startBtn} 
                         alt='startBtn' 
                         onClick={()=>{
@@ -120,7 +120,7 @@ export default class Home extends Component {
                         {/* scale은 크기 modelPath는 glb경로 */}
                         {/* 참고사이트 https://victordibia.com/blog/blender-to-react/#step-1-export-your-3d-model-as-gltf-20 */}
                     </div>
-                    <div>
+                    <div style={{overflow: 'hidden'}}>
                         {/* 모바일 상태에서는 커서 x */}
                         {isMobile ? <></> : <this.spermCursor></this.spermCursor>} 
                     </div>
