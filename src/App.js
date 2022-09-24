@@ -57,9 +57,11 @@ export default class App extends Component {
             this.setState({ play: playValue})
             if(playValue) {
                 backgroundMusic.play();   //재생
+                this.soundBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/soundControl.png'
             }
             else{
                 backgroundMusic.pause();  //멈춤
+                this.soundBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/soundStop.png'
             }		
             backgroundMusic.loop = true;  // 반복
         },
@@ -87,13 +89,13 @@ export default class App extends Component {
 			<BrowserRouter>
             {/* 메뉴버튼 */}
             <header> 
-                <div style={{width:'10vw'}}>
+                <div style={{marginLeft:'0.5vw', marginTop:'0.5vh', width:'10vw'}}>
                     {/* 홈화면이면 리스트를 보여주고 아니면 뒤로가기 */}
                     {window.location.pathname === '/' ?
                         <ImgBtn  //맨 왼쪽 위 메뉴 버튼
                             src={this.menuMainBtn} 
                             alt='menuButton' 
-                            style={{top:0, left:0, height: isMobile ? '15vh':'10vh'}}
+                            style={{top:'10vw', left: '10vh', height: isMobile ? '15vh':'10vh'}}
                             onClick={() =>{
                                 this.setState({
                                     menuOpen: this.state.menuOpen === '1' ? '0' : '1',  // 메인 메뉴버튼 클릭시 열리고 닫기

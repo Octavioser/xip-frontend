@@ -16,8 +16,9 @@ html{
 }
 
 header {
+  position: fixed;
   z-index: 1;
-  position: sticky;
+  color: red;
 }
 
 .soundBtn{
@@ -34,7 +35,7 @@ header {
 /* 이미지 버튼클래서에 마우스 올릴시 나타나는 이벤트  */
 .imgBtn:hover {
   /* x y z 확대  */
-  transform: scale3d(1.1, 1.1, 1.1)
+  transform: scale3d(1.05, 1.05, 1.05)
 }
 
 .logoImage{  /* 팝업으로 많이 이용 */
@@ -58,15 +59,13 @@ header {
   top: 0;
   left: 0;
   width: 10vw;
-  height: 10vw
-  ;
+  height: 10vw;
   /* border-radius: 50%; */
   /* background-color: black; */
   background-size: 100%;
   background-repeat: round;
   background-image: url('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/giphy2.gif');
-  /* 방향, 좌표  */
-  
+  /* 방향, 좌표  */ 
   /* 좌표 */
   /* transform: translate(-50%, -50%); */
 }
