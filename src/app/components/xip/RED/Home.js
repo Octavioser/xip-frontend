@@ -100,17 +100,18 @@ export default class Home extends Component {
                 {this.state.startValue === '0' && this.props.startClickValue === '0'?
                 // 맨 처음 화면 노클리
                 <div className='beforeStart'>
-                    <ImgBtn 
-                        className='logoImage'
-                        style={{width: isMobile ?'80vw':'50vw', height: 'auto'}}
-                        src= {this.startBtn} 
-                        alt='startBtn' 
-                        onClick={()=>{
-                            this.music.clickStartBtn();
-                        }}
-                        hover = {false}
-                        >
-                    </ImgBtn>
+                    <div style={{display:'flex', justifyContent: 'center', alignItems:'center', minHeight: '100vh'}}>
+                        <ImgBtn 
+                            className='imgBtnNoRed'
+                            style={{width: isMobile ?'80vw':'50vw', height: 'auto'}}
+                            src= {this.startBtn} 
+                            alt='startBtn' 
+                            onClick={()=>{
+                                this.music.clickStartBtn();
+                            }}
+                            >
+                        </ImgBtn>
+                    </div>
                 </div>
                 :
                 <>

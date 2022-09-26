@@ -17,17 +17,12 @@ class Btn extends Component{
  * @param alt       이미지 설명
  * @param onClick   클릭함수 
  * @param style     ex)style={{top:0, left:0, width:'100px'}}
- * @param onMouseOver
- * @param hover     false로 주면 hover 안됨
  * @param ref       ref
  */
 export class ImgBtn extends Component {
 
     render() {
-        const classNames = this.props.className ? (
-            this.props.hover ? ('imgBtn ' + this.props.className) : ('imgBtnNoHover ' + this.props.className)
-        )
-        : 'imgBtn'
+        const classNames = this.props.className ? this.props.className : 'imgBtn'
         return (
             <img 
                 className = {classNames} 

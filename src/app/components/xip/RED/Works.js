@@ -36,66 +36,81 @@ export default class Works extends Component {
     render() {
 
         const menuSize = {height: isMobile ? '3vh':'6vh'}
+
+        const menulength = 6
+
         return (
-            <>
-            <div style={{position:'fixed', width:'10vw', top: isMobile ? '16vh':'11vh'}}>
-                 <ImgBtn
-                    src={inUteroBtn}
-                    alt='inUteroBtn'
-                    onClick={()=>{
+            <div className='logoImage' style={{height: isMobile ? (menulength*3 + 'vh') : (menulength*6 + 'vh')}}>
+            {/* <div style={{marginLeft:'0.5vw', marginTop:'0.5vh', position:'fixed', top: isMobile ? '16vh':'11vh'}}> */}
+                 <div style={{textAlign: 'center'}}>
+                    <ImgBtn
+                        src={inUteroBtn}
+                        alt='inUteroBtn'
+                        onClick={()=>{
 
-                    }}
-                    style={menuSize}
-                >
-                </ImgBtn>
-                <ImgBtn
-                    src={HomoMechanicus}
-                    alt='HomoMechanicus'
-                    onClick={()=>{
+                        }}
+                        style={menuSize}
+                    >
+                    </ImgBtn>
+                </div>
+                <div style={{textAlign: 'center'}}>
+                    <ImgBtn
+                        src={HomoMechanicus}
+                        alt='HomoMechanicus'
+                        onClick={()=>{
 
-                    }}
-                    style={menuSize}
-                >
-                </ImgBtn>
-                <ImgBtn
-                    src={ArticulatedAnatomy}
-                    alt='ArticulatedAnatomy'
-                    onClick={()=>{
+                        }}
+                        style={menuSize}
+                    >
+                    </ImgBtn>
+                </div>
+                <div style={{textAlign: 'center'}}>
+                    <ImgBtn
+                        src={ArticulatedAnatomy}
+                        alt='ArticulatedAnatomy'
+                        onClick={()=>{
 
-                    }}
-                    style={menuSize}
-                >
-                </ImgBtn>
-                <ImgBtn
-                    src={trauma}
-                    alt='trauma'
-                    onClick={()=>{
+                        }}
+                        style={menuSize}
+                    >
+                    </ImgBtn>
+                </div>
+                <div style={{textAlign: 'center'}}>
+                    <ImgBtn
+                        src={trauma}
+                        alt='trauma'
+                        onClick={()=>{
 
-                    }}
-                    style={menuSize}
-                >
-                </ImgBtn>
-                <ImgBtn
-                    src={IsetanDenimProject}
-                    alt='IsetanDenimProject'
-                    onClick={()=>{
+                        }}
+                        style={menuSize}
+                    >
+                    </ImgBtn>
+                </div>
+                <div style={{textAlign: 'center'}}>
+                    <ImgBtn
+                        src={IsetanDenimProject}
+                        alt='IsetanDenimProject'
+                        onClick={()=>{
 
-                    }}
-                    style={menuSize}
-                >
-                </ImgBtn>
-                <ImgBtn
-                    src={Fetus}
-                    alt='Fetus'
-                    onClick={()=>{
-                        this.setState({
-                            menuOpenId: 'Fetus'
-                        })
-                        
-                    }}
-                    style={menuSize}
-                >
-                </ImgBtn>
+                        }}
+                        style={menuSize}
+                    >
+                    </ImgBtn>
+                </div>
+                <div style={{textAlign: 'center'}}>
+                    <ImgBtn
+                        src={Fetus}
+                        alt='Fetus'
+                        onClick={()=>{
+                            this.setState({
+                                menuOpenId: 'Fetus'
+                            })
+                            
+                        }}
+                        style={menuSize}
+                    >
+                    </ImgBtn>
+                {/* </div> */}
             </div>
 
             {/* <div style={{position:'relative', 'overflow-x': 'scroll', width:'10vw'}}> */}
@@ -106,7 +121,7 @@ export default class Works extends Component {
                     alt='Fetus'>
                 </img> */}
             {/* </div> */}
-            </>
+            </div>
         )
     }
 }
