@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { BrowserRouter, Routes, Route, Link, useNavigate} from 'react-router-dom';
 import './index.css';
 import './App.js';
@@ -12,7 +12,28 @@ import NightKidsMv from './app/components/xip/RED/Video/NightKidsMv';
 import Masterinnovation from './app/components/xip/RED/Video/Masterinnovation';
 import { isMobile } from 'react-device-detect';
 
-
+function StartPage(props)  {
+    
+    const startBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/startBtn.png'
+    return(
+        <div className='beforeStart'>
+            <div style={{display:'flex', justifyContent: 'center', alignItems:'center', minHeight: '100vh'}}>
+                <Link to ='./home'>
+                    <ImgBtn 
+                        className='imgBtnNoRed'
+                        style={{width: isMobile ?'80vw':'50vw', height: 'auto'}}
+                        src= {startBtn} 
+                        alt='startBtn' 
+                        onClick={()=>{
+                            props.music.play();
+                        }}
+                        >
+                    </ImgBtn>
+                </Link>
+            </div>
+        </div>
+    )
+}
     
 // 메뉴 컴포넌트 (경로이동)
 const Root = () => {
@@ -36,19 +57,8 @@ const Root = () => {
 
     const [play, setPlay] = useState(false);
 
-    
 
-    useEffect(() => {
-        console.log('1111')
-        defalut()
-    });
-
-    //처음시작실행
-    const defalut = () => {
-        
-    }
-
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const goBack = () => {
         navigate(-1)
@@ -91,7 +101,7 @@ const Root = () => {
         <header> 
             <div style={{marginLeft:'0.5vw', marginTop:'0.5vh', width:'10vw'}}>
                 {/* 홈화면이면 리스트를 보여주고 아니면 뒤로가기 */}
-                {window.location.pathname === '/' ?
+                {window.location.pathname === '/home' ?
                     <ImgBtn  //맨 왼쪽 위 메뉴 버튼
                         src={menuMainBtn} 
                         className='imgBtnNoRed'
@@ -105,7 +115,6 @@ const Root = () => {
                     >
                     </ImgBtn> 
                 :
-                    // <Link to = "../"> 
                         <ImgBtn  //맨 왼쪽 위 메뉴 버튼
                             src={menuMainBtn} 
                             alt='menuButton' 
@@ -116,7 +125,6 @@ const Root = () => {
                             }}
                         >
                         </ImgBtn>
-                    // </Link>
                 }
                 {menuOpen === '1' ?
                 <>
@@ -150,7 +158,8 @@ const Root = () => {
                         alt='musicBtn'
                         onClick={() =>{
                             let menuValue = menuOpen === '1' ? '0' : '1'
-                            setMenuOpen(menuValue).then(()=>{window.open('https://ffm.to/cuechoi_twelvedrives', '_blank')}) 
+                            setMenuOpen(menuValue)
+                            window.open('https://ffm.to/cuechoi_twelvedrives', '_blank') 
                         }}
                         style={menuSize}
                     >
@@ -189,7 +198,8 @@ const Root = () => {
         <music.soundBtn></music.soundBtn>
         <Routes>
             {/* 맨처음화면 */}
-            <Route path="/" element={<Home startClickValue={startClickValue} soundBtn={music.play}/>}></Route>
+            <Route path='/' element={<StartPage music={music}></StartPage>}></Route>
+            <Route path="/home" element={<Home startClickValue={startClickValue} soundBtn={music.play}/>}></Route>
             <Route path="/video" element={<Video/>}></Route>
             <Route path="/works" element={<Works/>}></Route>
             <Route path="/credit" element={<Credit/>}></Route>
