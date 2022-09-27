@@ -3,14 +3,13 @@ import '../../../../App.css';
 import ModelViewer from '../REDCommon/3D/ModelViewer'
 import model from '../REDCommon/3D/XIP_ALUMINUM_EMISSION4.glb'
 import { isMobile } from 'react-device-detect';
-import { ImgBtn } from '../REDCommon/CommonStyle';
 
 
 
 
 export default class Home extends Component {
 
-    startBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/startBtn.png'
+    
     state = {
 
         // 정자 커서 관련
@@ -57,7 +56,7 @@ export default class Home extends Component {
         return degree;
     }
 
-    spermCursor = (props) =>{ // 커서 컴포넌트
+    spermCursor = () =>{ // 커서 컴포넌트
         let {x,y,degree} = this.state; 
 
         return(
@@ -76,59 +75,21 @@ export default class Home extends Component {
         )
         
     }
-
-    music = {
-        // 스타트 버튼 클릭 이벤트
-        clickStartBtn: () => {
-            this.setState({
-                startValue: '1'     // 홈화면 보이기
-            },() => {
-                setTimeout(() => {
-                    // this.music.play(); //배경음악 2초뒤 실행
-                    // this.props.sounBtn()
-                    const {soundBtn} = this.props;
-                    soundBtn();
-                },1500)
-            })
-        }
-    }
     
     render() {
         return (
             
             <div> 
-                {this.state.startValue === '0' && this.props.startClickValue === '0'?
-                // 맨 처음 화면 노클리
-                <div className='beforeStart'>
-                    <div style={{display:'flex', justifyContent: 'center', alignItems:'center', minHeight: '100vh'}}>
-                        <ImgBtn 
-                            className='imgBtnNoRed'
-                            style={{width: isMobile ?'80vw':'50vw', height: 'auto'}}
-                            src= {this.startBtn} 
-                            alt='startBtn' 
-                            onClick={()=>{
-                                this.music.clickStartBtn();
-                            }}
-                            >
-                        </ImgBtn>
-                    </div>
+                {/* 가운데 3D 로고  */}
+                <div className='logoImage'> 
+                    <ModelViewer scale= {isMobile ? '0.8':"1.5"} modelPath={model}></ModelViewer>
+                    {/* scale은 크기 modelPath는 glb경로 */}
+                    {/* 참고사이트 https://victordibia.com/blog/blender-to-react/#step-1-export-your-3d-model-as-gltf-20 */}
                 </div>
-                :
-                <>
-                    {/* 가운데 3D 로고  */}
-                    <div className='logoImage'> 
-                        <ModelViewer scale= {isMobile ? '0.8':"1.5"} modelPath={model}></ModelViewer>
-                        {/* scale은 크기 modelPath는 glb경로 */}
-                        {/* 참고사이트 https://victordibia.com/blog/blender-to-react/#step-1-export-your-3d-model-as-gltf-20 */}
-                    </div>
-                    <div style={{overflow: 'hidden'}}>
-                        {/* 모바일 상태에서는 커서 x */}
-                        {isMobile ? <></> : <this.spermCursor></this.spermCursor>} 
-                    </div>
-
-                    
-                </> 
-                }
+                <div style={{overflow: 'hidden'}}>
+                    {/* 모바일 상태에서는 커서 x */}
+                    {isMobile ? <></> : <this.spermCursor></this.spermCursor>} 
+                </div>
             </div>
             
             

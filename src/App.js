@@ -4,6 +4,7 @@ import './index.css';
 import './App.js';
 import {ImgBtn} from './app/components/xip/REDCommon/CommonStyle';
 import Home from './app/components/xip/RED/Home';
+import Start from './app/components/xip/RED/Start';
 import Video from './app/components/xip/RED/Video';
 import NotFound from './app/components/xip/RED/NotFound'
 import Works from './app/components/xip/RED/Works'
@@ -12,29 +13,7 @@ import NightKidsMv from './app/components/xip/RED/Video/NightKidsMv';
 import Masterinnovation from './app/components/xip/RED/Video/Masterinnovation';
 import { isMobile } from 'react-device-detect';
 
-function StartPage(props)  {
-    
-    const startBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/startBtn.png'
-    return(
-        <Link to="/home">
-        <div className='beforeStart'>
-            <div style={{display:'flex', justifyContent: 'center', alignItems:'center', minHeight: '100vh'}}>
-                
-                    <ImgBtn 
-                        className='imgBtnNoRed'
-                        style={{width: isMobile ?'80vw':'50vw', height: 'auto'}}
-                        src= {startBtn} 
-                        alt='startBtn' 
-                        onClick={()=>{
-                            // props.music.play();
-                        }}
-                        >
-                    </ImgBtn>
-            </div>
-        </div>
-        </Link>
-    )
-}
+
     
 // 메뉴 컴포넌트 (경로이동)
 const Root = () => {
@@ -203,7 +182,7 @@ const Root = () => {
         <music.soundBtn></music.soundBtn>
         <Routes>
             {/* 맨처음화면 */}
-            <Route path='/' element={<StartPage music={music}></StartPage>}></Route>
+            <Route path='/' element={<Start music={music}></Start>}></Route>
             <Route path="/home" element={<Home startClickValue={startClickValue} soundBtn={music.play}/>}></Route>
             <Route path="/video" element={<Video/>}></Route>
             <Route path="/works" element={<Works/>}></Route>
