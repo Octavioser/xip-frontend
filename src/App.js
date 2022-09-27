@@ -98,7 +98,10 @@ const Root = () => {
     return (
         <>
         {/* 메뉴버튼 */}
-        <header> 
+        <header>
+            {window.location.pathname === './' ?
+            <></>
+            :
             <div style={{marginLeft:'0.5vw', marginTop:'0.5vh', width:'10vw'}}>
                 {/* 홈화면이면 리스트를 보여주고 아니면 뒤로가기 */}
                 {window.location.pathname === '/home' ?
@@ -194,7 +197,9 @@ const Root = () => {
                 <></>
                 }
             </div>
+            }
         </header>
+            
         <music.soundBtn></music.soundBtn>
         <Routes>
             {/* 맨처음화면 */}
