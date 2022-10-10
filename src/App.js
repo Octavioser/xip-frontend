@@ -11,6 +11,7 @@ import Works from './app/components/xip/RED/Works'
 import Credit from './app/components/xip/RED/Credit'  
 import NightKidsMv from './app/components/xip/RED/Video/NightKidsMv';
 import Masterinnovation from './app/components/xip/RED/Video/Masterinnovation';
+import GreenCardMv from './app/components/xip/RED/Video/GreenCardMv';
 import { isMobile } from 'react-device-detect';
 
 
@@ -189,6 +190,7 @@ const Root = () => {
             <Route path="/credit" element={<Credit/>}></Route>
             <Route path="/video/nightKidsMv" element={<NightKidsMv/>}></Route>
             <Route path="/video/masterinnovation" element={<Masterinnovation/>}></Route>
+            <Route path="/video/greenCardMv" element={<GreenCardMv/>}></Route>
             {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
             <Route path="*" element={<NotFound />}></Route>
         </Routes>

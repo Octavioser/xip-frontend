@@ -31,15 +31,17 @@ const Video = () =>{
                 </Link>
             </div>
             <div style={{textAlign: 'center'}}>
-                <ImgBtn
-                    src={greenCardMv}
-                    alt='greenCardMv'
-                    onClick={()=>{
+                <Link to = './greenCardMv'>
+                    <ImgBtn
+                        src={greenCardMv}
+                        alt='greenCardMv'
+                        onClick={()=>{
 
-                    }}
-                    style={menuSize}
-                >
-                </ImgBtn>
+                        }}
+                        style={menuSize}
+                    >
+                    </ImgBtn>
+                </Link>
             </div>
             <div style={{textAlign: 'center'}}>
                 <Link to = './masterinnovation'>
