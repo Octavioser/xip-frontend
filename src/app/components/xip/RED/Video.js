@@ -57,15 +57,17 @@ const Video = () =>{
                 </Link>
             </div>
             <div style={{textAlign: 'center'}}>
-                <ImgBtn
-                    src={masterinnovationBunka}
-                    alt='masterinnovationBunka'
-                    onClick={()=>{
+                <Link to = './masterinnovationBunka'>
+                    <ImgBtn
+                        src={masterinnovationBunka}
+                        alt='masterinnovationBunka'
+                        onClick={()=>{
 
-                    }}
-                    style={menuSize}
-                >
-                </ImgBtn>
+                        }}
+                        style={menuSize}
+                    >
+                    </ImgBtn>
+                </Link>
             </div>
         </div>
     )
