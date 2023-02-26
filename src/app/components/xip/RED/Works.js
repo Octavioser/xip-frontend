@@ -2,6 +2,7 @@ import React, { Component} from 'react';
 import '../../../../App.css';
 import { isMobile } from 'react-device-detect';
 import { ImgBtn } from '../REDCommon/CommonStyle';
+import {Link} from 'react-router-dom';
 
 const inUteroBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/works/in+utero.png'
 const HomoMechanicus = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/works/homo+mechanicus.png'
@@ -98,6 +99,7 @@ export default class Works extends Component {
                     </ImgBtn>
                 </div>
                 <div style={{textAlign: 'center'}}>
+                    <Link to='./ImageSlide'>
                     <ImgBtn
                         src={Fetus}
                         alt='Fetus'
@@ -110,6 +112,7 @@ export default class Works extends Component {
                         style={menuSize}
                     >
                     </ImgBtn>
+                    </Link>
                 {/* </div> */}
             </div>
 
