@@ -14,7 +14,7 @@ import Masterinnovation from './app/components/xip/RED/Video/Masterinnovation';
 import MasterinnovationBunka from './app/components/xip/RED/Video/MasterinnovationBunka';
 import GreenCardMv from './app/components/xip/RED/Video/GreenCardMv';
 import { isMobile } from 'react-device-detect';
-import ImageSlide from './app/components/xip/RED/Works/ImageSlide';
+// import ImageSlide from './app/components/xip/RED/Works/ImageSlide';
 
 
     
@@ -194,7 +194,7 @@ const Root = () => {
             <Route path="/video/masterinnovation" element={<Masterinnovation/>}></Route>
             <Route path="/video/masterinnovationBunka" element={<MasterinnovationBunka/>}></Route>
             <Route path="/video/greenCardMv" element={<GreenCardMv/>}></Route>
-            <Route path="/works/ImageSlide" element={<ImageSlide/>}></Route>
+            {/* <Route path="/works/ImageSlide" element={<ImageSlide/>}></Route> */}
             {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
             <Route path="*" element={<NotFound />}></Route>
         </Routes>
