@@ -14,12 +14,20 @@ import Masterinnovation from './app/components/xip/RED/Video/Masterinnovation';
 import MasterinnovationBunka from './app/components/xip/RED/Video/MasterinnovationBunka';
 import GreenCardMv from './app/components/xip/RED/Video/GreenCardMv';
 import { isMobile } from 'react-device-detect';
-// import ImageSlide from './app/components/xip/RED/Works/ImageSlide';
-
+import ImageSlide from './app/components/xip/RED/Works/ImageSlide';
 
     
 // 메뉴 컴포넌트 (경로이동)
 const Root = () => {
+    const AWS = require('aws-sdk');
+    // s3 권한
+    const s3 = new AWS.S3({ // 보안 자격 증명 엑세스 키
+        accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
+        secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
+        region: 'ap-northeast-2',
+    });
+
+
     // 메뉴
     const menuMainBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/menu8_2.png'
     const worksBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/home/works.png'
@@ -194,7 +202,7 @@ const Root = () => {
             <Route path="/video/masterinnovation" element={<Masterinnovation/>}></Route>
             <Route path="/video/masterinnovationBunka" element={<MasterinnovationBunka/>}></Route>
             <Route path="/video/greenCardMv" element={<GreenCardMv/>}></Route>
-            {/* <Route path="/works/ImageSlide" element={<ImageSlide/>}></Route> */}
+            <Route path="/works/ImageSlide" element={<ImageSlide s3={s3}/>}></Route>
             {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
             <Route path="*" element={<NotFound />}></Route>
         </Routes>

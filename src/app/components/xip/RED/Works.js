@@ -114,7 +114,7 @@ export default class Works extends Component {
                     </ImgBtn>
                     </Link>
                 {/* </div> */}
-            </div>
+                </div>
 
             {/* <div style={{position:'relative', 'overflow-x': 'scroll', width:'10vw'}}> */}
                 {/* <img src={Fetus}
