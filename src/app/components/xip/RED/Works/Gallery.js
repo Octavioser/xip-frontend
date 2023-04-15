@@ -6,7 +6,7 @@ const bucketName = 'xip-bucket';
 const folderName = 'xItem/i/works/image/fetus/';
 
 // 정보
-const ImageSlide = (props) => {
+const Gallery = (props) => {
     const [imageList, setImageList] = useState([]);
     useEffect(() => {
         const s3 = props.s3
@@ -67,4 +67,4 @@ const ImageSlide = (props) => {
     );
 };
 
-export default ImageSlide;
+export default Gallery;

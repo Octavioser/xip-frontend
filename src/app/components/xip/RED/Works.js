@@ -99,7 +99,7 @@ export default class Works extends Component {
                     </ImgBtn>
                 </div>
                 <div style={{textAlign: 'center'}}>
-                    <Link to='./ImageSlide'>
+                    <Link to='./Gallery'>
                     <ImgBtn
                         src={Fetus}
                         alt='Fetus'
