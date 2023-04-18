@@ -68,6 +68,8 @@ const Gallery = (props) => {
 
             // 이미지 태그 세팅함수
             const setImgTag = (imageWidth, awsUrl, i) => {  // 이미지 태그 반환 함수
+                console.log('list[i]=>', list[i])
+                console.log('[i]=>', i)
                 return (
                     <ImgBtn style={{ width: imageWidth }} src={awsUrl + list[i].Key} alt={i}
                         onClick={(event)=>{
@@ -85,7 +87,7 @@ const Gallery = (props) => {
             let displaylistData = [];
             for(let i=0; i<list.length; i++) {  // 이미지 3개씩 한줄로 넣어주고 사진팝업 데이터 넣어주기
                 // fetus trauma fetusDtail 만 3열로
-                if((pFolderName === 'fetus')||(pFolderName === 'trauma')||(pFolderName === 'fetusDetail')) {
+                if((pFolderName === 'fetus')||(pFolderName === 'trauma')) {
                     if((i % 3 === 0)) {
                         displaylistData = 
                         displaylistData.concat([
@@ -107,9 +109,9 @@ const Gallery = (props) => {
                 else {
                     displaylistData = 
                     displaylistData.concat([
-                        <div key={i} style={{ display: "flex" }}>
+                        <div key={i} style={{ display: "flex", justifyContent: 'center'}}>
                             <div style={{ marginRight: "0.5vh" }}>
-                                {setImgTag(imageWidth, awsUrl, i)}  
+                                {setImgTag(isMobile ? '70vw' : '35vw', awsUrl, i)}  
                             </div>
                         </div>
                     ]) 

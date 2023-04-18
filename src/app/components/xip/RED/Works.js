@@ -11,13 +11,13 @@ export default class Works extends Component {
         menuOpenId: '',
 
         photoSrc:[
-            { key : 'inUteroBtn' ,value: 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/works/in+utero.png'},
-            { key : 'homoMechanicus' ,value: 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/works/homo+mechanicus.png'},
+            { key : 'inUtero' ,value: 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/works/in+utero.png'},
+            // { key : 'homoMechanicus' ,value: 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/works/homo+mechanicus.png'},
             { key : 'articulatedAnatomy' ,value: 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/works/Articulated+Anatomy.png'},
             { key : 'trauma' ,value: 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/works/trauma.png'},
             { key : 'isetanDenimProject' ,value: 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/works/isetan+Denim+project.png'},
             { key : 'fetus' ,value: 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/works/fetus.png'},
-            { key : 'fetusDetail' ,value: 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/works/fetusDetails.png'}
+            { key : 'fetusDetails' ,value: 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/works/fetusDetails.png'}
         ]
     }
     componentDidMount() {
