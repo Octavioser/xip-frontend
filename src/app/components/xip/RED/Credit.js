@@ -1,31 +1,36 @@
 import React from 'react';
 import '../../../../App.css';
 import { isMobile } from 'react-device-detect';
+import { PBtn } from '../REDCommon/CommonStyle';
 
 // 정보
 const Credit = () => {
+    const menulength = 5
     return (    
-                <div className='logoImage'>
-                    <div style={{display:'flex', justifyContent: 'center', alignItems:'center', minHeight: '100vh'}}>
-                    <div style={{color:'white', fontFamily: 'HelveticaNeue', fontSize:'3vw', fontWeight:'bold',textAlign: 'center', lineHeight: isMobile ? '2vh' : '1vh'}}>
-                    {isMobile ?
-                        <>
-                        <h1>www.xip.red</h1>
-                        <h1 onClick={()=>{window.open('https://instagram.com/xipchang?igshid=YzA2ZDJiZGQ=', '_blank')}}>@xipchang</h1>
-                        <h1 onClick={()=>{window.open('https://instagram.com/xip.red?igshid=YmMyMTA2M2Y=', '_blank')}}>@xip.red</h1>
-                        <h1>xxipchang@gmail.com</h1>
-                        </>
-                        :
-                        <>
-                        <h3>www.xip.red</h3>
-                        <h3 onClick={()=>{window.open('https://instagram.com/xipchang?igshid=YzA2ZDJiZGQ=', '_blank')}}>@xipchang</h3>
-                        <h3 onClick={()=>{window.open('https://instagram.com/xip.red?igshid=YmMyMTA2M2Y=', '_blank')}}>@xip.red</h3>
-                        <h3>xxipchang@gmail.com</h3>
-                        </>
-                    }
-                    </div>
-                    </div>
-                </div>
+        <div className='logoImage' style={{height: isMobile ? '20vh' : '35vh',width: isMobile ? '90%':'50%', textAlign: 'center'}}>
+            <>
+                <PBtn
+                    labelText='www.xip.red'
+                    noHover={true}
+                >   
+                </PBtn>
+                <PBtn
+                    labelText='@xipchang'
+                    onClick={()=>{window.open('https://instagram.com/xipchang?igshid=YzA2ZDJiZGQ=', '_blank')}}
+                >
+                </PBtn>
+                <PBtn
+                    labelText='@xip.red'
+                    onClick={()=>{window.open('https://instagram.com/xip.red?igshid=YmMyMTA2M2Y=', '_blank')}}
+                >
+                </PBtn>
+                <PBtn
+                    labelText='xxipchang@gmail.com'
+                    noHover={true}
+                >
+                </PBtn>
+            </>
+        </div>
     );
 };
 export default Credit;

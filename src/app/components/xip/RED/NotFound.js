@@ -1,16 +1,14 @@
 import React from 'react';
 
-const comingSoon = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/coming+soon.png'
-
 const NotFound = () => {
 
     return(
-        <img
+        <p
             className='logoImage' 
-            src={comingSoon} 
             alt='commingSoon'
-            style={{width: '50vw', height:'auto'}}>
-        </img>
+            style={{width: '50vw', height:'auto', fontSize:'1rem', textAlign: 'center'}}>
+            not found
+        </p>
     )
 };
 export default NotFound

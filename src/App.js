@@ -2,17 +2,17 @@ import React, {useState} from 'react';
 import { BrowserRouter, Routes, Route, Link, useNavigate} from 'react-router-dom';
 import './index.css';
 import './App.js';
-import {ImgBtn} from './app/components/xip/REDCommon/CommonStyle';
+import {ImgBtn, PBtn} from './app/components/xip/REDCommon/CommonStyle';
 import Home from './app/components/xip/RED/Home';
 import Start from './app/components/xip/RED/Start';
 import Video from './app/components/xip/RED/Video';
 import NotFound from './app/components/xip/RED/NotFound'
 import Works from './app/components/xip/RED/Works'
 import Credit from './app/components/xip/RED/Credit'  
-import NightKidsMv from './app/components/xip/RED/Video/NightKidsMv';
+// import NightKidsMv from './app/components/xip/RED/Video/NightKidsMv';
 import Masterinnovation from './app/components/xip/RED/Video/Masterinnovation';
 import MasterinnovationBunka from './app/components/xip/RED/Video/MasterinnovationBunka';
-import GreenCardMv from './app/components/xip/RED/Video/GreenCardMv';
+// import GreenCardMv from './app/components/xip/RED/Video/GreenCardMv';
 import { isMobile } from 'react-device-detect';
 import Gallery from './app/components/xip/RED/Works/Gallery';
 
@@ -30,11 +30,6 @@ const Root = () => {
 
     // 메뉴
     const menuMainBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/menu8_2.png'
-    const worksBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/home/works.png'
-    const creditBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/home/credit.png'
-    const musicBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/home/sound.png'
-    const shopBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/home/shop.png'
-    const videoBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/home/video.png'
 
     const backgroundMusicUrl = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/m/wow.wav'
 
@@ -84,7 +79,6 @@ const Root = () => {
             )
         }
     }    
-    const menuSize = {height: isMobile ? '3vh':'6vh'}
     
     return (
         <>
@@ -100,7 +94,7 @@ const Root = () => {
                         src={menuMainBtn} 
                         className='imgBtnNoRed'
                         alt='menuButton' 
-                        style={{top:'10vw', left: '10vh', height: isMobile ? '15vh':'10vh'}}
+                        style={{top:'10vw', left: '10vh', height: isMobile ? '10vh':'15vh'}}
                         onClick={() =>{
                             let menuValue = menuOpen === '1' ? '0' : '1'
                             setMenuOpen(menuValue) // 메인 메뉴버튼 클릭시 열리고 닫기
@@ -113,7 +107,7 @@ const Root = () => {
                             src={menuMainBtn} 
                             alt='menuButton' 
                             className='imgBtnNoRed'
-                            style={{top:0, left:0, height: isMobile ? '15vh':'10vh'}}
+                            style={{top:0, left:0, height: isMobile ? '10vh':'15vh'}}
                             onClick={() =>{
                                 goBack()
                             }}
@@ -123,65 +117,60 @@ const Root = () => {
                 {menuOpen === '1' ?
                 <>
                 <Link to="./works"> 
-                    <ImgBtn //works
-                        src={worksBtn}
+                    <PBtn //works
+                        labelText='works'
                         alt='worksBtn'
                         onClick={() =>{
                             let menuValue = menuOpen === '1' ? '0' : '1'
                             setMenuOpen(menuValue) 
                         }}
-                        style={menuSize}
                     >
-                    </ImgBtn>
+                    </PBtn>
                 </Link>
                 <Link to="./video"> 
-                    <ImgBtn //비디오
-                        src={videoBtn}
-                        alt='videoBtn'
+                    <PBtn //비디오
+                       labelText='video'
+                       alt='videoBtn'
                         onClick={() =>{
                             let menuValue = menuOpen === '1' ? '0' : '1'
                             setMenuOpen(menuValue) 
                         }}
-                        style={menuSize}
                     >
-                    </ImgBtn>
+                    </PBtn>
                 </Link>
                 {/* <Link to="./music"> */}
-                    <ImgBtn //음악 사이트 이동
-                        src={musicBtn}
-                        alt='musicBtn'
+                    <PBtn //음악 사이트 이동
+                        labelText='sound'
+                        alt='soundBtn'
                         onClick={() =>{
                             let menuValue = menuOpen === '1' ? '0' : '1'
                             setMenuOpen(menuValue)
                             window.open('https://ffm.to/cuechoi_twelvedrives', '_blank') 
                         }}
-                        style={menuSize}
                     >
-                </ImgBtn>
+                    </PBtn>
                 {/* </Link> */}
                 <Link to="./shop"> 
-                    <ImgBtn // 샵
-                        src={shopBtn}
+                    <PBtn // 샵
+                        labelText='shop'
                         alt='shopBtn'
                         onClick={() =>{
                             let menuValue = menuOpen === '1' ? '0' : '1'
                             setMenuOpen(menuValue) 
                         }}
-                        style={menuSize}
                     >
-                    </ImgBtn>
+                    </PBtn>
                 </Link>
                 <Link to="./credit"> 
-                    <ImgBtn // contact
-                        src={creditBtn}
+                    <PBtn className='pbtn'// contact
+                        labelText='credit'
                         alt='creditBtn'
                         onClick={() =>{
                             let menuValue = menuOpen === '1' ? '0' : '1'
                             setMenuOpen(menuValue) 
                         }}
-                        style={menuSize}
                     >
-                    </ImgBtn>
+                    </PBtn>
                 </Link>
                 </>
                 :
@@ -198,10 +187,10 @@ const Root = () => {
             <Route path="/video" element={<Video/>}></Route>
             <Route path="/works" element={<Works/>}></Route>
             <Route path="/credit" element={<Credit/>}></Route>
-            <Route path="/video/nightKidsMv" element={<NightKidsMv/>}></Route>
+            {/* <Route path="/video/nightKidsMv" element={<NightKidsMv/>}></Route> */}
             <Route path="/video/masterinnovation" element={<Masterinnovation/>}></Route>
             <Route path="/video/masterinnovationBunka" element={<MasterinnovationBunka/>}></Route>
-            <Route path="/video/greenCardMv" element={<GreenCardMv/>}></Route>
+            {/* <Route path="/video/greenCardMv" element={<GreenCardMv/>}></Route> */}
             <Route path="/works/Gallery" element={<Gallery s3={s3}/>}></Route>
             {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
             <Route path="*" element={<NotFound />}></Route>

@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;700&family=Roboto:wght@500&display=swap');
+
+
 body {
   background-image: url(https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/backgroundVideo.gif);
   background-repeat: no-repeat;
@@ -10,6 +13,36 @@ body {
   height: 100%;
   width: 100%;
   margin: 0;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+}
+
+.pBtn {
+  margin-block-start:0em;
+  margin-block-end: 0em;
+}
+
+.pBtn:hover {
+  /* x y z 확대  */
+  transform: scale3d(1.05, 1.05, 1.05);
+  color: red;
+}
+
+.pBtnNoHover {
+  margin-block-start:0em;
+  margin-block-end: 0em;
+}
+
+/*사이트 링크*/
+a:link {
+  color: white;
+  text-decoration: none;
+}
+
+/*사이트 방문*/
+a:visited {   
+  color: white;
+  text-decoration: none;
 }
 
 html{
