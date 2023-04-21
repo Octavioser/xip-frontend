@@ -110,7 +110,7 @@ const Gallery = (props) => {
                     displaylistData = 
                     displaylistData.concat([
                         <div key={i} style={{ display: "flex", justifyContent: 'center'}}>
-                            <div style={{ marginRight: "0.5vh" }}>
+                            <div key={i}style={{ marginRight: "0.5vh" }}>
                                 {setImgTag(isMobile ? '70vw' : '35vw', awsUrl, i)}  
                             </div>
                         </div>
@@ -187,7 +187,7 @@ const Gallery = (props) => {
             </div>
             {isOpen && <div className={'popUp'} style={{ display: isOpen ? 'flex' : 'none' }}>
                 <ImgBtn
-                    src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/closeSilde.svg'}
+                    src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/closeSlideBtn.webp'}
                     alt= 'closeBtn'
                     onClick={()=>{
                         setIsOpen(false);

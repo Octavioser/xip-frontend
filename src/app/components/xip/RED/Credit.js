@@ -5,7 +5,6 @@ import { PBtn } from '../REDCommon/CommonStyle';
 
 // 정보
 const Credit = () => {
-    const menulength = 5
     return (    
         <div className='logoImage' style={{height: isMobile ? '20vh' : '35vh',width: isMobile ? '90%':'50%', textAlign: 'center'}}>
             <>
