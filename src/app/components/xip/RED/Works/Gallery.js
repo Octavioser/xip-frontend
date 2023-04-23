@@ -192,7 +192,7 @@ const Gallery = (props) => {
                     onClick={()=>{
                         setIsOpen(false);
                     }}
-                    style={{ position: 'absolute', top: '1.5vh', right: isMobile ?'2vw' : '1vw', width: isMobile ?'7vw':'3vw' , height:isMobile ?'7vw':'3vw'}}
+                    style={{ position: 'absolute', top: '1.5vh', right: isMobile ?'2vw' : '1vw', width: isMobile ?'7vw':'3vw' , height:isMobile ?'7vw':'3vw', zIndex: 1}}
                 >
                 </ImgBtn>
                 <ImageGallery
