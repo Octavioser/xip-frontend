@@ -43,10 +43,9 @@ export default class Works extends Component {
         const menulength = photoSrc.length
 
         return (
-            <div className='logoImage' style={{height: isMobile ? (menulength*7 + 'vh') : (menulength*7 + 'vh'), width: '50%'}}>
+            <div className='logoImage' style={{height: isMobile ? (menulength*5 + 'vh') : (menulength*7 + 'vh'), width: isMobile ? '90%':'50%', textAlign: 'center'}}>
            {photoSrc.map((e) => {
                 return (
-                    <div key={e.key} style={{textAlign: 'center', width: '50vw'}}>
                         <Link to={`./Gallery/?type=${e.key}`}>
                         <PBtn
                             labelText={e.display}
@@ -59,7 +58,6 @@ export default class Works extends Component {
                         >
                         </PBtn>
                         </Link>
-                    </div>
                 )
             })}
             </div>
