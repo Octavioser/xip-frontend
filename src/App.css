@@ -49,9 +49,9 @@ html{
   cursor: url("https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/cursor-7.cur"), default;
 }
 
-header {
+nav {
   position: fixed;
-  z-index: 1;
+  z-index: 10;
 }
 
 .soundBtn{

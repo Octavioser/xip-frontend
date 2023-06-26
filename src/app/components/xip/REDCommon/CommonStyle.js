@@ -34,7 +34,6 @@ export const ImgBtn = (props) => {
  * @param noHover   true로 주면 hover기능 없음
  */
 export const PBtn = (props) => {
-  console.log(props.style ? '111' : 22222)
   let style = props.style ? props.style : ({ fontSize: isMobile? '2rem':'55px'})
   let className = ((props.noHover || false) === true) ? 'pBtnNoHover' : 'pBtn'
   return (
