@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { BrowserRouter, Routes, Route, Link, useNavigate} from 'react-router-dom';
 import './index.css';
 import './App.js';
@@ -17,9 +17,9 @@ import MasterinnovationBunka from './app/components/xip/RED/Video/Masterinnovati
 // import GreenCardMv from './app/components/xip/RED/Video/GreenCardMv';
 import { isMobile } from 'react-device-detect';
 import Gallery from './app/components/xip/RED/Works/Gallery';
-import { useCookies } from 'react-cookie';
 
-import imgLogo from './loginLog.png';
+import { useCookies } from 'react-cookie';
+import {getCookie} from './cookie';
 
     
 // 메뉴 컴포넌트 (경로이동)
@@ -38,6 +38,8 @@ const Root = () => {
 
     const backgroundMusicUrl = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/m/wow.wav'
 
+    const loginLog = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/loginLog.png'
+
     const [soundBtn, setSoundBtn] = useState('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/soundControl.png');
 
     const [menuOpen, setMenuOpen] = useState('0');                 // 헤더 메뉴 버튼 닫음 0 열림 1
@@ -50,7 +52,15 @@ const Root = () => {
 
     const [lgBtn, setLgBtn] = useState(false);    //  토큰 있을 시 로그인버튼
 
-    const [cookies, setCookie, removeCookie] = useCookies(['token']); // 쿠키 훅
+    const [cookies, , removeCookie] = useCookies(['token']); // 쿠키 훅
+    
+    useEffect(() => {
+        console.log('cookies=>',cookies.token)
+        console.log('getCookie()=>',getCookie('token'))
+        if(cookies.token !== getCookie('token')) {
+            removeCookie('token')
+        }
+    });
 
 
     const navigate = useNavigate();
@@ -78,7 +88,7 @@ const Root = () => {
             return(
                 <ImgBtn  
                     className='soundBtn imgBtnNoHover'
-                    style={{width: isMobile ?'6vw':'3vw', right: '20px', bottom: '20px'}}
+                    style={{width: isMobile ?'6vw':'2vw', right: '20px', bottom: '20px'}}
                     src={soundBtn} 
                     alt='startBtn' 
                     onClick={()=>{
@@ -189,14 +199,15 @@ const Root = () => {
                     }
                 </div>
             </nav>
-            <div style={{right:'0.5vw', marginTop:'0.5vh', width:'5vw', position: 'fixed', zIndex: 10}}>
+            <div style={{right:isMobile? '5vw':'0vw', marginTop:'2vh', width:'5vw', position: 'fixed', zIndex: 1}}>
                 {/* 로그인 버튼 */}
-                {!cookies.token ?
+                {!getCookie('token') ?
                 <Link to= "./login">   
                     {/* 로그인안되어있으면 로그인창으로 이동 */}
                     <ImgBtn  
-                        style={{width:'5vw'}}
-                        src={imgLogo} 
+                        className='imgBtnNoRed'
+                        style={{width: isMobile? '7vw':'3vw'}}
+                        src={loginLog} 
                         alt='login' 
                         onClick={()=>{
                             setMenuOpen('0') 
@@ -206,8 +217,9 @@ const Root = () => {
                 </Link>
                 : 
                 <ImgBtn  
-                    style={{width:'5vw'}}
-                    src={imgLogo} 
+                    className='imgBtnNoRed'
+                    style={{width:isMobile? '7vw':'3vw'}}
+                    src={loginLog} 
                     alt='login' 
                     onClick={()=>{
                         if(lgBtn===0) {
@@ -243,7 +255,6 @@ const Root = () => {
                             onClick={() =>{
                                 setMenuOpen('0') 
                                 setLgBtn(0)
-                                console.log('cookie==>', cookies)
                             }}
                         >
                         </PBtn>

@@ -41,9 +41,6 @@ const Gallery = (props) => {
                 Prefix: param[0],
                 Delimiter: '/',
             };
-            console.log('이미지 콜')
-
-            console.log('parma==>', param[0])
 
             const images = await props.s3.listObjectsV2(params).promise();
             list = images.Contents
@@ -54,7 +51,6 @@ const Gallery = (props) => {
             for(let i=0; i<list.length; i++) {
                 let url = list[i].Key
                 url = url.replace('low', 'high')
-                console.log(url)
                 resultList = resultList.concat([
                     {
                         original: awsUrl + url, // 원본 이미지 URL
@@ -68,8 +64,6 @@ const Gallery = (props) => {
 
             // 이미지 태그 세팅함수
             const setImgTag = (imageWidth, awsUrl, i) => {  // 이미지 태그 반환 함수
-                console.log('list[i]=>', list[i])
-                console.log('[i]=>', i)
                 return (
                     <ImgBtn style={{ width: imageWidth }} src={awsUrl + list[i].Key} alt={i}
                         onClick={(event)=>{
@@ -123,12 +117,12 @@ const Gallery = (props) => {
         getData()
 
 
-    },[props.s3]);
+    },[props.s3]);  // useEffect(() => { },[]) 처음에만 동작
 
 
     const arrowSize = isMobile? '5vw' : '1.5vw' ;
 
-    const arrow  ='https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/slideArrow.svg'
+    const arrow  ='https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/.svg'
     
         
     const  renderLeftNav = ( onClick, disabled ) => { // 왼쪽화살표

@@ -1,10 +1,9 @@
-
-export default {
-
-    CommonApi: async(url, param) => {
-		try {
+const Common = {
+	CommonApi : async(url, param) => {
+		try{
+			let apiurl = 'http://localhost:8080' + url
 			let result = [];
-			await fetch(url, 
+			await fetch(apiurl, 
 			{
 				method: "POST",
 				headers: {
@@ -22,7 +21,7 @@ export default {
 			console.log(error)
 			return -1;
 		}
-		
-    },
-	
+	}	
 }
+
+export default Common;

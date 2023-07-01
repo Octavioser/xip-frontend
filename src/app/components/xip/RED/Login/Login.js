@@ -4,6 +4,7 @@ import { PBtn } from '../../REDCommon/CommonStyle';
 import Common from '../../REDCommon/Common';
 import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
+import { isMobile } from 'react-device-detect';
 
 
 const Login = (props) => {
@@ -14,12 +15,12 @@ const Login = (props) => {
     const [pw, setPw] = useState('');                // 비밀번호
     const [loginFail, setLoginFail] = useState('');      // 이메일 패스워드 틀릴시
 
-    const [cookies, setCookie] = useCookies(['token']); // 쿠키 훅           
+    const [, setCookie] = useCookies(['token']); // 쿠키 훅           
 
 
     const apiList = {
         login: {
-            api: 'http://localhost:8080/login/loginR001',
+            api: '/login/loginR001',
             param: () => {
                 return (
                     {email: email, pw: pw}
@@ -45,8 +46,10 @@ const Login = (props) => {
         // 로그인(비밀번호까지)
         let resultData = await Common.CommonApi(apiList.login.api, apiList.login.param());
         if(resultData && resultData.length > 0) {
+            const expires =  new Date();
+            expires.setMinutes(expires.getMinutes() + 1)
             setLoginFail(0)
-            setCookie('token', resultData[0].token); // 쿠키 저장
+            setCookie('token', resultData[0].token, {expires}); // 쿠키 저장
             navigate(-1); // 뒤로가기
         }
         else {
@@ -57,13 +60,16 @@ const Login = (props) => {
 
     }
 
+    const textWidth = isMobile? '35vw' : '15vw'
+
     return (
-        <div className='logoImage' style={{height: '35vh',width:'50%', textAlign: 'center'}}>
+        <div className='logoImage' style={{height: '35vh',width: textWidth, textAlign: 'center'}}>
             {loginFail ? <p style={{color:'red'}}>Incorrect email or password</p> : <></>}
-            <p>EMAIL</p>
+            <p style={{textAlign: 'left'}}>EMAIL</p>
             <input 
                 id='id'
                 type='text' 
+                style={{width: textWidth}} 
                 value={email}
                 onChange={(e)=>{
                     setEmail(e.target.value)
@@ -74,10 +80,11 @@ const Login = (props) => {
                     }
                 }}
             />
-            <p>PASSWORD</p>  
+            <p style={{textAlign: 'left'}}>PASSWORD</p>  
             <input 
                 id='password' 
-                type='text' 
+                type='text'
+                style={{width: textWidth}} 
                 value={pw}
                 onChange={(e)=>{
                     console.log(e.target.value)
@@ -89,7 +96,7 @@ const Login = (props) => {
                     }
                 }}
             />
-            <br/>
+            <br/><br/>
             <PBtn
                 labelText='CONTINUE' 
                 alt='continue'

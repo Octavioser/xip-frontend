@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate} from 'react-router-dom';
 import { PBtn } from '../../REDCommon/CommonStyle';
 import Common from '../../REDCommon/Common';
-import { useCookies } from 'react-cookie';
+import { isMobile } from 'react-device-detect';
 
 
 const CreateAccount = (props) => {
@@ -19,7 +19,7 @@ const CreateAccount = (props) => {
 
     const apiList = {
         checkEmail: {
-            api: 'http://localhost:8080/login/loginR002',
+            api: '/login/loginR002',
             param: () => {
                 return (
                     {email: email}
@@ -27,7 +27,7 @@ const CreateAccount = (props) => {
             }
         },
         insertCreateAccount: {
-            api: 'http://localhost:8080/login/loginR101',
+            api: '/login/loginR101',
             param: () => {
                 return (
                     {email: email, pw: pw, gender:gender, firstNm:firstNm, lastNm:lastNm}
@@ -83,21 +83,24 @@ const CreateAccount = (props) => {
 
         // 회원가입
         try {
-            let resultData = await Common.CommonApi(apiList.insertCreateAccount.api, apiList.insertCreateAccount.param());    // 없으면 0 있으면 1
+            await Common.CommonApi(apiList.insertCreateAccount.api, apiList.insertCreateAccount.param());
             navigate('/home')
         } catch (error) {
             console.log('error==>',error)
         }
     }
 
+    const textWidth = isMobile? '35vw' : '15vw'
+
     return (
-        <div className='logoImage' style={{height: '35vh',width:'50%', top: '40%', textAlign: 'center'}}>
+        <div className='logoImage' style={{height: '35vh', width: textWidth, top: '40%', textAlign: 'center'}}>
             <p style={{color:'red'}}>Create a XIP Account</p>
             <p style={{color:'red'}}>{errorMsg}</p>
-            <p>EMAIL</p>
+            <p style={{textAlign: 'left'}}>EMAIL</p>
             <input 
                 id='email'
                 type='email' 
+                style={{width: textWidth}} 
                 value={email}
                 disabled={newEmail}
                 maxLength="30"
@@ -113,10 +116,11 @@ const CreateAccount = (props) => {
             />
             {newEmail ?
             <>
-                <p>PASSWORD</p>  
+                <p style={{textAlign: 'left'}}>PASSWORD</p>  
                 <input 
                     id='password' 
                     type='text' 
+                    style={{width: textWidth}} 
                     value={pw}
                     onChange={(e)=>{
                         setPw(e.target.value)
@@ -127,10 +131,11 @@ const CreateAccount = (props) => {
                         }
                     }}
                 />
-                <p>FIRST NAME</p>  
+                <p style={{textAlign: 'left'}}>FIRST NAME</p>  
                 <input 
                     id='firstNm' 
                     type='text' 
+                    style={{width: textWidth}} 
                     value={firstNm}
                     onChange={(e)=>{
                         setFirstNm(e.target.value)
@@ -141,10 +146,11 @@ const CreateAccount = (props) => {
                         }
                     }}
                 />
-                <p>LAST NAME</p>  
+                <p style={{textAlign: 'left'}}>LAST NAME</p>  
                 <input 
                     id='lastNm' 
                     type='text' 
+                    style={{width: textWidth}} 
                     value={lastNm}
                     onChange={(e)=>{
                         setLastNm(e.target.value)
