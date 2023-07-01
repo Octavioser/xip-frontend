@@ -102,10 +102,11 @@ const CreateAccount = (props) => {
                 disabled={newEmail}
                 maxLength="30"
                 onChange={(e)=>{
+                    
                     setEmail(e.target.value)
                 }}
                 onKeyUp={(e)=> {  
-                    if(e.code === "Enter" && newEmail) {
+                    if(e.code === "Enter" && email) {
                         continueBtn(); // 엔터 클릭
                     }
                 }}
@@ -122,7 +123,7 @@ const CreateAccount = (props) => {
                     }}
                     onKeyUp={(e)=> {  
                         if(e.code === "Enter") {
-                            continueBtn(); // 엔터 클릭
+                            creatBtn(); // 엔터 클릭
                         }
                     }}
                 />
@@ -136,7 +137,7 @@ const CreateAccount = (props) => {
                     }}
                     onKeyUp={(e)=> {  
                         if(e.code === "Enter") {
-                            continueBtn(); // 엔터 클릭
+                            creatBtn(); // 엔터 클릭
                         }
                     }}
                 />
@@ -150,7 +151,7 @@ const CreateAccount = (props) => {
                     }}
                     onKeyUp={(e)=> {  
                         if(e.code === "Enter") {
-                            continueBtn(); // 엔터 클릭
+                            creatBtn(); // 엔터 클릭
                         }
                     }}
                 />

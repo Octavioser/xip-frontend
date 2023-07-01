@@ -89,6 +89,7 @@ const Login = (props) => {
                     }
                 }}
             />
+            <br/>
             <PBtn
                 labelText='CONTINUE' 
                 alt='continue'
@@ -98,6 +99,7 @@ const Login = (props) => {
                 }}
             >
             </PBtn>
+            <br/>
             <Link to= "../createAccount">  
                 <PBtn
                     labelText='CREATE ACCOUNT' 

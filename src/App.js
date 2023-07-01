@@ -195,7 +195,7 @@ const Root = () => {
                 <Link to= "./login">   
                     {/* 로그인안되어있으면 로그인창으로 이동 */}
                     <ImgBtn  
-                        style={{width:'70px'}}
+                        style={{width:'5vw'}}
                         src={imgLogo} 
                         alt='login' 
                         onClick={()=>{
@@ -206,7 +206,7 @@ const Root = () => {
                 </Link>
                 : 
                 <ImgBtn  
-                    style={{width:'70px'}}
+                    style={{width:'5vw'}}
                     src={imgLogo} 
                     alt='login' 
                     onClick={()=>{
