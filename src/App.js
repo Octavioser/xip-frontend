@@ -210,7 +210,8 @@ const Root = () => {
                         src={loginLog} 
                         alt='login' 
                         onClick={()=>{
-                            setMenuOpen('0') 
+                            setLgBtn(0)
+                            setMenuOpen('0') // 왼쪽 상단 메뉴 버튼 닫기
                         }}
                     >
                     </ImgBtn>

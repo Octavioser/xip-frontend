@@ -5,6 +5,7 @@ import Common from '../../REDCommon/Common';
 import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
+import CryptoJS from "crypto-js"; // 암호화
 
 
 const Login = (props) => {
@@ -83,7 +84,7 @@ const Login = (props) => {
             <p style={{textAlign: 'left'}}>PASSWORD</p>  
             <input 
                 id='password' 
-                type='text'
+                type='password'
                 style={{width: textWidth}} 
                 value={pw}
                 onChange={(e)=>{
