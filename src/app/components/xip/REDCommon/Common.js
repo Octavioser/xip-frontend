@@ -1,3 +1,4 @@
+import CryptoJS from "crypto-js"; // 암호화
 const Common = {
 	CommonApi : async(url, param) => {
 		try{
@@ -21,7 +22,19 @@ const Common = {
 			console.log(error)
 			return -1;
 		}
-	}	
+		
+	},
+	
+	CommonEncode : async(str) => { // 암호화
+		try{
+			const secretKey = process.env.REACT_APP_SECRET_LOGIN_KEY
+			const encrypted = CryptoJS.HmacMD5(JSON.stringify(str), secretKey).toString();
+			return encrypted;
+		} catch (error) {
+			console.log(error)
+			return -1;
+		}
+	}
 }
 
 export default Common;

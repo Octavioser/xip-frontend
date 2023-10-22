@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate} from 'react-router-dom';
 import { PBtn } from '../../REDCommon/CommonStyle';
 import Common from '../../REDCommon/Common';
 import { useCookies } from 'react-cookie';
-import { Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
-import CryptoJS from "crypto-js"; // 암호화
 
 
 const Login = (props) => {
-
-    const navigate = useNavigate();
 
     const [email, setEmail] = useState('');            // 이메일
     const [pw, setPw] = useState('');                // 비밀번호
@@ -18,13 +13,13 @@ const Login = (props) => {
 
     const [, setCookie] = useCookies(['token']); // 쿠키 훅           
 
-
     const apiList = {
         login: {
             api: '/login/loginR001',
-            param: () => {
+            param: async() => {
+                const encodePw = await Common.CommonEncode(pw);
                 return (
-                    {email: email, pw: pw}
+                    {email: email, pw: encodePw}
                 )
             }
         }
@@ -45,13 +40,14 @@ const Login = (props) => {
             return
         }
         // 로그인(비밀번호까지)
-        let resultData = await Common.CommonApi(apiList.login.api, apiList.login.param());
+        let resultData = await Common.CommonApi(apiList.login.api, await apiList.login.param());
         if(resultData && resultData.length > 0) {
             const expires =  new Date();
             expires.setMinutes(expires.getMinutes() + 1)
             setLoginFail(0)
             setCookie('token', resultData[0].token, {expires}); // 쿠키 저장
-            navigate(-1); // 뒤로가기
+            console.log('props==>', props)
+            props.loginModalBtn(false)
         }
         else {
             // 로그인 실패 
@@ -65,7 +61,7 @@ const Login = (props) => {
 
     return (
         <div className='logoImage' style={{height: '35vh',width: textWidth, textAlign: 'center'}}>
-            {loginFail ? <p style={{color:'red'}}>Incorrect email or password</p> : <></>}
+            {loginFail ? <p style={{color:'black'}}>Incorrect email or password</p> : <></>}
             <p style={{textAlign: 'left'}}>EMAIL</p>
             <input 
                 id='id'
@@ -98,7 +94,7 @@ const Login = (props) => {
                 }}
             />
             <br/><br/>
-            <PBtn
+            <PBtn 
                 labelText='CONTINUE' 
                 alt='continue'
                 style={{fontSize: '1em', whiteSpace:'nowrap'}} 
@@ -108,17 +104,15 @@ const Login = (props) => {
             >
             </PBtn>
             <br/>
-            <Link to= "../createAccount">  
                 <PBtn
                     labelText='CREATE ACCOUNT' 
                     alt='create account'
                     style={{fontSize: '1em', whiteSpace:'nowrap'}} 
                     onClick={()=>{
-                        
+                        props.showCreateAccountBtn();
                     }}
                 >
                 </PBtn>
-            </Link>
         </div>
     )
 }

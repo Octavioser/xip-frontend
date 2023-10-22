@@ -9,7 +9,7 @@ import Video from './app/components/xip/RED/Video';
 import NotFound from './app/components/xip/RED/NotFound';
 import Works from './app/components/xip/RED/Works';
 import Credit from './app/components/xip/RED/Credit';
-import Login from './app/components/xip/RED/Login/Login';
+import LoginModal from './app/components/xip/RED/Login/LoginModal';
 import CreateAccount from './app/components/xip/RED/Login/CreateAccount';  
 // import NightKidsMv from './app/components/xip/RED/Video/NightKidsMv';
 import Masterinnovation from './app/components/xip/RED/Video/Masterinnovation';
@@ -24,15 +24,7 @@ import {getCookie} from './cookie';
     
 // 메뉴 컴포넌트 (경로이동)
 const Root = () => {
-    const AWS = require('aws-sdk');
-    // s3 권한
-    const s3 = new AWS.S3({ // 보안 자격 증명 엑세스 키
-        accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
-        secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
-        region: 'ap-northeast-2',
-    });
-
-
+    
     // 메뉴
     const menuMainBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/menu8_2.png'
 
@@ -52,6 +44,8 @@ const Root = () => {
 
     const [lgBtn, setLgBtn] = useState(false);    //  토큰 있을 시 로그인버튼
 
+    const [loginModal,setLoginModal] = useState(false) // 로그인 팝업창
+
     const [cookies, , removeCookie] = useCookies(['token']); // 쿠키 훅
     
     useEffect(() => {
@@ -64,6 +58,15 @@ const Root = () => {
 
 
     const navigate = useNavigate();
+
+    const loginModalBtn = () => { // 로그인 팝업창 열기닫기 버튼
+        if(loginModal) {
+            setLoginModal(false)
+        }
+        else{
+            setLoginModal(true)
+        }
+    }
 
     // 뒤로가기
     const goBack = () => {
@@ -202,7 +205,7 @@ const Root = () => {
             <div style={{right:isMobile? '5vw':'0vw', marginTop:'2vh', width:'5vw', position: 'fixed', zIndex: 1}}>
                 {/* 로그인 버튼 */}
                 {!getCookie('token') ?
-                <Link to= "./login">   
+                <>   
                     {/* 로그인안되어있으면 로그인창으로 이동 */}
                     <ImgBtn  
                         className='imgBtnNoRed'
@@ -211,11 +214,11 @@ const Root = () => {
                         alt='login' 
                         onClick={()=>{
                             setLgBtn(0)
-                            setMenuOpen('0') // 왼쪽 상단 메뉴 버튼 닫기
+                            setLoginModal(true)
                         }}
                     >
                     </ImgBtn>
-                </Link>
+                </>
                 : 
                 <ImgBtn  
                     className='imgBtnNoRed'
@@ -263,23 +266,30 @@ const Root = () => {
                     :<></>
                 }
             </div>
+            {loginModal? // 로그인 팝업창
+            <LoginModal loginModalBtn={loginModalBtn}/>
+            :
+            <></>
+            }
         </>
         }               
         <music.soundBtn></music.soundBtn>
         <Routes>
+        {/*  페이지이동 */}
             {/* 맨처음화면 */}
             <Route path='/' element={<Start music={music}></Start>}></Route>
             <Route path="/home" element={<Home startClickValue={startClickValue} soundBtn={music.play}/>}></Route>
             <Route path="/video" element={<Video/>}></Route>
             <Route path="/works" element={<Works/>}></Route>
             <Route path="/credit" element={<Credit/>}></Route>
-            <Route path="/login" element={<Login navigate={navigate}/>}></Route>
+            {/* <Route path="/login" element={<Login navigate={navigate}/>}></Route> */}
             <Route path="/createAccount" element={<CreateAccount navigate={navigate}/>}></Route>
             {/* <Route path="/video/nightKidsMv" element={<NightKidsMv/>}></Route> */}
             <Route path="/video/masterinnovation" element={<Masterinnovation/>}></Route>
             <Route path="/video/masterinnovationBunka" element={<MasterinnovationBunka/>}></Route>
             {/* <Route path="/video/greenCardMv" element={<GreenCardMv/>}></Route> */}
-            <Route path="/works/Gallery" element={<Gallery s3={s3}/>}></Route>
+            {/* <Route path="/works/Gallery" element={<Gallery s3={s3}/>}></Route> */}
+            <Route path="/works/Gallery" element={<Gallery/>}></Route>
             {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
             <Route path="*" element={<NotFound />}></Route>
         </Routes>

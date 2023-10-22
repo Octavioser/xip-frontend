@@ -5,8 +5,19 @@ import { ImgBtn } from '../../REDCommon/CommonStyle';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 
+
+const AWS = require('aws-sdk');
+    // s3 권한
+    const s3 = new AWS.S3({ // 보안 자격 증명 엑세스 키
+        accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
+        secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
+        region: 'ap-northeast-2',
+    });
+
 // 정보
 const Gallery = (props) => {
+
+    
     
     const [selectedImage, setSelectedImage] = useState(0);          // 이미지 슬라이드 index
 
@@ -42,7 +53,7 @@ const Gallery = (props) => {
                 Delimiter: '/',
             };
 
-            const images = await props.s3.listObjectsV2(params).promise();
+            const images = await s3.listObjectsV2(params).promise();
             list = images.Contents
 
             let resultList = []
@@ -117,12 +128,12 @@ const Gallery = (props) => {
         getData()
 
 
-    },[props.s3]);  // useEffect(() => { },[]) 처음에만 동작
+    },[]);  // useEffect(() => { },[]) 처음에만 동작
 
 
-    const arrowSize = isMobile? '5vw' : '1.5vw' ;
+    const arrowSize = isMobile? '5vw' : '2vw' ;
 
-    const arrow  ='https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/.svg'
+    const arrow  ='https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/arrowCircle.png'
     
         
     const  renderLeftNav = ( onClick, disabled ) => { // 왼쪽화살표
@@ -136,7 +147,7 @@ const Gallery = (props) => {
                 top: '50%',
                 left: '10px',
                 transform: 'translateY(-50%)',
-                fontSize: '30px',
+                fontSize: '50px',
                 cursor: 'pointer',
                 width: arrowSize,
                 height: arrowSize,
