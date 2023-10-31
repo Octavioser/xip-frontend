@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import { PBtn } from '../../REDCommon/CommonStyle';
 import Common from '../../REDCommon/Common';
 import { isMobile } from 'react-device-detect';
@@ -8,7 +8,8 @@ const CreateAccount = (props) => {
 
     const [email, setEmail] = useState('');                 // 이메일
     const [pw, setPw] = useState('');                       // 비밀번호
-    const [country, setCountry] = useState('');               // 성별
+    const [confirmPw, setConfirmPw] = useState('');                       // 확인 비밀번호
+    const [country, setCountry] = useState('KOR');               // 성별
     const [firstNm, setFirstNm] = useState('');            // 이름(성) 
     const [lastNm, setLastNm] = useState('');            // 이름
     const [errorMsg, setErrorMsg] = useState('');        // 이메일 있는지 체크
@@ -16,7 +17,9 @@ const CreateAccount = (props) => {
     const [authCdStatus, setAuthCdStatus] = useState(0);          // 이메일 코드 입력창 
     const [newEmail, setNewEmail] = useState(0);         // 이메일 없으면 패스워드 입력 보이기
 
-    const countriesArray = Object.values(getCountryDataList()); // 나라 데이터
+    
+
+    
 
     const apiList = {
         checkEmail: {
@@ -42,7 +45,7 @@ const CreateAccount = (props) => {
                 const encodePw = await Common.CommonEncode(pw);
                 console.log('encodePw ==>', encodePw)
                 return (
-                    {email: email, pw: encodePw, country:country, firstNm:firstNm, lastNm:lastNm}
+                    {email: email, pw: encodePw, country:country, firstNm:firstNm, lastNm:lastNm, authCd: authCd}
                 )
             }
         }
@@ -82,7 +85,7 @@ const CreateAccount = (props) => {
                 if(resultData ===1) { // 이미 가입된 이메일이다.
                     setErrorMsg('You already have an account.')
                 }
-                else { // 새로운 이메일
+                else if(resultData ===0){ // 새로운 이메일
                     setAuthCdStatus(1); // 이메일 코드 입력창 보이게 하기
                     setErrorMsg('Enter the verification code received via email')
                 }
@@ -96,35 +99,108 @@ const CreateAccount = (props) => {
     // 회원가입 버튼
     const creatBtn = async() => {
         let msg = ''
+        const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
+        if (!emailRegex.test(email)) { // 이메일 유효성 검사
+            msg = 'Registration failed. Please try again.'
+            setErrorMsg(msg)
+            return
+        }
         // 비밀번호 검사
         if(!pw) {
             msg = 'Enter your password.'
             setErrorMsg(msg)
             return
         }
+
+        // 비밀번호 동일한지 검사
+        if(pw !== confirmPw) {
+            msg = 'Passwords does not match.'
+            setErrorMsg(msg)
+            return
+        }
+
+        if(!(/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(pw))) { // 8글자 이상 대문자, 숫자 포함
+            msg = 'passwords must be at least 8 characters containing one uppercase character and one number'
+            setErrorMsg(msg)
+            return
+        }
         
         //  이름 검사
-        if(! (firstNm && lastNm)) {
+        if(firstNm.trim() === '' || lastNm.trim() === '') {
             msg = 'Enter your name.'
             setErrorMsg(msg)
             return
         }
 
-        // 성별 검사
-        // if(!(gender === 'MEN' || gender === 'WOMEN')) {
-        //     msg = 'Please select a gender.'
-        //     setErrorMsg(msg)
-        //     return
-        // }
+        // 국가 검사
+        if(!(country)) {
+            msg = 'Please select a country.'
+            setErrorMsg(msg)
+            return
+        }
 
         // 회원가입
         try {
-            await Common.CommonApi(apiList.insertCreateAccount.api, await apiList.insertCreateAccount.param());
-            props.loginModalBtn()
+            try{
+                let resultData = await Common.CommonApi(apiList.insertCreateAccount.api, await apiList.insertCreateAccount.param());
+                if(resultData === -1) {
+                    msg = 'Registration failed. Please try again.'
+                    setErrorMsg(msg)
+                }
+                else {
+                    props.loginModalBtn()
+                }
+            } catch (error) {
+                    
+            }
+            
         } catch (error) {
             console.log('error==>',error)
         }
     }
+
+    
+
+
+    const countryDropDown = () => {
+        let array = Object.values(getCountryDataList())
+        array.sort((a, b) => {
+            if(a.iso3 === 'KOR') {
+                return -1;
+            }
+            else if(b.iso3 === 'KOR') {
+                return 1;
+            }
+            else if(a.name.toLowerCase() > b.name.toLowerCase()){
+                return 1;
+            }
+            else if(a.name.toLowerCase() < b.name.toLowerCase()) {
+                return -1;
+            }
+            else {
+                return 0;
+            }       
+        });
+        console.log(array)
+        return(
+        <>
+            <p style={{textAlign: 'left'}}>COUNTRY</p>  
+            <select  
+                style={{width: textWidth}}
+                onChange={(e)=>{
+                    setCountry(e.target.value.trim())
+                }}
+            >
+                {array.map(item => (
+                    <option key={item.iso3} value={item.iso3}>
+                        {item.name}
+                    </option>
+                ))}
+            </select>
+        </>
+        )
+    }
+
 
     const textWidth = isMobile? '35vw' : '15vw'
 
@@ -140,8 +216,8 @@ const CreateAccount = (props) => {
                 value={email}
                 disabled={newEmail || authCdStatus}
                 maxLength="30"
-                onChange={(e)=>{              
-                    setEmail(e.target.value)
+                onChange={(e)=>{         
+                    setEmail(e.target.value.trim())
                 }}
                 onKeyUp={(e)=> {  
                     if(e.code === "Enter" && email) {
@@ -180,7 +256,7 @@ const CreateAccount = (props) => {
                     style={{width: textWidth}} 
                     value={pw}
                     onChange={(e)=>{
-                        setPw(e.target.value)
+                        setPw(e.target.value.trim())
                     }}
                     onKeyUp={(e)=> {  
                         if(e.code === "Enter") {
@@ -188,11 +264,28 @@ const CreateAccount = (props) => {
                         }
                     }}
                 />
-                <p style={{textAlign: 'left'}}>COUNTRY</p>  
+
+                <p style={{textAlign: 'left'}}>CONFIRM PASSWORD</p>  
+                <input 
+                    id='password' 
+                    type='password'
+                    style={{width: textWidth}} 
+                    value={confirmPw}
+                    onChange={(e)=>{
+                        setConfirmPw(e.target.value.trim())
+                    }}
+                    onKeyUp={(e)=> {  
+                        if(e.code === "Enter") {
+                            creatBtn(); // 엔터 클릭
+                        }
+                    }}
+                />
+                {/* <p style={{textAlign: 'left'}}>COUNTRY</p>  
                 <select  
                     style={{width: textWidth}}
                     onChange={(e)=>{
-                        setCountry(e.target.value)
+                        console.log(countriesArray)
+                        setCountry(e.target.value.trim())
                     }}
                 >
                     {countriesArray.map(item => (
@@ -200,7 +293,8 @@ const CreateAccount = (props) => {
                             {item.name}
                         </option>
                     ))}
-                </select>
+                </select> */}
+                {countryDropDown()}
                 <p style={{textAlign: 'left'}}>FIRST NAME</p>  
                 <input 
                     id='firstNm' 

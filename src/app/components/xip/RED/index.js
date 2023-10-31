@@ -1,0 +1,11 @@
+export { default as Credit } from './Credit';
+export { default as Home } from './Home';
+export { default as NotFound } from './NotFound'; 
+export { default as StartPage } from './StartPage'; 
+export { default as Video } from './Video/Video';  
+export { default as Works } from './Works/Works'; 
+export { default as Masterinnovation } from './Video/Masterinnovation'; 
+export { default as MasterinnovationBunka } from './Video/MasterinnovationBunka';  
+export { default as Gallery } from './Works/Gallery'; 
+export { default as Shop } from './Shop/Shop'; 
+export { default as MainBtn } from './MainBtn';

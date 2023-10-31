@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import Login from './Login';
 import CreateAccount from './CreateAccount';
-import {ImgBtn} from '../../REDCommon/CommonStyle';
+import {PBtn} from '../../REDCommon/CommonStyle';
 
 const LoginModal = (props) => {
 
@@ -45,13 +45,19 @@ const LoginModal = (props) => {
             shouldCloseOnOverlayClick={false} // 팝업창이 아닌 바깥부분 클릭시 닫히게 할것인지
         >
         {/*닫기버튼*/}
-        <ImgBtn  
-            src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/closeSlideBtn.webp'} 
+        <PBtn  
+            labelText= 'X'
             alt='menuButton' 
-            style={{height: '3vh'}}
+            style={{
+                fontSize: '2rem',
+                position: 'absolute',  // 절대적 위치 설정
+                top: '2vh',           // 상단으로부터의 거리
+                right: '1vw',         // 오른쪽으로부터의 거리
+                height: '3vh'
+            }}
             onClick={() =>{props.loginModalBtn()}}
         >
-        </ImgBtn>
+        </PBtn>
         {showCreateAccount ?
             <CreateAccount loginModalBtn={props.loginModalBtn}/>
         :

@@ -18,7 +18,7 @@ const StartPage = (props) => {
                             onClick={()=>{
                                 props.music.play();
                             }}
-                            >
+                        >
                         </ImgBtn>
                     </Link>
             </div>

@@ -9,8 +9,8 @@ const Credit = () => {
         <div className='logoImage' style={{height: isMobile ? '20vh' : '35vh',width: isMobile ? '90%':'50%', textAlign: 'center'}}>
             <>
                 <PBtn
+                    className='pBtnNoHover'
                     labelText='www.xip.red'
-                    noHover={true}
                 >   
                 </PBtn>
                 <PBtn
@@ -24,8 +24,8 @@ const Credit = () => {
                 >
                 </PBtn>
                 <PBtn
+                    className='pBtnNoHover'
                     labelText='xxipchang@gmail.com'
-                    noHover={true}
                 >
                 </PBtn>
             </>

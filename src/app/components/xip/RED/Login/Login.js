@@ -42,11 +42,11 @@ const Login = (props) => {
         // 로그인(비밀번호까지)
         let resultData = await Common.CommonApi(apiList.login.api, await apiList.login.param());
         if(resultData && resultData.length > 0) {
-            const expires =  new Date();
-            expires.setMinutes(expires.getMinutes() + 1)
+            
+            const expiresTime =  new Date();
+            expiresTime.setMinutes(expiresTime.getMinutes() + 10)
             setLoginFail(0)
-            setCookie('token', resultData[0].token, {expires}); // 쿠키 저장
-            console.log('props==>', props)
+            setCookie('token', resultData[0].token, {expires: expiresTime}); // 쿠키 저장
             props.loginModalBtn(false)
         }
         else {
@@ -69,7 +69,7 @@ const Login = (props) => {
                 style={{width: textWidth}} 
                 value={email}
                 onChange={(e)=>{
-                    setEmail(e.target.value)
+                    setEmail(e.target.value.trim())
                 }}
                 onKeyUp={(e)=> {  
                     if(e.code === "Enter") {
@@ -84,8 +84,7 @@ const Login = (props) => {
                 style={{width: textWidth}} 
                 value={pw}
                 onChange={(e)=>{
-                    console.log(e.target.value)
-                    setPw(e.target.value)
+                    setPw(e.target.value.trim())
                 }}
                 onKeyUp={(e)=> {  
                     if(e.code === "Enter") {

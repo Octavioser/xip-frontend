@@ -1,7 +1,7 @@
 import React from 'react';
-import '../../../../App.css';
+import '../../../../../App.css';
 import { isMobile } from 'react-device-detect';
-import { PBtn } from '../REDCommon/CommonStyle';
+import { PBtn } from '../../REDCommon/CommonStyle';
 import {Link} from 'react-router-dom';
 
 // 뮤직비디오
