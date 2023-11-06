@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { Link, useNavigate} from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 
@@ -8,15 +8,10 @@ import {ImgBtn, PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 const MainBtn = (props) => {
          
     // 메뉴
+    
     const menuMainBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/menu8_2.png'
 
     const [menuOpen, setMenuOpen] = useState('0');                 // 헤더 메뉴 버튼 닫음 0 열림 1
-
-    useEffect(() => {
-        // 배경화면 변경
-        document.body.style.backgroundImage = 'url(https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/backgroundVideo.gif)'; // 여기에 원하는 이미지 URL을 넣습니다.
-        document.body.style.backgroundColor = 'transparent'; // background-color 제거
-    })
 
     const navigate = useNavigate(); // 뒤로가기 
 
@@ -26,7 +21,7 @@ const MainBtn = (props) => {
     }
     return (
         <>
-            { window.location.pathname === '/' || window.location.pathname.substring(0,5) === '/shop' ?  //처음 화면
+            { window.location.pathname === '/' ?  //처음 화면
                 <></>  /* start.js*/
             :
                 <>

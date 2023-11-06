@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useRef} from 'react';
 import { PBtn } from '../../REDCommon/CommonStyle';
 import Common from '../../REDCommon/Common';
 import { isMobile } from 'react-device-detect';
@@ -13,8 +13,23 @@ const CreateAccount = (props) => {
     const [firstNm, setFirstNm] = useState('');            // 이름(성) 
     const [lastNm, setLastNm] = useState('');            // 이름
     const [errorMsg, setErrorMsg] = useState('');        // 이메일 있는지 체크
-    const [authCd, setAuthCd] = useState('');          // 이메일 코드 입력창 
-    const [authCdStatus, setAuthCdStatus] = useState(0);          // 이메일 코드 입력창 
+
+    const [authCd1, setAuthCd1] = useState('');          // 이메일 코드1 입력창 
+    const [authCd2, setAuthCd2] = useState('');          // 이메일 코드2 입력창
+    const [authCd3, setAuthCd3] = useState('');          // 이메일 코드3 입력창
+    const [authCd4, setAuthCd4] = useState('');          // 이메일 코드4 입력창
+    const [authCd5, setAuthCd5] = useState('');          // 이메일 코드5 입력창
+    const [authCd6, setAuthCd6] = useState('');          // 이메일 코드6 입력창
+
+    const authCd1Ref = useRef(null);
+    const authCd2Ref = useRef(null);
+    const authCd3Ref = useRef(null);
+    const authCd4Ref = useRef(null);
+    const authCd5Ref = useRef(null);
+    const authCd6Ref = useRef(null);
+
+    const [authCdStatus, setAuthCdStatus] = useState(0);          // 이메일 코드 입력창 상태
+
     const [newEmail, setNewEmail] = useState(0);         // 이메일 없으면 패스워드 입력 보이기
 
     
@@ -34,18 +49,18 @@ const CreateAccount = (props) => {
             api: '/login/loginR003',
             param: () => {
                 return (
-                    {email: email, authCd: authCd}
+                    {email: email, authCd: authCd1 + authCd2 + authCd3 + authCd4 + authCd5 + authCd6}
                 )
             }
         },
         insertCreateAccount: {
-            api: '/login/loginR101',
+            api: '/login/loginC101',
             param: async () => {
                 console.log('비밀번호 ==>', pw)
                 const encodePw = await Common.CommonEncode(pw);
                 console.log('encodePw ==>', encodePw)
                 return (
-                    {email: email, pw: encodePw, country:country, firstNm:firstNm, lastNm:lastNm, authCd: authCd}
+                    {email: email, pw: encodePw, country:country, firstNm:firstNm, lastNm:lastNm, authCd: authCd1 + authCd2 + authCd3 + authCd4 + authCd5 + authCd6}
                 )
             }
         }
@@ -88,6 +103,7 @@ const CreateAccount = (props) => {
                 else if(resultData ===0){ // 새로운 이메일
                     setAuthCdStatus(1); // 이메일 코드 입력창 보이게 하기
                     setErrorMsg('Enter the verification code received via email')
+                    authCd1Ref.current.focus();
                 }
             } catch (error) {
                 
@@ -161,7 +177,7 @@ const CreateAccount = (props) => {
 
     
 
-
+    // 세계나라 드랍다운리스트
     const countryDropDown = () => {
         let array = Object.values(getCountryDataList())
         array.sort((a, b) => {
@@ -202,40 +218,36 @@ const CreateAccount = (props) => {
     }
 
 
-    const textWidth = isMobile? '35vw' : '15vw'
+    const textWidth = isMobile? '60vw' : '15vw'
+
+    const codeWidth = isMobile? '6vw' : '1.5vw'
+
+    const codeStyle = {
+        height: codeWidth, 
+        width: codeWidth,
+        border: '1px solid #ddd', 
+        textAlign: 'center',
+    }
 
     return (
-        <div className='logoImage' style={{height: '35vh', width: textWidth, top: '40%', textAlign: 'center'}}>
+        <div className='logoImage' style={{height: '35vh', width: textWidth, top: '30%', textAlign: 'center'}}>
             <p style={{color:'black'}}>Create a XIP Account</p>
             <p style={{color:'black'}}>{errorMsg}</p>
-            <p style={{textAlign: 'left'}}>EMAIL</p>
-            <input 
-                id='email'
-                type='email' 
-                style={{width: textWidth}} 
-                value={email}
-                disabled={newEmail || authCdStatus}
-                maxLength="30"
-                onChange={(e)=>{         
-                    setEmail(e.target.value.trim())
-                }}
-                onKeyUp={(e)=> {  
-                    if(e.code === "Enter" && email) {
-                        continueBtn(); // 엔터 클릭
-                    }
-                }}
-            />
+            
             { authCdStatus && !newEmail? 
+            <></>
+            :
                 <>
-                    <p style={{textAlign: 'left'}}>CODE</p>
+                    <p style={{textAlign: 'left'}}>EMAIL</p>
                     <input 
-                        id='authCd'
-                        type='test' 
+                        id='email'
+                        type='email' 
                         style={{width: textWidth}} 
-                        value={authCd}
+                        value={email}
+                        disabled={newEmail || authCdStatus}
                         maxLength="30"
-                        onChange={(e)=>{
-                            setAuthCd(e.target.value)
+                        onChange={(e)=>{         
+                            setEmail(e.target.value.trim())
                         }}
                         onKeyUp={(e)=> {  
                             if(e.code === "Enter" && email) {
@@ -243,6 +255,125 @@ const CreateAccount = (props) => {
                             }
                         }}
                     />
+                </>
+            }
+            { authCdStatus && !newEmail? 
+                <>  
+                    <p style={{textAlign: 'center'}}>VERIFICATION CODE</p>
+                    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1vw'}}>
+                        <input 
+                            id='authCd1'
+                            type='text' 
+                            ref={authCd1Ref}
+                            style={codeStyle} 
+                            value={authCd1}
+                            maxLength="1"
+                            onChange={(e)=>{
+                                setAuthCd1(String(e.target.value))
+                                if(String(e.target.value) !== '') {
+                                    authCd2Ref.current.focus();
+                                }
+                            }}
+                            onKeyUp={(e)=> {  
+                                if(e.code === "Enter" && email) {
+                                    continueBtn(); // 엔터 클릭
+                                }
+                            }}
+                        />
+                        <input 
+                            id='authCd2'
+                            type='text' 
+                            ref={authCd2Ref}
+                            style={codeStyle} 
+                            value={authCd2}
+                            maxLength="1"
+                            onChange={(e)=>{
+                                setAuthCd2(String(e.target.value))
+                                if(String(e.target.value) !== '') {
+                                    authCd3Ref.current.focus();
+                                }
+                            }}
+                            onKeyUp={(e)=> {  
+                                if(e.code === "Enter" && email) {
+                                    continueBtn(); // 엔터 클릭
+                                }
+                            }}
+                        />
+                        <input 
+                            id='authCd3'
+                            type='text' 
+                            ref={authCd3Ref}
+                            style={codeStyle} 
+                            value={authCd3}
+                            maxLength="1"
+                            onChange={(e)=>{
+                                setAuthCd3(String(e.target.value))
+                                if(String(e.target.value) !== '') {
+                                    authCd4Ref.current.focus();
+                                }
+                            }}
+                            onKeyUp={(e)=> {  
+                                if(e.code === "Enter" && email) {
+                                    continueBtn(); // 엔터 클릭
+                                }
+                            }}
+                        />
+                        <input 
+                            id='authCd4'
+                            type='text' 
+                            ref={authCd4Ref}
+                            style={codeStyle} 
+                            value={authCd4}
+                            maxLength="1"
+                            onChange={(e)=>{
+                                setAuthCd4(String(e.target.value))
+                                if(String(e.target.value) !== '') {
+                                    authCd5Ref.current.focus();
+                                }
+                            }}
+                            onKeyUp={(e)=> {  
+                                if(e.code === "Enter" && email) {
+                                    continueBtn(); // 엔터 클릭
+                                }
+                            }}
+                        />
+                        <input 
+                            id='authCd5'
+                            type='text' 
+                            ref={authCd5Ref}
+                            style={codeStyle} 
+                            value={authCd5}
+                            maxLength="1"
+                            onChange={(e)=>{
+                                setAuthCd5(String(e.target.value))
+                                if(String(e.target.value) !== '') {
+                                    authCd6Ref.current.focus();
+                                }
+                            }}
+                            onKeyUp={(e)=> {  
+                                if(e.code === "Enter" && email) {
+                                    continueBtn(); // 엔터 클릭
+                                }
+                            }}
+                        />
+                        <input 
+                            id='authCd6'
+                            type='text' 
+                            ref={authCd6Ref}
+                            style={codeStyle} 
+                            value={authCd6}
+                            maxLength="1"
+                            onChange={(e)=>{
+                                setAuthCd6(String(e.target.value))
+                            }}
+                            onKeyUp={(e)=> {  
+                                if(e.code === "Enter" && email) {
+                                    continueBtn(); // 엔터 클릭
+                                }
+                            }}
+                        />
+                    </div>
+                    <br></br>
                 </>
                 :
                 <></>
@@ -280,20 +411,6 @@ const CreateAccount = (props) => {
                         }
                     }}
                 />
-                {/* <p style={{textAlign: 'left'}}>COUNTRY</p>  
-                <select  
-                    style={{width: textWidth}}
-                    onChange={(e)=>{
-                        console.log(countriesArray)
-                        setCountry(e.target.value.trim())
-                    }}
-                >
-                    {countriesArray.map(item => (
-                        <option key={item.iso3} value={item.iso3}>
-                            {item.name}
-                        </option>
-                    ))}
-                </select> */}
                 {countryDropDown()}
                 <p style={{textAlign: 'left'}}>FIRST NAME</p>  
                 <input 

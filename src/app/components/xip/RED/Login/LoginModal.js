@@ -3,6 +3,8 @@ import Modal from 'react-modal';
 import Login from './Login';
 import CreateAccount from './CreateAccount';
 import {PBtn} from '../../REDCommon/CommonStyle';
+import { isMobile } from 'react-device-detect';
+
 
 const LoginModal = (props) => {
 
@@ -34,8 +36,8 @@ const LoginModal = (props) => {
                 content: {
                     left: '50%',  /* 왼쪽에서 중앙 */
                     top: '50%',    /* 위에서 중앙*/
-                    width: '25vw',
-                    height: '40vw',
+                    width: isMobile? '90vw':'25vw',
+                    height: isMobile? '80vh':'80vh',
                     backgroundColor: 'rgba(255, 0, 0, 0.66)',
                     transform: 'translate(-50%, -50%)'
                 }

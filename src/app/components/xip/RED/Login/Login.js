@@ -42,9 +42,8 @@ const Login = (props) => {
         // 로그인(비밀번호까지)
         let resultData = await Common.CommonApi(apiList.login.api, await apiList.login.param());
         if(resultData && resultData.length > 0) {
-            
             const expiresTime =  new Date();
-            expiresTime.setMinutes(expiresTime.getMinutes() + 10)
+            expiresTime.setTime(expiresTime.getTime() + (12 * 60 * 60 * 1000))
             setLoginFail(0)
             setCookie('token', resultData[0].token, {expires: expiresTime}); // 쿠키 저장
             props.loginModalBtn(false)
@@ -57,7 +56,7 @@ const Login = (props) => {
 
     }
 
-    const textWidth = isMobile? '35vw' : '15vw'
+    const textWidth = isMobile? '60vw' : '15vw'
 
     return (
         <div className='logoImage' style={{height: '35vh',width: textWidth, textAlign: 'center'}}>

@@ -1,4 +1,7 @@
+
 import CryptoJS from "crypto-js"; // 암호화
+import {getCookie} from 'app/components/xip/RED/Login/Cookie';
+
 const Common = {
 	CommonApi : async(url, param) => {
 		try{
@@ -7,8 +10,10 @@ const Common = {
 			await fetch(apiurl, 
 			{
 				method: "POST",
+				credentials: 'include',
 				headers: {
-				"Content-Type": "application/json",
+					"Content-Type": "application/json",
+					'Authorization': `Bearer ${getCookie('token')}`
 				},
 				body: JSON.stringify(param)
 			}).then(response => 

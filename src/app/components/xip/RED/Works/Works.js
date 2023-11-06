@@ -19,7 +19,7 @@ const Works = () => {
 
     return(
             <div className='logoImage' style={{height: isMobile ? (menulength*5 + 'vh') : (menulength*7 + 'vh'), width: isMobile ? '90%':'50%', textAlign: 'center'}}>
-           {photoSrc.map((e) => {
+            {photoSrc.map((e) => {
                 return (
                         <Link to={`./Gallery/?type=${e.id}`}>
                             <PBtn // 샵
