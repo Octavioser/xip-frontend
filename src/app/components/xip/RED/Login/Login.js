@@ -26,6 +26,7 @@ const Login = (props) => {
     }
 
     const continueBtn = async() => {
+        setLoginFail(0)
         if(!pw) {
             setLoginFail(1)
             return
@@ -58,6 +59,11 @@ const Login = (props) => {
 
     const textWidth = isMobile? '60vw' : '15vw'
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // 폼 제출 로직 처리
+    };
+
     return (
         <div className='logoImage' style={{height: '35vh',width: textWidth, textAlign: 'center'}}>
             {loginFail ? <p style={{color:'black'}}>Incorrect email or password</p> : <></>}
@@ -77,20 +83,23 @@ const Login = (props) => {
                 }}
             />
             <p style={{textAlign: 'left'}}>PASSWORD</p>  
-            <input 
-                id='password' 
-                type='password'
-                style={{width: textWidth}} 
-                value={pw}
-                onChange={(e)=>{
-                    setPw(e.target.value.trim())
-                }}
-                onKeyUp={(e)=> {  
-                    if(e.code === "Enter") {
-                        continueBtn(); // 엔터 클릭
-                    }
-                }}
-            />
+            <form onSubmit={handleSubmit}>
+                <input 
+                    autoComplete="off"
+                    id='newpassword' 
+                    type='password'
+                    style={{width: textWidth}} 
+                    value={pw}
+                    onChange={(e)=>{
+                        setPw(e.target.value.trim())
+                    }}
+                    onKeyDown={(e)=> {  
+                        if(e.code === "Enter") {
+                            continueBtn(); // 엔터 클릭
+                        }
+                    }}
+                />
+            </form>
             <br/><br/>
             <PBtn 
                 labelText='CONTINUE' 

@@ -5,7 +5,7 @@ import {getCookie} from 'app/components/xip/RED/Login/Cookie';
 const Common = {
 	CommonApi : async(url, param) => {
 		try{
-			let apiurl = 'http://localhost:8080' + url
+			let apiurl = process.env.REACT_APP_API_URL + url
 			let result = [];
 			await fetch(apiurl, 
 			{
@@ -19,7 +19,6 @@ const Common = {
 			}).then(response => 
 				response.json()
 			).then(json  => {
-				console.log('json==>', json)
 				result = json
 			});
 			return result

@@ -34,7 +34,7 @@ const AuthShopBtn = () => {
     const fontSize = isMobile? '1.3rem':'15px'
 
     return (
-        <div style={{position: 'fixed', width:'10vw', right: '1vw', top: isMobile?'2vh':'1vh', display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}> 
+        <div style={{position: 'absolute', width:'10vw', right: '1vw', top: '-13vh', display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}> 
                 <PBtn  
                     className='pBtnNoRed'
                     style={{textAlign: 'right', margin: '2px', fontSize:fontSize}}

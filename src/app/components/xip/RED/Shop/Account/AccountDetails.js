@@ -3,6 +3,7 @@ import { isMobile } from 'react-device-detect';
 import Common from 'app/components/xip/REDCommon/Common';
 import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router-dom';
+import {getCountryDataList} from 'countries-list'
 
 const AccountDetails = () => {
     
@@ -59,6 +60,45 @@ const AccountDetails = () => {
         }
         getUserItem();
     },[navigate, removeCookie, start]);
+
+    // 세계나라 드랍다운리스트
+    const countryDropDown = () => {
+        let array = Object.values(getCountryDataList())
+        array.sort((a, b) => { // KOR 첫번째로 순서 변경
+            if(a.iso3 === 'KOR') {
+                return -1;
+            }
+            else if(b.iso3 === 'KOR') {
+                return 1;
+            }
+            else if(a.name.toLowerCase() > b.name.toLowerCase()){
+                return 1;
+            }
+            else if(a.name.toLowerCase() < b.name.toLowerCase()) {
+                return -1;
+            }
+            else {
+                return 0;
+            }       
+        });
+        return(
+        <>
+            <p style={{textAlign: 'left'}}>COUNTRY</p>  
+            <select  
+                style={{width: textWidth}}
+                onChange={(e)=>{
+                    setAddCountry(e.target.value.trim())
+                }}
+            >
+                {array.map(item => (
+                    <option key={item.iso3} value={item.iso3}>
+                        {item.name}
+                    </option>
+                ))}
+            </select>
+        </>
+        )
+    }
 
     
 
@@ -139,14 +179,7 @@ const AccountDetails = () => {
                 />
             </div>
             <div style={{ width: '48%' }}>
-                <p style={{textAlign: 'left'}}>COUNTRY</p>  
-                <input 
-                    id='addCountry' 
-                    type='addCountry'
-                    value={addCountry}
-                    disabled={true}
-                    style={{width: textWidth}} 
-                />
+                {countryDropDown()}
             </div>
         </div>
     )

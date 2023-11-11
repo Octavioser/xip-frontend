@@ -11,14 +11,14 @@ const ProductList = () => {
     useEffect(() => {
        
         const item = [
-            {key:'t1', name:'testT', status:'0', price:'300000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testT.gif'}, 
-            {key:'t2', name:'testT', status:'0', price:'300000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testT.gif'}, 
-            {key:'t3', name:'testT', status:'0', price:'300000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testT.gif'}, 
-            {key:'t4', name:'testT', status:'0', price:'300000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testT.gif'}, 
-            {key:'t5',name:'testpants', status:'0', price:'100000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testpants.gif'},
-            {key:'t6',name:'xipPants', status:'0', price:'275000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testpants.gif'},
-            {key:'t7',name:'testpants', status:'0', price:'100000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testpants.gif'},
-            {key:'t8',name:'testpants', status:'0', price:'100000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testpants.gif'}
+            {id:1, key:'t1', name:'testT', status:'0', price:'300000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testT.gif'}, 
+            {id:2, key:'t2', name:'testT', status:'0', price:'300000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testT.gif'}, 
+            {id:3, key:'t3', name:'testT', status:'0', price:'300000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testT.gif'}, 
+            {id:4, key:'t4', name:'testT', status:'0', price:'300000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testT.gif'}, 
+            {id:5, key:'t5',name:'testpants', status:'0', price:'100000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testpants.gif'},
+            {id:6, key:'t6',name:'xipPants', status:'0', price:'275000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testpants.gif'},
+            {id:7, key:'t7',name:'testpants', status:'0', price:'100000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testpants.gif'},
+            {id:8, key:'t8',name:'testpants', status:'0', price:'100000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testpants.gif'}
         ]
         setProductListItem(item);
     },[]);
@@ -44,6 +44,7 @@ const ProductList = () => {
             }}> 
             {productListItem.map((e) => 
                 <div 
+                    key={e.id}
                     style={{ flex: isMobile? '100 0 calc(100%)' : '0 0 calc(25% - 10px)', margin: '5px', position: 'relative'}}
                     // onMouseOver={()=>(setProductHover(productHover[e.key]=1))}
                     // onMouseLeave={()=>(setProductHover(productHover[e.key]=0))}
@@ -55,6 +56,7 @@ const ProductList = () => {
                     }}
                     >
                     <ImgBtn
+                        id={e.id}
                         src={e.src} 
                         className='imgBtnNoRed'
                         alt={e.name}
@@ -68,6 +70,7 @@ const ProductList = () => {
                         <>
                             {e.status === '1'  ? // status=2 판매완료
                                 <div 
+                                    key={e.id}
                                     style={{
                                         position:'absolute',  
                                         width: '90%', 
@@ -92,6 +95,7 @@ const ProductList = () => {
                                 </div>
                                 :
                                 <div 
+                                    key={e.id}
                                     style={{
                                     position:'absolute',  
                                     width: '90%', 

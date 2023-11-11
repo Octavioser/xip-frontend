@@ -76,7 +76,10 @@ const Gallery = (props) => {
             // 이미지 태그 세팅함수
             const setImgTag = (imageWidth, awsUrl, i) => {  // 이미지 태그 반환 함수
                 return (
-                    <ImgBtn style={{ width: imageWidth }} src={awsUrl + list[i].Key} alt={i}
+                    <ImgBtn     
+                        id={i}
+                        style={{ width: imageWidth }} 
+                        src={awsUrl + list[i].Key} alt={i}
                         onClick={(event)=>{
                             setSelectedImage(parseInt(event.target.alt));
                             setIsOpen(true) // 슬라이드 열기
@@ -97,13 +100,13 @@ const Gallery = (props) => {
                         displaylistData = 
                         displaylistData.concat([
                             <div key={i} style={{ display: "flex" }}>
-                                <div style={{ marginRight: "0.5vh" }}>
+                                <div key={i + 'a'} style={{ marginRight: "0.5vh" }}>
                                     {setImgTag(imageWidth, awsUrl, i)}  
                                 </div>
-                                <div style={{ marginRight: "0.5vh" }}>
+                                <div key={i + 'b'}style={{ marginRight: "0.5vh" }}>
                                     {setImgTag(imageWidth, awsUrl, i+1)}
                                 </div>
-                                <div>
+                                <div key={i + 'c'}>
                                     {setImgTag(imageWidth, awsUrl, i+2)}
                                 </div>
                             </div>
