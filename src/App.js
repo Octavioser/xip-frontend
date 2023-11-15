@@ -6,7 +6,9 @@ import {ImgBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import {Credit,Works, Video, StartPage, Home, NotFound,Masterinnovation,MasterinnovationBunka,Gallery, Shop, MainBtn} from 'app/components/xip/RED'; //index.js
 import ProductList from 'app/components/xip/RED/Shop/ProductList';
 import Account from 'app/components/xip/RED/Shop/Account/Account';
-import AccountDetails from 'app/components/xip/RED/Shop/Account/AccountDetails';
+import AccountDetails from 'app/components/xip/RED/Shop/Account/AccountDetails/AccountDetails';
+import { LoadingProvider } from 'app/components/xip/REDCommon/Loading/LoadingContext'
+import Loading from 'app/components/xip/REDCommon/Loading/Loading';
 
 // 메뉴 컴포넌트 (경로이동)
 const Root = () => {
@@ -20,7 +22,7 @@ const Root = () => {
             document.body.style.backgroundColor = 'red';
         }
         else {
-            document.body.style.backgroundImage = 'url(https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/backgroundVideo.gif)'; // 여기에 원하는 이미지 URL을 넣습니다.
+            document.body.style.backgroundImage = 'url(https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/backgroundVideo.gif)'; // 여기에 원하는 이미지 URL을 넣습니다.
             document.body.style.backgroundColor = 'transparent'; // background-color 제거
         }
     })
@@ -31,7 +33,7 @@ const Root = () => {
 
     const [play, setPlay] = useState(false);
 
-    const [soundBtn, setSoundBtn] = useState('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/soundControl.png');
+    const [soundBtn, setSoundBtn] = useState('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/soundControl.webp');
 
 
     const music = {
@@ -40,11 +42,11 @@ const Root = () => {
             setPlay(playValue)
             if(playValue) {
                 backgroundMusic.play();   //재생
-                setSoundBtn('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/soundControl.png')
+                setSoundBtn('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/soundControl.webp')
             }
             else{
                 backgroundMusic.pause();  //멈춤
-                setSoundBtn('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/soundStop.png')
+                setSoundBtn('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/soundStop.webp')
             }		
             backgroundMusic.loop = true;  // 반복
         },
@@ -68,51 +70,56 @@ const Root = () => {
 
     const setStartClick = () =>{setStartClickValue('1')}
 
+    
+
     return (
         <>
-        {/* shop 일경우 버튼 삭제 */}
-        {location.pathname.substring(0,5) === '/shop' ?
-            <Shop/>
-        :
-            <MainBtn setStartClick={setStartClick}/>
-        }
+            <Loading/>
+            {/* shop 일경우 버튼 삭제 */}
+            {location.pathname.substring(0,5) === '/shop' ?
+                <Shop/>
+            :
+                <MainBtn setStartClick={setStartClick}/>
+            }
 
-        <music.soundBtn></music.soundBtn>
+            <music.soundBtn></music.soundBtn>
 
-        <Routes>
-        {/*  페이지이동 */}
-            {/* 맨처음화면 */}
-            <Route path='/' element={<StartPage music={music}></StartPage>}></Route>
-            <Route path="/home" element={<Home startClickValue={startClickValue} soundBtn={music.play}/>}></Route>
-            <Route path="/video">
-                <Route path="" element={<Video/>}></Route>
-                <Route path=":masterinnovation" element={<Masterinnovation/>}></Route>
-                <Route path=":masterinnovationBunka" element={<MasterinnovationBunka/>}></Route>
-            </Route>
-            <Route path="/credit" element={<Credit/>}></Route>
-            <Route path="/works">
-                <Route path="" element={<Works/>}></Route>
-                <Route path=":gallery" element={<Gallery/>}></Route>
-            </Route>
-            <Route path="/shop">
-                <Route path="" element={<ProductList/>}/>
-                {/* <Route path=":account" element={<Account/>}/> */}
-                <Route path=":acoount">
-                    <Route path="" element={<Account/>}/>
-                    <Route path="accountDetails" element={<AccountDetails/>}/>
+            <Routes>
+            {/*  페이지이동 */}
+                {/* 맨처음화면 */}
+                <Route path='/' element={<StartPage music={music}></StartPage>}></Route>
+                <Route path="/home" element={<Home startClickValue={startClickValue} soundBtn={music.play}/>}></Route>
+                <Route path="/video">
+                    <Route path="" element={<Video/>}></Route>
+                    <Route path=":masterinnovation" element={<Masterinnovation/>}></Route>
+                    <Route path=":masterinnovationBunka" element={<MasterinnovationBunka/>}></Route>
                 </Route>
-            </Route>
-            {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
-            <Route path="*" element={<NotFound />}></Route>
-        </Routes>
+                <Route path="/credit" element={<Credit/>}></Route>
+                <Route path="/works">
+                    <Route path="" element={<Works/>}></Route>
+                    <Route path=":gallery" element={<Gallery/>}></Route>
+                </Route>
+                <Route path="/shop">
+                    <Route path="" element={<ProductList/>}/>
+                    {/* <Route path=":account" element={<Account/>}/> */}
+                    <Route path=":acoount">
+                        <Route path="" element={<Account/>}/>
+                        <Route path="accountDetails" element={<AccountDetails/>}/>
+                    </Route>
+                </Route>
+                {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
+                <Route path="*" element={<NotFound />}></Route>
+            </Routes>
         </>
     );
 };
 const App  = () => {
     return (
-        <BrowserRouter>
-        <Root />
-        </BrowserRouter>
+        <LoadingProvider>
+            <BrowserRouter>
+                <Root />
+            </BrowserRouter>
+        </LoadingProvider>
     );
 }
 export default App

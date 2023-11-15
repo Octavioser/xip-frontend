@@ -5,7 +5,7 @@ import { isMobile } from 'react-device-detect';
 // 맨처음 시작하면
 const StartPage = (props) => {
     
-    const startBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/startBtn.png'
+    const startBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/startBtn.webp'
     return(
         <div className='beforeStart'>
             <div style={{display:'flex', justifyContent: 'center', alignItems:'center', top: '50vh', minHeight: '100%'}}>

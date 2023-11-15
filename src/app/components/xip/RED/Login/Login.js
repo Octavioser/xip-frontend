@@ -3,9 +3,11 @@ import { PBtn } from '../../REDCommon/CommonStyle';
 import Common from '../../REDCommon/Common';
 import { useCookies } from 'react-cookie';
 import { isMobile } from 'react-device-detect';
-
+import { useLoading  } from 'app/components/xip/REDCommon/Loading/LoadingContext';
 
 const Login = (props) => {
+
+    const {setLoading} = useLoading();
 
     const [email, setEmail] = useState('');            // 이메일
     const [pw, setPw] = useState('');                // 비밀번호
@@ -32,16 +34,28 @@ const Login = (props) => {
             return
         }
         if(!email) {
+            setLoginFail(1)
+            return
+        }
+        if(!!email && !!pw) {
             const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
             if (!emailRegex.test(email)) { // 이메일 유효성 검사
                 setLoginFail(1)
                 return
             }
-            setLoginFail(1)
-            return
         }
-        // 로그인(비밀번호까지)
-        let resultData = await Common.CommonApi(apiList.login.api, await apiList.login.param());
+
+        let resultData;
+
+        try {
+            setLoading(true)
+            // 로그인(비밀번호까지)
+            resultData = await Common.CommonApi(apiList.login.api, await apiList.login.param())
+        } catch (error) {
+
+        } finally {
+            setLoading(false)
+        }
         if(resultData && resultData.length > 0) {
             const expiresTime =  new Date();
             expiresTime.setTime(expiresTime.getTime() + (12 * 60 * 60 * 1000))

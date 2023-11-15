@@ -136,7 +136,7 @@ const Gallery = (props) => {
 
     const arrowSize = isMobile? '5vw' : '2vw' ;
 
-    const arrow  ='https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/arrowCircle.png'
+    const arrow  ='https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/works/arrowCircle.webp'
     
         
     const  renderLeftNav = ( onClick, disabled ) => { // 왼쪽화살표
@@ -195,7 +195,7 @@ const Gallery = (props) => {
             </div>
             {isOpen && <div className={'popUp'} style={{ display: isOpen ? 'flex' : 'none' }}>
                 <ImgBtn
-                    src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/closeSlideBtn.webp'}
+                    src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/works/closeSlideBtn.webp'}
                     alt= 'closeBtn'
                     onClick={()=>{
                         setIsOpen(false);

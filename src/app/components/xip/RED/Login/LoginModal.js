@@ -31,7 +31,7 @@ const LoginModal = (props) => {
                     right: 0,
                     bottom: 0,
                     backgroundColor: 'rgba(255, 255, 255, 0.35)',
-                    zIndex: 999 // 최상위
+                    zIndex: 99
                 },
                 content: {
                     left: '50%',  /* 왼쪽에서 중앙 */

@@ -3,8 +3,11 @@ import { PBtn } from '../../REDCommon/CommonStyle';
 import Common from '../../REDCommon/Common';
 import { isMobile } from 'react-device-detect';
 import EmailAuthCode from 'app/components/xip/RED/Login/EmailAuthCode';
+import { useLoading  } from 'app/components/xip/REDCommon/Loading/LoadingContext';
 
 const CreateAccount = (props) => {
+
+    const {setLoading} = useLoading();                      // 
 
     const [email, setEmail] = useState('');                 // 이메일
     const [pw, setPw] = useState('');                       // 비밀번호
@@ -49,7 +52,8 @@ const CreateAccount = (props) => {
         if(authCdStatus === 1){ // 새로운 이메일을 입력하고 인증번호 받는 상태
             if( !!e && String(e).length === 6) {  // 검사
                 try {
-                    setAuthCd(e) // 싱크가 안맞다
+                    setLoading(true)
+                    setAuthCd(e) // 싱크가 안맞다 회원가입 할때 필요
                     let resultData = await Common.CommonApi(apiList.emailAuthCodeCheck.api, {email: email, authCd: e});
                     if (resultData > 0) { // 인증코드가 맞으면
                         msg = ''
@@ -62,6 +66,8 @@ const CreateAccount = (props) => {
                     setErrorMsg(msg)
                 } catch (error) {
                     console.log(error);    
+                } finally {
+                    setLoading(false)
                 }
             }
             else {
@@ -80,6 +86,7 @@ const CreateAccount = (props) => {
             }
             // 이메일 체크 및 인증
             try {
+                setLoading(true)
                 let resultData = await Common.CommonApi(apiList.checkEmail.api, apiList.checkEmail.param());    // 없으면 0 있으면 1
                 if(resultData ===1) { // 이미 가입된 이메일이다.
                     setErrorMsg('You already have an account.')
@@ -90,6 +97,8 @@ const CreateAccount = (props) => {
                 }
             } catch (error) {
                 
+            } finally {
+                setLoading(false)
             }
         }
         
@@ -132,23 +141,22 @@ const CreateAccount = (props) => {
         }
 
         // 회원가입
-        try {
-            try{
-                let resultData = await Common.CommonApi(apiList.insertCreateAccount.api, await apiList.insertCreateAccount.param());
-                if(resultData === -1) {
-                    msg = 'Registration failed. Please try again.'
-                    setErrorMsg(msg)
-                }
-                else {
-                    props.loginModalBtn()
-                }
-            } catch (error) {
-                    
+        try{
+            setLoading(true)
+            let resultData = await Common.CommonApi(apiList.insertCreateAccount.api, await apiList.insertCreateAccount.param());
+            if(resultData === -1) {
+                msg = 'Registration failed. Please try again.'
+                setErrorMsg(msg)
             }
-            
+            else {
+                props.loginModalBtn()
+            }
         } catch (error) {
-            console.log('error==>',error)
+                
+        } finally {
+            setLoading(false)
         }
+            
     }
 
     const handleSubmit = (event) => {

@@ -58,7 +58,7 @@ a:visited {
 }
 
 html{
-  cursor: url("https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/cursor-7.cur"), default;
+  cursor: url("https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/cursor-7.cur"), default;
 }
 
 nav {
@@ -116,7 +116,7 @@ nav {
   /* background-color: black; */
   background-size: 100%;
   background-repeat: round;
-  background-image: url('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/giphy2.gif');
+  background-image: url('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/giphy2.gif');
   /* 방향, 좌표  */ 
   /* 좌표 */
   /* transform: translate(-50%, -50%); */
