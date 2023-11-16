@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { PBtn } from '../../REDCommon/CommonStyle';
-import Common from '../../REDCommon/Common';
+import {useCommon} from '../../REDCommon/Common';
 import { useCookies } from 'react-cookie';
 import { isMobile } from 'react-device-detect';
-import { useLoading  } from 'app/components/xip/REDCommon/Loading/LoadingContext';
 
 const Login = (props) => {
 
-    const {setLoading} = useLoading();
+    const { commonShowLoading, commonHideLoading, commonApi, commonEncode } = useCommon();
 
     const [email, setEmail] = useState('');            // 이메일
     const [pw, setPw] = useState('');                // 비밀번호
@@ -19,7 +18,7 @@ const Login = (props) => {
         login: {
             api: '/login/loginR001',
             param: async() => {
-                const encodePw = await Common.CommonEncode(pw);
+                const encodePw = await commonEncode(pw);
                 return (
                     {email: email, pw: encodePw}
                 )
@@ -48,13 +47,14 @@ const Login = (props) => {
         let resultData;
 
         try {
-            setLoading(true)
+            await commonShowLoading()
+            // setLoading(true)
             // 로그인(비밀번호까지)
-            resultData = await Common.CommonApi(apiList.login.api, await apiList.login.param())
+            resultData = await commonApi(apiList.login.api, await apiList.login.param())
         } catch (error) {
 
         } finally {
-            setLoading(false)
+            commonHideLoading(false)
         }
         if(resultData && resultData.length > 0) {
             const expiresTime =  new Date();

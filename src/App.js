@@ -7,11 +7,20 @@ import {Credit,Works, Video, StartPage, Home, NotFound,Masterinnovation,Masterin
 import ProductList from 'app/components/xip/RED/Shop/ProductList';
 import Account from 'app/components/xip/RED/Shop/Account/Account';
 import AccountDetails from 'app/components/xip/RED/Shop/Account/AccountDetails/AccountDetails';
-import { LoadingProvider } from 'app/components/xip/REDCommon/Loading/LoadingContext'
+import { LoadingProvider, useLoading } from 'app/components/xip/REDCommon/Loading/LoadingContext'
 import Loading from 'app/components/xip/REDCommon/Loading/Loading';
+
+function preloadImage(url) { // 이미지 미리 불러오기
+    const img = new Image();
+    img.src = url;
+}
+preloadImage('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/loadingLogo.gif');
 
 // 메뉴 컴포넌트 (경로이동)
 const Root = () => {
+
+    const { loading } = useLoading();
+
     const location = useLocation ();
 
     useEffect(() => {
@@ -70,11 +79,13 @@ const Root = () => {
 
     const setStartClick = () =>{setStartClickValue('1')}
 
-    
-
     return (
         <>
-            <Loading/>
+            {loading ? 
+                <Loading/>
+            :
+                <></>
+            }
             {/* shop 일경우 버튼 삭제 */}
             {location.pathname.substring(0,5) === '/shop' ?
                 <Shop/>

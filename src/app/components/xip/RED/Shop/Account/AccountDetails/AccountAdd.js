@@ -1,12 +1,13 @@
 import React, { useEffect, useState} from 'react';
-import { isMobile } from 'react-device-detect';
-import Common from 'app/components/xip/REDCommon/Common';
+import { useCommon }  from 'app/components/xip/REDCommon/Common';
 import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router-dom';
 import {getCountryDataList} from 'countries-list'
 import { PBtn } from 'app/components/xip/REDCommon/CommonStyle'
 
 const AccountAdd = () => {
+
+    const { commonApi } = useCommon();
 
     const [, , removeCookie] = useCookies(['token']); // 쿠키 훅
     const navigate = useNavigate(); // 페이지 이동
@@ -40,7 +41,7 @@ const AccountAdd = () => {
 
             if(start === 0) {
                 try{
-                    let resultData = await Common.CommonApi(apiList.selectDetailAccount.api, apiList.selectDetailAccount.param());
+                    let resultData = await commonApi(apiList.selectDetailAccount.api, apiList.selectDetailAccount.param());
                     if (resultData === -2 || !resultData || resultData.length < 1){
                         removeCookie('token') // 토큰 오류시 로그아웃
                         navigate('/shop')
@@ -64,13 +65,14 @@ const AccountAdd = () => {
             }
         }
         getUserItem();
-    },[navigate, removeCookie, start]);
+    },[navigate, removeCookie, start, commonApi]);
 
     return(
         <>
             <p style={{display:'flex', fontSize:'1.3rem', textAlign: 'left'}}>ADDRESS</p>
             <div style={{ textAlign: 'center'}}> {/* 버튼을 감싸는 div를 가운데 정렬 */}
                 <p>{addLastNm + ', ' + addFirstNm}</p>
+                <p>{company}</p>
                 <p>{add1}</p>
                 <p>{add2}</p>
                 <p>{state + ', ' + city}</p>
