@@ -1,4 +1,5 @@
 import React from 'react';
+import { isMobile } from 'react-device-detect';
 
 const Loading = () => {
     return (
@@ -16,7 +17,7 @@ const Loading = () => {
                 height: '100vh'
             }}>
                 <img 
-                    style={{height:'50vh'}}
+                    style={{height: isMobile ? '25vh' : '50vh'}}
                     src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/loadingLogo.gif'} 
                     alt="Loading"
                 />

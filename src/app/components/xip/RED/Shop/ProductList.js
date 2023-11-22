@@ -109,7 +109,11 @@ const ProductList = () => {
                                     color:'white',
                                     textAlign: 'center',
                                     fontSize: '1.5rem'
-                                }}>
+                                    }}
+                                    onClick={()=>{
+                                        onClick(e);
+                                    }}
+                                >
                                     {e.status === '2' ?
                                         <>SOLD OUT</>
                                     :

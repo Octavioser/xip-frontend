@@ -1,10 +1,12 @@
-import React from 'react';
 import { isMobile } from 'react-device-detect';
 import { PBtn } from 'app/components/xip/REDCommon/CommonStyle'
 import AccountInfo from 'app/components/xip/RED/Shop/Account/AccountDetails/AccountInfo';
 import AccountAdd from 'app/components/xip/RED/Shop/Account/AccountDetails/AccountAdd';
 
-const AccountDetails = () => {
+
+
+const AccountDetails = (props) => {
+    const userItem = props.userItem;
 
     return (
         <div style={{position:'relative', top: isMobile?'20vh':'2vh',textAlign: 'center'}}> 
@@ -27,22 +29,23 @@ const AccountDetails = () => {
                         </hr>
                     </div>
                 </div>
-                <AccountInfo/>
-                <AccountAdd/>
-                <br/><br/>
+                <AccountInfo userItem={userItem}/>
+                <AccountAdd userItem={userItem}/>
+                <br/><br/><br/>
                 <PBtn
                     className= 'pBtnNoRed'
                     style={{ 
                         textAlign: 'center', 
-                        width:'15vw', 
-                        height:'2vw',
+                        display: 'inline-block', 
+                        padding: '3px 6px',
                         border: '2px solid white',  
-                        fontSize: '1.3rem',  
+                        fontSize: '1.2rem',  
                         margin: 'auto',
                     }}
                     labelText= 'DELETE ACCOUNT'
                 >
                 </PBtn>
+                <br/><br/><br/>
             </div>
         </div>
     )

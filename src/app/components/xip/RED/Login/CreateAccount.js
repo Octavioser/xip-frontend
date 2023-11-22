@@ -207,6 +207,7 @@ const CreateAccount = (props) => {
                     <input 
                         id='password' 
                         type='password'
+                        autoComplete="off"
                         style={{width: textWidth}} 
                         value={pw}
                         onChange={(e)=>{
@@ -224,6 +225,7 @@ const CreateAccount = (props) => {
                     <input 
                         id='confirm password' 
                         type='password'
+                        autoComplete="off"
                         style={{width: textWidth}} 
                         value={confirmPw}
                         onChange={(e)=>{

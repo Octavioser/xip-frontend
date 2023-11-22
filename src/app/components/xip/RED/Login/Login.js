@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PBtn } from '../../REDCommon/CommonStyle';
 import {useCommon} from '../../REDCommon/Common';
-import { useCookies } from 'react-cookie';
+import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 import { isMobile } from 'react-device-detect';
 
 const Login = (props) => {
@@ -12,7 +12,7 @@ const Login = (props) => {
     const [pw, setPw] = useState('');                // 비밀번호
     const [loginFail, setLoginFail] = useState('');      // 이메일 패스워드 틀릴시
 
-    const [, setCookie] = useCookies(['token']); // 쿠키 훅           
+    const {setCookie } = useCookie();        
 
     const apiList = {
         login: {
@@ -47,7 +47,7 @@ const Login = (props) => {
         let resultData;
 
         try {
-            await commonShowLoading()
+            await commonShowLoading();
             // setLoading(true)
             // 로그인(비밀번호까지)
             resultData = await commonApi(apiList.login.api, await apiList.login.param())
@@ -60,7 +60,7 @@ const Login = (props) => {
             const expiresTime =  new Date();
             expiresTime.setTime(expiresTime.getTime() + (12 * 60 * 60 * 1000))
             setLoginFail(0)
-            setCookie('token', resultData[0].token, {expires: expiresTime}); // 쿠키 저장
+            setCookie('xipToken', resultData[0].token, {path: '/', expires: expiresTime}); // 쿠키 저장
             props.loginModalBtn(false)
         }
         else {
@@ -116,6 +116,7 @@ const Login = (props) => {
             </form>
             <br/><br/>
             <PBtn 
+                className= 'pBtnNoRed'
                 labelText='CONTINUE' 
                 alt='continue'
                 style={{fontSize: '1em', whiteSpace:'nowrap'}} 
@@ -125,15 +126,28 @@ const Login = (props) => {
             >
             </PBtn>
             <br/>
-                <PBtn
-                    labelText='CREATE ACCOUNT' 
-                    alt='create account'
-                    style={{fontSize: '1em', whiteSpace:'nowrap'}} 
-                    onClick={()=>{
-                        props.showCreateAccountBtn();
-                    }}
-                >
-                </PBtn>
+            <PBtn
+                className= 'pBtnNoRed'
+                labelText='CREATE ACCOUNT' 
+                alt='create account'
+                style={{fontSize: '1em', whiteSpace:'nowrap'}} 
+                onClick={()=>{
+                    props.showCreateAccountBtn();
+                }}
+            >
+            </PBtn>
+            <br/>
+            <PBtn
+                className= 'pBtnNoRed'
+                labelText='FORGOT PASSWORD' 
+                alt='forgotPassword'
+                style={{fontSize: '1em', whiteSpace:'nowrap'}} 
+                onClick={()=>{
+                    // props.showCreateAccountBtn();
+                    
+                }}
+            >
+            </PBtn>
         </div>
     )
 }

@@ -1,9 +1,11 @@
 import CryptoJS from "crypto-js"; 
 import { useLoading } from 'app/components/xip/REDCommon/Loading/LoadingContext';
-import { getCookie } from 'app/components/xip/RED/Login/Cookie';
+import { useCookie } from 'app/components/xip/RED/Login/Cookie';
 
 export const useCommon = () => {
   	const { setLoading } = useLoading();
+
+	const {getCookie} = useCookie();
 
 	const commonShowLoading = async() => { // 로딩화면 보이기
 		setLoading(true); 
@@ -12,7 +14,7 @@ export const useCommon = () => {
 	const commonHideLoading = () => { // 로딩화면 풀기
 		setTimeout(() => {
 			setLoading(false);
-		}, 1000);
+		}, 700);
 	};
 
 	const commonEncode = async(str) => { // 암호화
@@ -36,7 +38,7 @@ export const useCommon = () => {
 				credentials: 'include',
 				headers: {
 					"Content-Type": "application/json",
-					'Authorization': `Bearer ${getCookie('token')}`
+					'Authorization': `Bearer ${getCookie('xipToken')}`
 				},
 				body: JSON.stringify(param)
 			}).then(response => 
