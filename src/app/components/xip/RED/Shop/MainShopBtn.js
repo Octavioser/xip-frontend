@@ -92,13 +92,10 @@ const MainShopBtn = () => {
                                 :
                                     <></>
                                 } 
-                                
-
-                            <Link to="./customerCare"> 
                                 <PBtn 
                                     className='pBtnNoRed'
                                     labelText='SERVICE'
-                                    alt='customerCareBtn'
+                                    alt='service'
                                     style={{fontSize: mainfont}}
                                     onClick={() =>{
                                         let menuValue = menuOpen === '1' ? '0' : '1'
@@ -106,7 +103,6 @@ const MainShopBtn = () => {
                                     }}
                                     >
                                 </PBtn>
-                            </Link>
                         </>
                     :
                         <></>

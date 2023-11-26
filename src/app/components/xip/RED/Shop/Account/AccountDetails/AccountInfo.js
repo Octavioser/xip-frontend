@@ -60,8 +60,8 @@ const AccountInfo = (props) => {
         console.log('saveNmChange 호출!!')
         let message = '';
 
-        const firstNm  = !(userEditItem?.firstNm) ? '' : userEditItem?.firstNm
-        const lastNm  = !(userEditItem?.lastNm) ? '' : userEditItem?.lastNm
+        const firstNm  = !(userEditItem?.firstNm) || ''
+        const lastNm  = !(userEditItem?.lastNm) || ''
 
         if(firstNm === userItem?.firstNm && lastNm === userItem?.lastNm) { // 변경사항이 없을시
             setEdit(false);
@@ -132,7 +132,7 @@ const AccountInfo = (props) => {
             return
         }
 
-        // 회원가입
+        // 비밀번호 바꾸기
         try{
             await commonShowLoading();
             let resultData = await commonApi(apiList.updateInfoPw.api, await apiList.updateInfoPw.param(accountPw, newPw));

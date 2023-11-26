@@ -6,6 +6,7 @@ import {ImgBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import {Credit,Works, Video, StartPage, Home, NotFound,Masterinnovation,MasterinnovationBunka,Gallery, Shop, MainBtn} from 'app/components/xip/RED'; //index.js
 import ProductList from 'app/components/xip/RED/Shop/ProductList';
 import Account from 'app/components/xip/RED/Shop/Account/Account';
+import AccountDetails from 'app/components/xip/RED/Shop/Account/AccountDetails/AccountDetails';
 import { LoadingProvider, useLoading } from 'app/components/xip/REDCommon/Loading/LoadingContext'
 import Loading from 'app/components/xip/REDCommon/Loading/Loading';
 
@@ -114,6 +115,7 @@ const Root = () => {
                     {/* <Route path=":account" element={<Account/>}/> */}
                     <Route path=":acoount">
                         <Route path="" element={<Account/>}/>
+                        <Route path=":accountDetails" element={<AccountDetails/>}/>
                     </Route>
                 </Route>
                 {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}

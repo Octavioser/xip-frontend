@@ -17,7 +17,6 @@ const AuthShopBtn = () => {
     const loginCheck = (e) => { // 로그인이 되어있지 않을 시 cart acoount 로그인창 띄우기
         if(!!getCookie('xipToken')) {
             navigate('shop/' + e);
-            window.location.reload();
         }
         else {
             setLoginModal(true);

@@ -1,7 +1,5 @@
-import React, {useState} from 'react';
 import { isMobile } from 'react-device-detect';
 import { PBtn } from 'app/components/xip/REDCommon/CommonStyle'
-import AccountDetails from './AccountDetails/AccountDetails';
 import { useCommon }  from 'app/components/xip/REDCommon/Common';
 import { useNavigate } from 'react-router-dom';
 import {useCookie} from 'app/components/xip/RED/Login/Cookie';
@@ -14,11 +12,6 @@ const Account = () => {
 
     const navigate = useNavigate(); // 페이지 이동
 
-    const [showAccountDetail, setShowAccountDetail] = useState(false); 
-    const [showOrderHistory, setShowOrderHistory] = useState(false);
-
-    const [userItem, setUserItem] = useState([]); 
-
     // const menulength = photoSrc.length
     const menulength = 3;
 
@@ -30,16 +23,6 @@ const Account = () => {
                     {}
                 )
             }
-        }
-    }
-
-
-
-    const switchShow = (e) => {
-        if(e === 'AccountDetails') {
-            setShowOrderHistory(false);
-            setShowAccountDetail(true);
-            
         }
     }
 
@@ -64,8 +47,6 @@ const Account = () => {
 
     return (
         <>
-            {!showOrderHistory &&  !showAccountDetail?  // 기본화면
-            
             <div style={{display:'flex',margin:'15vh 20vh 0 20vh',  /* 위, 오른쪽, 아래, 왼쪽 순서대로 마진 값을 설정 */}}> 
                 <div className='logoImage' style={{height: isMobile ? (menulength*5 + 'vh') : (menulength*7 + 'vh'), width: isMobile ? '90%':'50%', textAlign: 'center'}}>
                     <PBtn // 샵
@@ -82,21 +63,12 @@ const Account = () => {
                         alt='Account Details'
                         onClick={async() => {
                             let item = await getUserItem();
-                            setUserItem(item)
-                            switchShow('AccountDetails');
+                            navigate('./accountDetails', {state: item})
                         }}
                     >
                     </PBtn>
                 </div>
             </div>
-            : 
-            <></>
-            }
-            {showAccountDetail ? 
-                <AccountDetails userItem={userItem[0]}/>
-                :
-                <></>
-            }
         </>
         
     )
