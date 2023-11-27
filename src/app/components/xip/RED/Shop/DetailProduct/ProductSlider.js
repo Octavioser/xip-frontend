@@ -2,6 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { isMobile } from 'react-device-detect';
 
 const ProductSlider = () => {
   const settings = {
@@ -14,10 +15,10 @@ const ProductSlider = () => {
     variableWidth: true,
   };
 
-  const imageWidth = '29.9vw';
+  const imageWidth = isMobile? '59.9vw':'29.9vw';
 
   return (
-    <div className="carousel" style={{width:'30vw'}}>
+    <div className="carousel" style={{width:isMobile? '60vw':'30vw'}}>
         <Slider {...settings}>
             <img src="https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testT.gif" alt="1111"
                 style={{width: imageWidth}}

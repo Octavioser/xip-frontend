@@ -25,6 +25,7 @@ const Root = () => {
     const location = useLocation ();
 
     useEffect(() => {
+        document.body.style.color = 'white';
         // 배경화면 변경
         if(location.pathname.substring(0,5) === '/shop' ) {
             // shop 이용시 배경화면 변경
@@ -113,7 +114,8 @@ const Root = () => {
                 <Route path="/credit" element={<Credit/>}></Route>
                 <Route path="/works">
                     <Route path="" element={<Works/>}></Route>
-                    <Route path="gallery" element={<Gallery/>}></Route>
+                    {/* <Route path="gallery" element={<Gallery/>}></Route> */}
+                    <Route path="gallery/:galleryType" element={<Gallery/>}></Route>
                 </Route>
                 <Route path="/shop">
                     <Route path="" element={<ProductList/>}/>

@@ -1,7 +1,7 @@
 
 import React, {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
+import { useCommon } from '../../REDCommon/Common';
 
 import 'App.css';
 
@@ -16,7 +16,7 @@ const MainShopBtn = () => {
     const [menuOpen, setMenuOpen] = useState('0');                 // 헤더 메뉴 버튼 닫음 0 열림 1
     const [shopSubOpen, setShopSubOpen] = useState(false);         // 샵 클릭시 시즌별 버튼 보이게
 
-    const navigate = useNavigate();                                // 페이지 이동
+    const {navigate} = useCommon();                                // 페이지 이동
 
 
     const mainfont = isMobile? '1.5rem':'20px'

@@ -1,14 +1,12 @@
 import React, { useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common';
-import { useNavigate } from 'react-router-dom';
 import { useCookie } from 'app/components/xip/RED/Login/Cookie';
 import { PBtn, ImgBtn } from 'app/components/xip/REDCommon/CommonStyle'
+import { isMobile } from 'react-device-detect';
 
 const AccountInfo = (props) => {
 
     const [userItem, setUserItem] = useState(props.userItem);
-
-    const navigate = useNavigate(); // 페이지 이동
 
     const {removeCookie} = useCookie();
 
@@ -16,7 +14,7 @@ const AccountInfo = (props) => {
 
     const [changePw, setChangePw] = useState(false);
 
-    const { commonShowLoading, commonHideLoading, commonApi, commonEncode } = useCommon();
+    const { commonShowLoading, commonHideLoading, commonApi, commonEncode, navigate} = useCommon();
 
     const [userEditItem, setUserEditItem] = useState({});
 
@@ -161,7 +159,7 @@ const AccountInfo = (props) => {
     const textBox = {
         setTopic: (text) => {
             return (
-                <div style={{ display:'flex', width: wdithLength, height: heigthLength, justifyContent: 'right', alignItems: 'center' }}>
+                <div style={{ display:'flex', width: wdithLength, height: heigthLength, justifyContent: isMobile? 'left' : 'right', alignItems: 'center' }}>
                     <p style={{textAlign: 'right'}}>{text}</p>
                 </div>
             )
@@ -182,7 +180,7 @@ const AccountInfo = (props) => {
                         <div style={{ display:'flex', width: wdithLength, height: heigthLength, justifyContent: 'center', alignItems: 'center'}}>
                             <form onSubmit={handleSubmit} style={{ width: '100%'}}>
                                 <input 
-                                    style={{ width: '60%'}}
+                                    style={{ width: isMobile? '100%' :'60%'}}
                                     id={id + 'password'}
                                     type='password'
                                     maxLength={valueWidth}
@@ -200,7 +198,7 @@ const AccountInfo = (props) => {
                     return (
                         <div style={{ display:'flex', width: wdithLength, height: heigthLength, justifyContent: 'center', alignItems: 'center'}}>
                             <input 
-                                style={{ width: '60%'}} 
+                                style={{ width: isMobile? '100%' :'60%'}} 
                                 id={id} 
                                 value={value}
                                 maxLength={valueWidth} 
@@ -223,7 +221,7 @@ const AccountInfo = (props) => {
                 <p style={{ fontSize: '1.3rem', textAlign: 'left' }}>ACCOUNT INFORMATION</p>
                 {edit || changePw ? // 이름변경 비밀번호 변경하는 화면일때
                     <ImgBtn
-                        style={{width: '2vw', height: '2vw', paddingRight:'2vw'}}
+                    style={{width: isMobile? '5vw':'2vw', height: isMobile? '5vw':'2vw', paddingRight:'2vw', paddingTop:isMobile? '5vw':'2vw'}}
                         src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/backArrow.png'}
                         alt={'backArrrow'}
                         onClick={() => {
@@ -246,7 +244,7 @@ const AccountInfo = (props) => {
                         {textBox.setTopic('Last name')}
                         {textBox.setValue('input', userEditItem?.lastNm, 'lastNm', 16)} 
 
-                        {textBox.setTopic('Email address')} 
+                        {textBox.setTopic('Email')} 
                         {textBox.setValue('input', userEditItem?.email, 'email', 33)} 
                     </>
                     :
@@ -274,7 +272,7 @@ const AccountInfo = (props) => {
                         {textBox.setTopic('Last name')}
                         {textBox.setValue('text',userItem?.lastNm)}   
 
-                        {textBox.setTopic('Email address')}
+                        {textBox.setTopic('Email')}
                         {textBox.setValue('text',userItem?.email)}
                     </>
                    :

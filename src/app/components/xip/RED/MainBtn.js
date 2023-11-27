@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import { Link, useNavigate} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
+import { useCommon } from '../REDCommon/Common';
 
 import {ImgBtn, PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 
@@ -13,7 +14,7 @@ const MainBtn = (props) => {
 
     const [menuOpen, setMenuOpen] = useState('0');                 // 헤더 메뉴 버튼 닫음 0 열림 1
 
-    const navigate = useNavigate(); // 뒤로가기 
+    const {navigate} = useCommon();
 
     // 뒤로가기
     const goBack = () => {

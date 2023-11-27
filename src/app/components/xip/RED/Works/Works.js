@@ -21,7 +21,7 @@ const Works = () => {
             <div className='logoImage' style={{height: isMobile ? (menulength*5 + 'vh') : (menulength*7 + 'vh'), width: isMobile ? '90%':'50%', textAlign: 'center'}}>
             {photoSrc.map((e) => {
                 return (
-                        <Link to={`./Gallery/?type=${e.id}`} key={e.id}>
+                        <Link to={`./gallery/${e.id}`} key={e.id}>
                             <PBtn // 샵
                                 id={e.id}
                                 labelText={e.text}

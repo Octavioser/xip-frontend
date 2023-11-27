@@ -1,11 +1,14 @@
 import CryptoJS from "crypto-js"; 
 import { useLoading } from 'app/components/xip/REDCommon/Loading/LoadingContext';
 import { useCookie } from 'app/components/xip/RED/Login/Cookie';
+import { useNavigate } from 'react-router-dom';
 
 export const useCommon = () => {
   	const { setLoading } = useLoading();
 
 	const {getCookie} = useCookie();
+
+	const navigate = useNavigate(); // 페이지 이동
 
 	const commonShowLoading = async() => { // 로딩화면 보이기
 		setLoading(true); 
@@ -52,5 +55,5 @@ export const useCommon = () => {
 			return -1;
 		}
   	};
-	return { commonShowLoading, commonHideLoading, commonApi, commonEncode };
+	return { commonShowLoading, commonHideLoading, commonApi, commonEncode, navigate};
 }

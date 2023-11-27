@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../../../../App.css';
+import { useParams } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { ImgBtn } from '../../REDCommon/CommonStyle';
 import ImageGallery from 'react-image-gallery';
@@ -15,9 +16,9 @@ const AWS = require('aws-sdk');
     });
 
 // 정보
-const Gallery = (props) => {
+const Gallery = () => {
 
-    
+    const {galleryType} = useParams();
     
     const [selectedImage, setSelectedImage] = useState(0);          // 이미지 슬라이드 index
 
@@ -29,27 +30,18 @@ const Gallery = (props) => {
     
     const awsUrl = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/';
     
-    // 이미지 갖고오기위한 파라미터 정보 (폴더경로)
-    const getForderParam  = async() => {
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        const typeParam = urlParams.get('type');
-        const folderName = `xItem/i/works/image/${typeParam}/low/`;
-        return [folderName, typeParam];
-    }
 
 
     useEffect(() => {
-
+        console.log('갤러리 실행')
         let list = []
 
         // 이미지 데이터 갖고오기기
         const getData = async () => {       
             const bucketName = 'xip-bucket'; 
-            const param = await getForderParam()
             const params = {  // s3 파람
                 Bucket: bucketName,
-                Prefix: param[0],
+                Prefix: `xItem/i/works/image/${galleryType}/low/`,
                 Delimiter: '/',
             };
 
@@ -90,7 +82,7 @@ const Gallery = (props) => {
             
 
             // 화면에 뿌려줄 이미지데이터 가공 (슬라이드x)
-            const pFolderName = param[1];
+            const pFolderName = galleryType;
             const imageWidth = isMobile ? '30vw' : '20vw';
             let displaylistData = [];
             for(let i=0; i<list.length; i++) {  // 이미지 3개씩 한줄로 넣어주고 사진팝업 데이터 넣어주기
@@ -99,14 +91,14 @@ const Gallery = (props) => {
                     if((i % 3 === 0)) {
                         displaylistData = 
                         displaylistData.concat([
-                            <div key={i} style={{ display: "flex" }}>
-                                <div key={i + 'a'} style={{ marginRight: "0.5vh" }}>
+                            <div id={i} key={i} style={{ display: "flex" }}>
+                                <div id={i} key={i + 'a'} style={{ marginRight: "0.5vh" }}>
                                     {setImgTag(imageWidth, awsUrl, i)}  
                                 </div>
-                                <div key={i + 'b'}style={{ marginRight: "0.5vh" }}>
+                                <div id={i} key={i + 'b'}style={{ marginRight: "0.5vh" }}>
                                     {setImgTag(imageWidth, awsUrl, i+1)}
                                 </div>
-                                <div key={i + 'c'}>
+                                <div id={i} key={i + 'c'}>
                                     {setImgTag(imageWidth, awsUrl, i+2)}
                                 </div>
                             </div>
@@ -117,8 +109,8 @@ const Gallery = (props) => {
                 else {
                     displaylistData = 
                     displaylistData.concat([
-                        <div key={i} style={{ display: "flex", justifyContent: 'center'}}>
-                            <div key={i}style={{ marginRight: "0.5vh" }}>
+                        <div id={i} key={i} style={{ display: "flex", justifyContent: 'center'}}>
+                            <div id={i} key={i}style={{ marginRight: "0.5vh" }}>
                                 {setImgTag(isMobile ? '70vw' : '35vw', awsUrl, i)}  
                             </div>
                         </div>
@@ -131,7 +123,7 @@ const Gallery = (props) => {
         getData()
 
 
-    },[]);  // useEffect(() => { },[]) 처음에만 동작
+    },[galleryType]);  // useEffect(() => { },[]) 처음에만 동작
 
 
     const arrowSize = isMobile? '5vw' : '2vw' ;

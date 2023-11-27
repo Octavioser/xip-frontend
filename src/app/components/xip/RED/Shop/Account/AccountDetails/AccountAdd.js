@@ -1,30 +1,22 @@
 import React, { useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common';
-import { useNavigate } from 'react-router-dom';
 import { useCookie } from 'app/components/xip/RED/Login/Cookie';
 import { PBtn, ImgBtn } from 'app/components/xip/REDCommon/CommonStyle'
 import {getCountryDataList} from 'countries-list'
+import { isMobile } from 'react-device-detect';
 
 const AccountAdd = (props) => {
     const [userItem, setUserItem] = useState(props.userItem);
 
-    const navigate = useNavigate(); // 페이지 이동
-
     const {removeCookie} = useCookie();
 
-    const { commonShowLoading, commonHideLoading, commonApi } = useCommon();
+    const { commonShowLoading, commonHideLoading, commonApi, navigate } = useCommon();
 
     const [edit, setEdit] = useState(false);
 
     const [msg, setMsg] = useState(false);
 
     const [userEditItem, setUserEditItem] = useState({});
-
-    
-
-    const wdithLength = '48%'
-
-    const heigthLength = '35px'
 
     const apiList = {
         insertAdd: {
@@ -148,10 +140,14 @@ const AccountAdd = (props) => {
         }
     }
 
+    const wdithLength = '48%'
+
+    const heigthLength = '35px'
+
     const textBox = {
         setTopic: (text) => {
             return (
-                <div style={{ display:'flex', width: wdithLength, height: heigthLength, justifyContent: 'right', alignItems: 'center' }}>
+                <div style={{ display:'flex', width: isMobile? 'auto' : wdithLength, height: heigthLength, justifyContent: isMobile? 'center' : 'right', alignItems: 'center' }}>
                     <p style={{textAlign: 'right'}}>{text}</p>
                 </div>
             )
@@ -159,11 +155,11 @@ const AccountAdd = (props) => {
     
         setValue: (value, id, maxLength, type) => {
             let inputWidth = '65%'
-            if(id ==='add1' || id === 'add2'){
+            if(!isMobile && (id ==='add1' || id === 'add2')){
                 inputWidth = '100%'
             }
             return (
-                <div style={{ display:'flex', width: 'auto', flexGrow: 1, marginLeft: '10%', height: heigthLength, justifyContent: 'left', alignItems: 'center'}}>
+                <div style={{ display:'flex', width: 'auto', flexGrow: 1, marginLeft: isMobile? '' :'10%', height: heigthLength, justifyContent: isMobile? 'center' :'left', alignItems: 'center'}}>
                     <input 
                         type={"text"}
                         style={{ width: inputWidth}} 
@@ -189,7 +185,7 @@ const AccountAdd = (props) => {
         
         setEmpty: () => {
             return (
-            <div style={{ display:'flex', width: wdithLength, height: heigthLength, justifyContent: 'right', alignItems: 'center' }}></div>
+                <div style={{ display:'flex', width: wdithLength, height: heigthLength, justifyContent: 'right', alignItems: 'center' }}></div>
             )
         },
 
@@ -214,7 +210,7 @@ const AccountAdd = (props) => {
             });
             return(
             <>
-                <div style={{ display:'flex', width: 'auto', flexGrow: 1, marginLeft: '10%', height: heigthLength, justifyContent: 'left', alignItems: 'center'}}>
+                <div style={{ display:'flex', width: 'auto', flexGrow: 1, marginLeft: isMobile? '' :'10%', height: heigthLength, justifyContent: isMobile? 'center' :'left', alignItems: 'center'}}>
                     <select  
                         style={{ width: '67%'}}
                         onChange={(e)=>{
@@ -239,7 +235,7 @@ const AccountAdd = (props) => {
                 <p style={{ fontSize: '1.3rem', textAlign: 'left' }}>ADDRESS</p>
                     {edit  ? // 이름변경 비밀번호 변경하는 화면일때
                         <ImgBtn
-                            style={{width: '2vw', height: '2vw', paddingRight:'2vw'}}
+                            style={{width: isMobile? '5vw':'2vw', height: isMobile? '5vw':'2vw', paddingRight:'2vw', paddingTop:isMobile? '5vw':'2vw'}}
                             src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/backArrow.png'}
                             alt={'backArrrow'}
                             onClick={() => {
@@ -253,7 +249,7 @@ const AccountAdd = (props) => {
             </div>
             { edit ? 
                 <>
-                    <div style={{display:'flex', flexWrap: 'wrap',  justifyContent: 'space-between', marginRight: '15%'}}>
+                    <div style={{display: isMobile? '' :'flex', flexWrap: 'wrap',  justifyContent: 'space-between', marginRight: isMobile? '' :'15%'}}>
 
                         {textBox.setTopic('First Name')}
                         {textBox.setValue(userEditItem?.addFirstNm, 'addFirstNm', 16, 'text')}
@@ -267,12 +263,12 @@ const AccountAdd = (props) => {
                         {textBox.setTopic('Company')}
                         {textBox.setValue(userEditItem?.company, 'company', 85, 'text')}
 
-                        {textBox.setEmpty()}
-                        {textBox.setEmpty()}
+                        {isMobile? '' :textBox.setEmpty()}
+                        {isMobile? '' :textBox.setEmpty()}
 
                         {textBox.setTopic('Street address')}
                         {textBox.setValue(userEditItem?.add1, 'add1', 100, 'text')}
-                        {textBox.setEmpty()}
+                        {isMobile? '' :textBox.setEmpty()}
                         {textBox.setValue(userEditItem?.add2, 'add2', 100, 'text')}
 
                         {textBox.setTopic('City')}

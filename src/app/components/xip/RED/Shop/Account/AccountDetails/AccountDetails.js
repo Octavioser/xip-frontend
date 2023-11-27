@@ -13,7 +13,7 @@ const AccountDetails = () => {
     return (
         <div style={{position:'relative', top: isMobile?'20vh':'2vh',textAlign: 'center'}}> 
             <h2 style={{textAlign: 'center', letterSpacing: '1.5px'}}>ACCOUNT DETAILS</h2>
-            <div style={{width:'60%', margin: 'auto'}}>
+            <div style={{width: isMobile? '90%':'60%', margin: 'auto'}}>
                 <div style={{ padding: '10px 0', textAlign: 'left', height:'0%'}}>
                     <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>Your Account</p>
                     <div style={{width: '100%', height:'2px', textAlign: 'center', transform: 'rotate(-1.5deg)'}}>

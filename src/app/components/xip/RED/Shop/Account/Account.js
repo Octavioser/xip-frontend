@@ -1,16 +1,14 @@
 import { isMobile } from 'react-device-detect';
 import { PBtn } from 'app/components/xip/REDCommon/CommonStyle'
 import { useCommon }  from 'app/components/xip/REDCommon/Common';
-import { useNavigate } from 'react-router-dom';
 import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 
 const Account = () => {
 
-    const { commonShowLoading, commonHideLoading, commonApi } = useCommon();
+    const { commonShowLoading, commonHideLoading, commonApi, navigate } = useCommon();
 
     const { removeCookie } = useCookie();
 
-    const navigate = useNavigate(); // 페이지 이동
 
     // const menulength = photoSrc.length
     const menulength = 3;

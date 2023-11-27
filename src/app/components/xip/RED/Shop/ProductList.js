@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {ImgBtn} from 'app/components/xip/REDCommon/CommonStyle';
-import { useNavigate } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
+import {useCommon} from 'app/components/xip/REDCommon/Common'
 
 const ProductList = () => {
 
-    const navigate = useNavigate(); // 페이지 이동
+    const {navigate} = useCommon();
 
     const [productHover, setProductHover] = useState(''); // 마우스 올렸을시 바뀌는 값
 
@@ -31,7 +31,7 @@ const ProductList = () => {
             return;
         }
         else {
-            navigate('./detailProduct?type=dfd')
+            navigate(`./detailProduct?detailProduct=${e.key}`)
         }
     }
     

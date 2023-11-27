@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
-import { useNavigate } from 'react-router-dom';
 import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 import LoginModal from 'app/components/xip/RED/Login/LoginModal';
 import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import { isMobile } from 'react-device-detect';
+import { useCommon } from '../../REDCommon/Common';
+
 
 const AuthShopBtn = () => {
-    const navigate = useNavigate(); // 페이지 이동
+
+    const {navigate} = useCommon();
 
     const {getCookie, removeCookie} = useCookie();
 
