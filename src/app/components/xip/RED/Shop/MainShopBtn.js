@@ -1,6 +1,6 @@
 
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 
 import 'App.css';
@@ -9,15 +9,19 @@ import {ImgBtn, PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 
 
 const MainShopBtn = () => {
-
+    
      // 메뉴
     const menuMainBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/shopMainBtn.png'
 
     const [menuOpen, setMenuOpen] = useState('0');                 // 헤더 메뉴 버튼 닫음 0 열림 1
-    const [shopSubOpen, setShopSubOpen] = useState(false);           // 샵 클릭시 시즌별 버튼 보이게
+    const [shopSubOpen, setShopSubOpen] = useState(false);         // 샵 클릭시 시즌별 버튼 보이게
+
+    const navigate = useNavigate();                                // 페이지 이동
+
 
     const mainfont = isMobile? '1.5rem':'20px'
     const subfont = isMobile? '1.3rem':'15px'
+    
 
     return (
         <>
@@ -39,7 +43,6 @@ const MainShopBtn = () => {
                     {menuOpen === '1' ?
                         <>  
                             <p></p>
-                            <Link to="/home"> 
                                 <PBtn //home
                                     className='pBtnNoRed'
                                     labelText='HOME'
@@ -48,10 +51,10 @@ const MainShopBtn = () => {
                                     onClick={() =>{
                                         let menuValue = menuOpen === '1' ? '0' : '1'
                                         setMenuOpen(menuValue) 
+                                        navigate('/home')
                                     }}
                                 >
                                 </PBtn>
-                            </Link>
                                 <PBtn //상품 나열 버튼
                                     className='pBtnNoRed'
                                     labelText='SHOP'
@@ -65,18 +68,16 @@ const MainShopBtn = () => {
                                 {shopSubOpen ? 
                                     <>
                                         <p style={{fontSize: '5px'}}></p>
-                                        <Link to="/shop"> 
-                                            <PBtn //상품 나열 버튼
-                                                className='pBtnNoRed'
-                                                labelText='&nbsp;&nbsp;&nbsp;&nbsp;Shop All'
-                                                alt='shopAllBtn'
-                                                style={{fontSize: subfont}}
-                                                onClick={() =>{
-                                                    console.log('shopAllBtn')
-                                                }}
-                                            >
-                                            </PBtn>
-                                        </Link>
+                                        <PBtn //상품 나열 버튼
+                                            className='pBtnNoRed'
+                                            labelText='&nbsp;&nbsp;&nbsp;&nbsp;Shop All'
+                                            alt='shopAllBtn'
+                                            style={{fontSize: subfont}}
+                                            onClick={() =>{
+                                                navigate('/shop')
+                                            }}
+                                        >
+                                        </PBtn>
                                         <PBtn //상품 나열 버튼
                                             className='pBtnNoRed'
                                             labelText='&nbsp;&nbsp;&nbsp;&nbsp;S/S 2024'

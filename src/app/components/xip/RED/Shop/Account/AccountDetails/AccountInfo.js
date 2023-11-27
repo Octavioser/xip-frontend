@@ -167,7 +167,7 @@ const AccountInfo = (props) => {
             )
         },
     
-        setValue: (type, value, id, pw) => {
+        setValue: (type, value, id, valueWidth, pw) => {
             if(type === 'text') {
                 return (
                     <div style={{ display:'flex', width: wdithLength, height: heigthLength, justifyContent: 'center', alignItems: 'center'}}>
@@ -185,6 +185,7 @@ const AccountInfo = (props) => {
                                     style={{ width: '60%'}}
                                     id={id + 'password'}
                                     type='password'
+                                    maxLength={valueWidth}
                                     autoComplete="off"
                                     value={value}
                                     onChange={(e)=>{
@@ -201,7 +202,8 @@ const AccountInfo = (props) => {
                             <input 
                                 style={{ width: '60%'}} 
                                 id={id} 
-                                value={value} 
+                                value={value}
+                                maxLength={valueWidth} 
                                 disabled={id === 'email' ? true : false}
                                 onChange={(e)=>{
                                     setUserEditItem({...userEditItem, [id]:e.target.value})
@@ -238,14 +240,14 @@ const AccountInfo = (props) => {
                 { edit ?  // edit 클릭 할 경우
                     <>  
                         {textBox.setTopic('First Name')}
-                        {textBox.setValue('input', userEditItem?.firstNm, 'firstNm')}
+                        {textBox.setValue('input', userEditItem?.firstNm, 'firstNm', 16)}
 
 
                         {textBox.setTopic('Last name')}
-                        {textBox.setValue('input', userEditItem?.lastNm, 'lastNm')} 
+                        {textBox.setValue('input', userEditItem?.lastNm, 'lastNm', 16)} 
 
                         {textBox.setTopic('Email address')} 
-                        {textBox.setValue('input', userEditItem?.email, 'email')} 
+                        {textBox.setValue('input', userEditItem?.email, 'email', 33)} 
                     </>
                     :
                     <></>
@@ -253,13 +255,13 @@ const AccountInfo = (props) => {
                 { changePw ? // chage password 클릭한 경우
                     <>  
                         {textBox.setTopic('Account password')}
-                        {textBox.setValue('input', userEditItem?.accountPw, 'accountPw', true)} 
+                        {textBox.setValue('input', userEditItem?.accountPw, 'accountPw', 100, true)} 
 
                         {textBox.setTopic('New password')}
-                        {textBox.setValue('input', userEditItem?.newPw, 'newPw', true)} 
+                        {textBox.setValue('input', userEditItem?.newPw, 'newPw', 100, true)} 
 
                         {textBox.setTopic('Confirm password')} 
-                        {textBox.setValue('input', userEditItem?.confirmPw, 'confirmPw', true)} 
+                        {textBox.setValue('input', userEditItem?.confirmPw, 'confirmPw', 100, true)} 
                     </>
                     :
                     <></>

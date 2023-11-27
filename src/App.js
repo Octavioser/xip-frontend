@@ -9,6 +9,7 @@ import Account from 'app/components/xip/RED/Shop/Account/Account';
 import AccountDetails from 'app/components/xip/RED/Shop/Account/AccountDetails/AccountDetails';
 import { LoadingProvider, useLoading } from 'app/components/xip/REDCommon/Loading/LoadingContext'
 import Loading from 'app/components/xip/REDCommon/Loading/Loading';
+import DetailProduct from 'app/components/xip/RED/Shop/DetailProduct/DetailProduct.js';
 
 function preloadImage(url) { // 이미지 미리 불러오기
     const img = new Image();
@@ -29,6 +30,10 @@ const Root = () => {
             // shop 이용시 배경화면 변경
             document.body.style.backgroundImage = 'none';
             document.body.style.backgroundColor = 'red';
+
+            if(location.pathname === '/shop/detailProduct') {
+                document.body.style.color = 'black';
+            }
         }
         else {
             document.body.style.backgroundImage = 'url(https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/backgroundVideo.gif)'; // 여기에 원하는 이미지 URL을 넣습니다.
@@ -102,21 +107,21 @@ const Root = () => {
                 <Route path="/home" element={<Home startClickValue={startClickValue} soundBtn={music.play}/>}></Route>
                 <Route path="/video">
                     <Route path="" element={<Video/>}></Route>
-                    <Route path=":masterinnovation" element={<Masterinnovation/>}></Route>
-                    <Route path=":masterinnovationBunka" element={<MasterinnovationBunka/>}></Route>
+                    <Route path="masterinnovation" element={<Masterinnovation/>}></Route>
+                    <Route path="masterinnovationBunka" element={<MasterinnovationBunka/>}></Route>
                 </Route>
                 <Route path="/credit" element={<Credit/>}></Route>
                 <Route path="/works">
                     <Route path="" element={<Works/>}></Route>
-                    <Route path=":gallery" element={<Gallery/>}></Route>
+                    <Route path="gallery" element={<Gallery/>}></Route>
                 </Route>
                 <Route path="/shop">
                     <Route path="" element={<ProductList/>}/>
-                    {/* <Route path=":account" element={<Account/>}/> */}
-                    <Route path=":acoount">
+                    <Route path="account">
                         <Route path="" element={<Account/>}/>
-                        <Route path=":accountDetails" element={<AccountDetails/>}/>
-                    </Route>
+                        <Route path="accountDetails" element={<AccountDetails/>}/>
+                    </Route> 
+                    <Route path="detailProduct" element={<DetailProduct/>}></Route>
                 </Route>
                 {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
                 <Route path="*" element={<NotFound />}></Route>

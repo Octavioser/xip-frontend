@@ -165,13 +165,21 @@ const AccountAdd = (props) => {
             return (
                 <div style={{ display:'flex', width: 'auto', flexGrow: 1, marginLeft: '10%', height: heigthLength, justifyContent: 'left', alignItems: 'center'}}>
                     <input 
-                        type={type}
+                        type={"text"}
                         style={{ width: inputWidth}} 
                         id={id} 
                         value={value} 
                         maxLength={maxLength}
                         onChange={(e)=>{
-                            setUserEditItem({...userEditItem, [id]:e.target.value})
+                            if(type === "number") {
+                                const numberRegex = /^[0-9]+$/
+                                if(numberRegex.test(e.target.value)) {
+                                    setUserEditItem({...userEditItem, [id]: e.target.value})
+                                }
+                            }
+                            else {
+                                setUserEditItem({...userEditItem, [id]:e.target.value})
+                            }
                         }}
                         >
                     </input>
