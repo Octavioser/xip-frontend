@@ -22,7 +22,7 @@ const AccountInfo = (props) => {
 
     const handleSubmit = (event) => { // 폼 제출 로직 처리
         event.preventDefault();
-    };
+    }
 
     const apiList = {
         updateInfoNm: {
@@ -222,7 +222,7 @@ const AccountInfo = (props) => {
                 {edit || changePw ? // 이름변경 비밀번호 변경하는 화면일때
                     <ImgBtn
                     style={{width: isMobile? '5vw':'2vw', height: isMobile? '5vw':'2vw', paddingRight:'2vw', paddingTop:isMobile? '5vw':'2vw'}}
-                        src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/backArrow.png'}
+                        src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/accountDetails/backArrow.webp'}
                         alt={'backArrrow'}
                         onClick={() => {
                             setChangePw(false);

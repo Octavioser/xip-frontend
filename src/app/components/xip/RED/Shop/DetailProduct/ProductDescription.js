@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 import LoginModal from 'app/components/xip/RED/Login/LoginModal';
+import { isMobile } from 'react-device-detect';
 
 const ProductDescription = () => {
 
@@ -61,7 +62,7 @@ const ProductDescription = () => {
     }
 
     return (
-        <div style={{ width: '25vw', margin: 'auto', marginLeft:'18vw'}}>
+        <div style={{ width: isMobile? '90vw':'25vw', margin: isMobile? '0' : 'auto', marginLeft: isMobile?'0':'18vw'}}>
             <br/>
             <h2 style={{ textAlign: 'center', fontWeight: 'bold', margin: '5px'}}>PAD VEST - BLACK</h2>
             <h2 style={{ textAlign: 'center', margin: '5px'}}>₩427,000</h2>
@@ -98,7 +99,7 @@ const ProductDescription = () => {
                 <PBtn style={btnStyle()} labelText={'PURCHASE'}/>
             </div>
 
-            <ul style={{ listStyle: 'none', padding: '0' }}>
+            <ul style={{ listStyle: 'none', padding: '0', textAlign: isMobile?'center':'left' }}>
                 <li style={{ marginBottom: '5px' }}>UNISEX</li>
                 <li style={{ marginBottom: '5px' }}>REGULAR FIT</li>
                 <li style={{ marginBottom: '5px' }}>SHOULDER PADS</li>

@@ -1,14 +1,26 @@
+import {useEffect} from 'react';
 import { isMobile } from 'react-device-detect';
 import { PBtn } from 'app/components/xip/REDCommon/CommonStyle'
 import AccountInfo from 'app/components/xip/RED/Shop/Account/AccountDetails/AccountInfo';
 import AccountAdd from 'app/components/xip/RED/Shop/Account/AccountDetails/AccountAdd';
 import { useLocation } from 'react-router-dom';
+import { useCommon }  from 'app/components/xip/REDCommon/Common';
 
 
 
 const AccountDetails = () => {
 
+    const { navigate } = useCommon();
+
     const {state} = useLocation();
+
+    useEffect(() => {
+        if(!state) {
+            navigate('/shop')
+        }
+    },[state, navigate])
+
+    
 
     return (
         <div style={{position:'relative', top: isMobile?'20vh':'2vh',textAlign: 'center'}}> 
@@ -31,8 +43,8 @@ const AccountDetails = () => {
                         </hr>
                     </div>
                 </div>
-                <AccountInfo userItem={state[0]}/>
-                <AccountAdd userItem={state[0]}/>
+                <AccountInfo userItem={!state ? [] : state[0]}/>
+                <AccountAdd userItem={!state ? [] : state[0]}/>
                 <br/><br/><br/>
                 <PBtn
                     className= 'pBtnNoRed'

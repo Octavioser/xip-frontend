@@ -11,7 +11,6 @@ export const useCookie = () => {
 	}
 
 	const removeCookie = (name) => {
-		console.log(name)
 		return cookies.remove(name, { path: '/'})
 	}
 	return {setCookie, getCookie, removeCookie}

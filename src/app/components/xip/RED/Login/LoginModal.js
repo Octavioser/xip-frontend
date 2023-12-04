@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import Login from './Login';
 import CreateAccount from './CreateAccount';
+import WebAuthn from './WebAuthn';
 import {PBtn} from '../../REDCommon/CommonStyle';
 import { isMobile } from 'react-device-detect';
 
@@ -10,13 +11,14 @@ const LoginModal = (props) => {
 
     const [showCreateAccount, setShowCreateAccount] = useState(false) // 회원가입
 
-    const showCreateAccountBtn = () => { // 로그인 팝업창 열기닫기 버튼
-        if(showCreateAccount) {
-            setShowCreateAccount(false)
-        }
-        else{
-            setShowCreateAccount(true)
-        }
+    const [showWebAuthn, setShowWebAuthn] = useState(false) // 회원가입
+
+    const showCreateAccountBtn = () => { // 회원가입 화면
+        setShowCreateAccount(true)
+    }
+
+    const showWebAuthnBtn = () => { // face id 화면
+        setShowWebAuthn(true)
     }
 
     return (
@@ -60,10 +62,21 @@ const LoginModal = (props) => {
             onClick={() =>{props.loginModalBtn()}}
         >
         </PBtn>
-        {showCreateAccount ?
-            <CreateAccount loginModalBtn={props.loginModalBtn}/>
+        {(showCreateAccount ||  showWebAuthn)?
+        <>
+            { showCreateAccount ?
+                <CreateAccount loginModalBtn={props.loginModalBtn}/>
+                :
+                <></>
+            }
+            { showWebAuthn ?
+                <WebAuthn loginModalBtn={props.loginModalBtn}/>
+                :
+                <></>
+            }
+        </>
         :
-            <Login showCreateAccountBtn={showCreateAccountBtn} loginModalBtn={props.loginModalBtn}/>
+            <Login showCreateAccountBtn={showCreateAccountBtn} showWebAuthnBtn={showWebAuthnBtn} loginModalBtn={props.loginModalBtn}/>
         }
         </Modal>
     )

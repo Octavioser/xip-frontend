@@ -1,39 +1,46 @@
 import ProductSlider from "./ProductSlider";
 import ProductDescription from "./ProductDescription";
-import { useParams } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 
 
 const DetailProduct = () => {
 
-    const { detailProduct } = useParams();
-
     const parentDivStyle = () => {
 
         let item = 
-        isMobile ?
-                {
-                    overflow: 'hidden', 
-                    backgroundColor: 'white', 
-                    width: '100vw', 
-                    height: '100vh', 
-                    color: 'black',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }
+            isMobile ?
+                    {
+                        width: '100vw', 
+                        height: '100vh'
+                    }
+                    :
+                    {
+                        display:'flex',  
+                        overflow: 'hidden', 
+                        width: '100vw', 
+                        height: '100vh', 
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }   
+        return(item)
+    }
+
+    const productSliderStyle = () => {
+        let item = 
+            isMobile ? 
+                {display:'flex', justifyContent: 'center',  alignItems: 'center', position: 'relative', top:'10vh'}
                 :
-                {
-                    display:'flex',  
-                    overflow: 'hidden', 
-                    backgroundColor: 'white', 
-                    width: '100vw', 
-                    height: '100vh', 
-                    color: 'black',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }   
+                {display:'flex', justifyContent: 'center',  alignItems: 'center'}
+        return(item)
+    }
+
+    const productDescriptionStyle = () => {
+        let item = 
+            isMobile ? 
+                {display:'flex', justifyContent: 'center',  alignItems: 'center', position: 'relative', top:'10vh'}
+                :
+                {display:'flex', justifyContent: 'center',  alignItems: 'center', width:'50vw', height:'40vw'}
         return(item)
     }
 
@@ -42,10 +49,10 @@ const DetailProduct = () => {
     return (
         <div style={parentDivStyle()}
         >
-            <div style={{justifyContent: 'center',  alignItems: 'center'}}>
+            <div style={productSliderStyle()}>
                 <ProductSlider/>
             </div>
-            <div style={{width:'50vw', height:'40vw'}}>
+            <div style={productDescriptionStyle()}>
                 <ProductDescription/>
             </div>
         </div>

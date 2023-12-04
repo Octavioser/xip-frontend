@@ -14,14 +14,14 @@ const ProductList = () => {
     useEffect(() => {
        
         const item = [
-            {id:1, key:'t1', name:'testT', status:'0', price:'300000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testT.gif'}, 
-            {id:2, key:'t2', name:'testT', status:'0', price:'300000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testT.gif'}, 
-            {id:3, key:'t3', name:'testT', status:'0', price:'300000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testT.gif'}, 
-            {id:4, key:'t4', name:'testT', status:'0', price:'300000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testT.gif'}, 
-            {id:5, key:'t5',name:'testpants', status:'0', price:'100000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testpants.gif'},
-            {id:6, key:'t6',name:'xipPants', status:'0', price:'275000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testpants.gif'},
-            {id:7, key:'t7',name:'testpants', status:'0', price:'100000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testpants.gif'},
-            {id:8, key:'t8',name:'testpants', status:'0', price:'100000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testpants.gif'}
+            {id:1, key:'t1', name:'testT', status:'1', price:'300000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/products/test/testT.gif'}, 
+            {id:2, key:'t2', name:'testT', status:'0', price:'300000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/products/test/testT.gif'}, 
+            {id:3, key:'t3', name:'testT', status:'0', price:'300000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/products/test/testT.gif'}, 
+            {id:4, key:'t4', name:'testT', status:'0', price:'300000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/products/test/testT.gif'}, 
+            {id:5, key:'t5',name:'testpants', status:'0', price:'100000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/products/test/testpants.gif'},
+            {id:6, key:'t6',name:'xipPants', status:'0', price:'275000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/products/test/testpants.gif'},
+            {id:7, key:'t7',name:'testpants', status:'0', price:'100000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/products/test/testpants.gif'},
+            {id:8, key:'t8',name:'testpants', status:'0', price:'100000', src:'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/products/test/testpants.gif'}
         ]
         setProductListItem(item);
     },[]);

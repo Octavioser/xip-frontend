@@ -33,13 +33,17 @@ const Account = () => {
                 navigate('/shop', { replace: true })
             }
             else {
-                return resultData
+                navigate('./accountDetails', {state: resultData})
             }
         } catch (error) {
             console.log(error);
         } finally {
             commonHideLoading();
         }
+    }
+
+    const getOrderHistory = () => {
+        navigate('./orderHistory')
     }
 
 
@@ -52,6 +56,9 @@ const Account = () => {
                         id='Order History'
                         labelText='Order History'
                         alt='Order History'
+                        onClick={() => {
+                            getOrderHistory();
+                        }}
                     >
                     </PBtn>
                     <PBtn // 샵
@@ -59,9 +66,8 @@ const Account = () => {
                         id='Account Details'
                         labelText='Account Details'
                         alt='Account Details'
-                        onClick={async() => {
-                            let item = await getUserItem();
-                            navigate('./accountDetails', {state: item})
+                        onClick={() => {
+                            getUserItem();
                         }}
                     >
                     </PBtn>

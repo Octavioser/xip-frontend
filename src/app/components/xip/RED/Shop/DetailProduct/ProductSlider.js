@@ -20,12 +20,12 @@ const ProductSlider = () => {
   return (
     <div className="carousel" style={{width:isMobile? '60vw':'30vw'}}>
         <Slider {...settings}>
-            <img src="https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testT.gif" alt="1111"
+            <img src="https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/products/test/testT.gif" alt="1111"
                 style={{width: imageWidth}}
             />
-            <img src="https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testpants.gif" alt="2222"
+            <img src="https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/products/test/testpants.gif" alt="2222"
                 style={{width: imageWidth}}/>
-            <img src="https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/testT.gif" alt="3333"
+            <img src="https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/products/test/testT.gif" alt="3333"
                 style={{width: imageWidth}}/>
         {/* 추가 슬라이드 ... */}
         </Slider>

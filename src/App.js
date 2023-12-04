@@ -10,6 +10,8 @@ import AccountDetails from 'app/components/xip/RED/Shop/Account/AccountDetails/A
 import { LoadingProvider, useLoading } from 'app/components/xip/REDCommon/Loading/LoadingContext'
 import Loading from 'app/components/xip/REDCommon/Loading/Loading';
 import DetailProduct from 'app/components/xip/RED/Shop/DetailProduct/DetailProduct.js';
+import Cart from 'app/components/xip/RED/Shop/Cart/Cart';
+import OrderHistory from 'app/components/xip/RED/Shop/Account/OrderHistory/OrderHistory';
 
 function preloadImage(url) { // 이미지 미리 불러오기
     const img = new Image();
@@ -34,6 +36,7 @@ const Root = () => {
 
             if(location.pathname === '/shop/detailProduct') {
                 document.body.style.color = 'black';
+                document.body.style.backgroundColor = 'white';
             }
         }
         else {
@@ -104,29 +107,30 @@ const Root = () => {
             <Routes>
             {/*  페이지이동 */}
                 {/* 맨처음화면 */}
-                <Route path='/' element={<StartPage music={music}></StartPage>}></Route>
-                <Route path="/home" element={<Home startClickValue={startClickValue} soundBtn={music.play}/>}></Route>
+                <Route path='/' element={<StartPage music={music}></StartPage>}/>
+                <Route path="/home" element={<Home startClickValue={startClickValue} soundBtn={music.play}/>}/>
                 <Route path="/video">
-                    <Route path="" element={<Video/>}></Route>
-                    <Route path="masterinnovation" element={<Masterinnovation/>}></Route>
-                    <Route path="masterinnovationBunka" element={<MasterinnovationBunka/>}></Route>
+                    <Route path="" element={<Video/>}/>
+                    <Route path="masterinnovation" element={<Masterinnovation/>}/>
+                    <Route path="masterinnovationBunka" element={<MasterinnovationBunka/>}/>
                 </Route>
-                <Route path="/credit" element={<Credit/>}></Route>
+                <Route path="/credit" element={<Credit/>}/>
                 <Route path="/works">
-                    <Route path="" element={<Works/>}></Route>
-                    {/* <Route path="gallery" element={<Gallery/>}></Route> */}
-                    <Route path="gallery/:galleryType" element={<Gallery/>}></Route>
+                    <Route path="" element={<Works/>}/>
+                    <Route path="gallery/:galleryType" element={<Gallery/>}/>
                 </Route>
                 <Route path="/shop">
                     <Route path="" element={<ProductList/>}/>
                     <Route path="account">
                         <Route path="" element={<Account/>}/>
                         <Route path="accountDetails" element={<AccountDetails/>}/>
+                        <Route path="orderHistory" element={<OrderHistory/>}/>
                     </Route> 
-                    <Route path="detailProduct" element={<DetailProduct/>}></Route>
+                    <Route path="detailProduct" element={<DetailProduct/>}/>
+                    <Route path="cart" element={<Cart/>}/>
                 </Route>
                 {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
-                <Route path="*" element={<NotFound />}></Route>
+                <Route path="*" element={<NotFound />}/>
             </Routes>
         </>
     );

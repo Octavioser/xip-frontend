@@ -11,7 +11,7 @@ import {ImgBtn, PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 const MainShopBtn = () => {
     
      // 메뉴
-    const menuMainBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/shopMainBtn.png'
+    const menuMainBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/main/shopMainBtn.webp'
 
     const [menuOpen, setMenuOpen] = useState('0');                 // 헤더 메뉴 버튼 닫음 0 열림 1
     const [shopSubOpen, setShopSubOpen] = useState(false);         // 샵 클릭시 시즌별 버튼 보이게
@@ -33,7 +33,7 @@ const MainShopBtn = () => {
                         src={menuMainBtn} 
                         className='imgBtnNoRed'
                         alt='menuButton' 
-                        style={{top:'10vw', left: '10vh', height: isMobile ? '15vh':'15vh'}}
+                        style={{height: isMobile ? '15vh':'15vh'}}
                         onClick={() =>{
                             let menuValue = menuOpen === '1' ? '0' : '1'
                             setMenuOpen(menuValue) // 메인 메뉴버튼 클릭시 열리고 닫기
