@@ -10,11 +10,21 @@ const Login = (props) => {
 
     const [email, setEmail] = useState('');            // 이메일
     const [pw, setPw] = useState('');                // 비밀번호
-    const [msg, setMsg] = useState('');      // 이메일 패스워드 틀릴시
+
+    const [showPw, setShowPw] = useState(false) // 패스워드 칸 보이기
 
     const {setCookie } = useCookie();        
 
     const apiList = {
+        checkEmail:{
+            api: '/login/loginR007',
+            param: async() => {
+                return (
+                    {email: email}
+                )
+            }
+        },
+
         login: {
             api: '/login/loginR001',
             param: async() => {
@@ -26,20 +36,66 @@ const Login = (props) => {
         }
     }
 
+    const emailCheckBtn = async() => {
+        props.setMsg('')
+        if(!email) {
+            props.setMsg('Incorrect email.')
+            return
+        }
+        if(!!email) {
+            const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
+            if (!emailRegex.test(email)) { // 이메일 유효성 검사
+                props.setMsg('Incorrect email.')
+                return
+            }
+        }
+
+        let resultData;
+
+        try {
+            await commonShowLoading();
+            // setLoading(true)
+            // 로그인(비밀번호까지)
+            resultData = await commonApi(apiList.checkEmail.api, await apiList.checkEmail.param())
+            if(resultData && resultData.length > 0) {
+                if(!!resultData[0].webAuthId) {  // 생체인증 로그인 등록 되어있는 사람
+                    await props.webAuthLogin(email, resultData[0].challenge, resultData[0].webAuthId).then((e)=>{
+                        if(!e) { // 실패시 패스워드 창 보이게
+                            setShowPw(true);
+                        }
+                    })
+                }
+                else{  // 회원가입은 되어있지만 생체인증 등록이 되어있지 않은 사람
+                    setShowPw(true);
+                }
+            }
+            else {
+                // 신규 고객
+                if(!(resultData === -1) ) {
+                    props.showCreateAccountBtn(email);
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            commonHideLoading(false)
+        }
+    }
+
     const continueBtn = async() => {
-        setMsg('')
+        props.setMsg('')
         if(!pw) {
-            setMsg('Incorrect email or password.')
+            props.setMsg('Incorrect email or password.')
             return
         }
         if(!email) {
-            setMsg('Incorrect email or password.')
+            props.setMsg('Incorrect email or password.')
             return
         }
         if(!!email && !!pw) {
             const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
             if (!emailRegex.test(email)) { // 이메일 유효성 검사
-                setMsg('Incorrect email or password.')
+                props.setMsg('Incorrect email or password.')
                 return
             }
         }
@@ -54,13 +110,13 @@ const Login = (props) => {
             if(resultData && resultData.length > 0) {
                 const expiresTime =  new Date();
                 expiresTime.setTime(expiresTime.getTime() + (12 * 60 * 60 * 1000))
-                setMsg('')
+                props.setMsg('')
                 setCookie('xipToken', resultData[0].token, {path: '/', expires: expiresTime}); // 쿠키 저장
                 props.loginModalBtn(false)
             }
             else {
                 // 로그인 실패 
-                setMsg('Incorrect email or password')
+                props.setMsg('Incorrect email or password')
                 console.log('resultData==>', resultData)
             }
         } catch (error) {
@@ -82,11 +138,11 @@ const Login = (props) => {
 
     return (
         <div className='logoImage' style={{height: '35vh',width: textWidth, textAlign: 'center'}}>
-            <p style={{color:'black'}}>{msg}</p>
             <p style={{textAlign: 'left'}}>EMAIL</p>
             <input 
-                id='id'
-                type='text' 
+                id='email'
+                type='email'
+                name='email'
                 style={{width: textWidth}} 
                 value={email}
                 onChange={(e)=>{
@@ -94,73 +150,87 @@ const Login = (props) => {
                 }}
                 onKeyUp={(e)=> {  
                     if(e.code === "Enter") {
-                        continueBtn(); // 엔터 클릭
+                        showPw ? continueBtn() : emailCheckBtn(); // 엔터 클릭
                     }
                 }}
             />
-            <p style={{textAlign: 'left'}}>PASSWORD</p>  
-            <form onSubmit={handleSubmit}>
-                <input 
-                    autoComplete="off"
-                    id='newpassword' 
-                    type='password'
-                    style={{width: textWidth}} 
-                    value={pw}
-                    onChange={(e)=>{
-                        setPw(e.target.value.trim())
-                    }}
-                    onKeyDown={(e)=> {  
-                        if(e.code === "Enter") {
-                            continueBtn(); // 엔터 클릭
-                        }
-                    }}
-                />
-            </form>
-            <br/><br/>
+            {showPw ?
+            <>
+                <p style={{textAlign: 'left'}}>PASSWORD</p>  
+                <form onSubmit={handleSubmit}>
+                    <input 
+                        autoComplete="off"
+                        id='newpassword' 
+                        type='password'
+                        style={{width: textWidth}} 
+                        value={pw}
+                        onChange={(e)=>{
+                            setPw(e.target.value.trim())
+                        }}
+                        onKeyDown={(e)=> {  
+                            if(e.code === "Enter") {
+                                continueBtn(); // 엔터 클릭
+                            }
+                        }}
+                    />
+                </form>
+            </>
+            :
+            <></>
+            }
+            <br/><br/><br/>
+            
             <PBtn 
                 className= 'pBtnNoRed'
                 labelText='CONTINUE' 
                 alt='continue'
                 style={{fontSize: '1em', whiteSpace:'nowrap'}} 
                 onClick={async()=>{
-                    continueBtn();
+                    showPw ? continueBtn() : emailCheckBtn();
                 }}
             >
             </PBtn>
             <br/>
+            {showPw ?
+            <>
             <PBtn
                 className= 'pBtnNoRed'
                 labelText='FACE ID LOGIN' 
                 alt='faceId'
                 style={{fontSize: '1em', whiteSpace:'nowrap'}} 
                 onClick={async()=>{
-                    props.showWebAuthnBtn();
+                    props.showWebAuthnBtn(email);
                 }}
             >
             </PBtn>
-            <br/>
-            <PBtn
-                className= 'pBtnNoRed'
-                labelText='CREATE ACCOUNT' 
-                alt='create account'
-                style={{fontSize: '1em', whiteSpace:'nowrap'}} 
-                onClick={()=>{
-                    props.showCreateAccountBtn();
-                }}
-            >
-            </PBtn>
-            <br/>
-            <PBtn
-                className= 'pBtnNoRed'
-                labelText='FORGOT PASSWORD' 
-                alt='forgotPassword'
-                style={{fontSize: '1em', whiteSpace:'nowrap'}} 
-                onClick={()=>{
-                    
-                }}
-            >
-            </PBtn>
+            <br/><br/><br/><br/><br/>
+
             
+                <PBtn
+                    className= 'pBtnNoRed'
+                    labelText='CREATE ACCOUNT' 
+                    alt='create account'
+                    style={{fontSize: '0.7em', whiteSpace:'nowrap'}} 
+                    onClick={()=>{
+                        props.showCreateAccountBtn(email);
+                    }}
+                >
+                </PBtn>
+                <br/>
+                <PBtn
+                    className= 'pBtnNoRed'
+                    labelText='FORGOT PASSWORD' 
+                    alt='forgotPassword'
+                    style={{fontSize: '0.7em', whiteSpace:'nowrap'}} 
+                    onClick={()=>{
+                        props.showForgotPasswordBtn(email)
+                    }}
+                >
+                </PBtn>
+            </>
+            :
+            <></>
+            }
         </div>
     )
 }

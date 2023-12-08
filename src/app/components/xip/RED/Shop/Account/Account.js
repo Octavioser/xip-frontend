@@ -42,7 +42,7 @@ const Account = () => {
         }
     }
 
-    const getOrderHistory = () => {
+    const showOrderHistory = () => {
         navigate('./orderHistory')
     }
 
@@ -57,7 +57,7 @@ const Account = () => {
                         labelText='Order History'
                         alt='Order History'
                         onClick={() => {
-                            getOrderHistory();
+                            showOrderHistory();
                         }}
                     >
                     </PBtn>

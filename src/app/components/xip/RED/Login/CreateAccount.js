@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { PBtn } from '../../REDCommon/CommonStyle';
 import {useCommon} from '../../REDCommon/Common';
 import { isMobile } from 'react-device-detect';
@@ -8,12 +8,11 @@ const CreateAccount = (props) => {
 
     const { commonShowLoading, commonHideLoading, commonApi, commonEncode } = useCommon();
 
-    const [email, setEmail] = useState('');                 // 이메일
+    const [email, setEmail] = useState(props.email || '');                 // 이메일
     const [pw, setPw] = useState('');                       // 비밀번호
     const [confirmPw, setConfirmPw] = useState('');                       // 확인 비밀번호
     const [firstNm, setFirstNm] = useState('');            // 이름(성) 
     const [lastNm, setLastNm] = useState('');            // 이름
-    const [errorMsg, setErrorMsg] = useState('');        // 이메일 있는지 체크
 
 
     const [authCd, setAuthCd] = useState('');            // 이메일 코드
@@ -21,6 +20,7 @@ const CreateAccount = (props) => {
     const [authCdStatus, setAuthCdStatus] = useState(0);          // 이메일 코드 입력창 상태
 
     const [newEmail, setNewEmail] = useState(0);         // 이메일 없으면 패스워드 입력 보이기
+
 
     const apiList = {
         checkEmail: {
@@ -62,7 +62,7 @@ const CreateAccount = (props) => {
                     else {
                         msg = 'Invalid authentication code. Please try again.'
                     }
-                    setErrorMsg(msg)
+                    props.setMsg(msg)
                 } catch (error) {
                     console.log(error);    
                 } finally {
@@ -71,7 +71,7 @@ const CreateAccount = (props) => {
             }
             else {
                 let msg = 'Incomplete verification code entered.'
-                setErrorMsg(msg)
+                props.setMsg(msg)
                 return false;
             }
             
@@ -80,7 +80,7 @@ const CreateAccount = (props) => {
             const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
             if (!emailRegex.test(email)) { // 이메일 유효성 검사
                 msg = 'Please enter a valid email address.'
-                setErrorMsg(msg)
+                props.setMsg(msg)
                 return
             }
             // 이메일 체크 및 인증
@@ -88,11 +88,11 @@ const CreateAccount = (props) => {
                 await commonShowLoading();
                 let resultData = await commonApi(apiList.checkEmail.api, apiList.checkEmail.param());    // 없으면 0 있으면 1
                 if(resultData ===1) { // 이미 가입된 이메일이다.
-                    setErrorMsg('You already have an account.')
+                    props.setMsg('You already have an account.')
                 }
                 else if(resultData ===0){ // 새로운 이메일
                     setAuthCdStatus(1); // 이메일 코드 입력창 보이게 하기
-                    setErrorMsg('Enter the verification code received via email')
+                    props.setMsg('Enter the verification code received via email')
                 }
             } catch (error) {
                 
@@ -109,33 +109,33 @@ const CreateAccount = (props) => {
         const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
         if (!emailRegex.test(email)) { // 이메일 유효성 검사
             msg = 'Registration failed. Please try again.'
-            setErrorMsg(msg)
+            props.setMsg(msg)
             return
         }
         // 비밀번호 검사
-        if(!pw) {
+        if(!pw || !confirmPw) {
             msg = 'Enter your password.'
-            setErrorMsg(msg)
+            props.setMsg(msg)
             return
         }
 
         // 비밀번호 동일한지 검사
         if(pw !== confirmPw) {
             msg = 'Passwords does not match.'
-            setErrorMsg(msg)
+            props.setMsg(msg)
             return
         }
 
         if(!(/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(pw))) { // 8글자 이상 대문자, 숫자 포함
             msg = 'passwords must be at least 8 characters containing one uppercase character and one number'
-            setErrorMsg(msg)
+            props.setMsg(msg)
             return
         }
         
         //  이름 검사
         if(firstNm.trim() === '' || lastNm.trim() === '') {
             msg = 'Enter your name.'
-            setErrorMsg(msg)
+            props.setMsg(msg)
             return
         }
 
@@ -145,7 +145,7 @@ const CreateAccount = (props) => {
             let resultData = await commonApi(apiList.insertCreateAccount.api, await apiList.insertCreateAccount.param());
             if(resultData === -1) {
                 msg = 'Registration failed. Please try again.'
-                setErrorMsg(msg)
+                props.setMsg(msg)
             }
             else {
                 props.loginModalBtn()
@@ -168,7 +168,6 @@ const CreateAccount = (props) => {
     return (
         <div className='logoImage' style={{height: '35vh', width: textWidth, top: '30%', textAlign: 'center'}}>
             <p style={{color:'black'}}>Create a XIP Account</p>
-            <p style={{color:'black'}}>{errorMsg}</p>
             
             { authCdStatus && !newEmail?  // 새로운 이메일한테 인증번호 보낸 상태
             <></>
@@ -177,7 +176,8 @@ const CreateAccount = (props) => {
                     <p style={{textAlign: 'left'}}>EMAIL</p>
                     <input 
                         id='email'
-                        type='email' 
+                        type='email'
+                        name='email'
                         style={{width: textWidth}} 
                         value={email}
                         disabled={newEmail || authCdStatus}
@@ -195,7 +195,7 @@ const CreateAccount = (props) => {
             }
             { authCdStatus && !newEmail? // 새로운 이메일한테 인증번호 보낸 상태
                 <>  
-                    <EmailAuthCode continueBtn={continueBtn}/>   {/* 타이머 */}
+                    <EmailAuthCode checkAuthCodeBtn={continueBtn}/>   {/* 타이머 */}
                 </>
                 :
                 <></>

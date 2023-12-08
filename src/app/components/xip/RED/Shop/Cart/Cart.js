@@ -41,7 +41,7 @@ const Cart = () => {
                     
                 </div>
                 <br/>
-                <div style={{width: '100%', height:'2px', textAlign: 'center', transform: 'rotate(-1.5deg)'}}>
+                <div style={{width: '100%', height:'2px', textAlign: 'center'}}>
                     <hr 
                         style={{
                             border: 'none', 

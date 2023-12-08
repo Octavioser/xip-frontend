@@ -54,7 +54,7 @@ const EmailAuthCode = (props) => {
 
     const clickContinueBtn = async() => {
        let auchCd = await makeAuthCd();
-        props.continueBtn(auchCd); // 인증번호 확인
+        props.checkAuthCodeBtn(auchCd); // 인증번호 확인
     }
 
     return (

@@ -28,7 +28,7 @@ const AccountDetails = () => {
             <div style={{width: isMobile? '90%':'60%', margin: 'auto'}}>
                 <div style={{ padding: '10px 0', textAlign: 'left', height:'0%'}}>
                     <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>Your Account</p>
-                    <div style={{width: '100%', height:'2px', textAlign: 'center', transform: 'rotate(-1.5deg)'}}>
+                    <div style={{width: '100%', height:'2px', textAlign: 'center'}}>
                         <hr 
                             style={{
                                 border: 'none', 
