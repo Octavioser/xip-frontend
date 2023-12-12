@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { BrowserRouter, Routes, Route, useLocation} from 'react-router-dom';
-import { isMobile } from 'react-device-detect';
 
-import {ImgBtn} from 'app/components/xip/REDCommon/CommonStyle';
-import {Credit,Works, Video, StartPage, Home, NotFound,Masterinnovation,MasterinnovationBunka,Gallery, Shop, MainBtn} from 'app/components/xip/RED'; //index.js
+
+import {Credit,Works, Video, StartPage, Home, NotFound,Masterinnovation,MasterinnovationBunka,Gallery, Shop, MainBtn, MusicBtn} from 'app/components/xip/RED'; //index.js
 import ProductList from 'app/components/xip/RED/Shop/ProductList';
 import Account from 'app/components/xip/RED/Shop/Account/Account';
 import AccountDetails from 'app/components/xip/RED/Shop/Account/AccountDetails/AccountDetails';
@@ -19,12 +18,21 @@ function preloadImage(url) { // 이미지 미리 불러오기
 }
 preloadImage('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/loadingLogo.gif');
 
+const backgroundMusic = new Audio('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/m/wow.wav');
+backgroundMusic.loop = true;  // 반복
+
 // 메뉴 컴포넌트 (경로이동)
 const Root = () => {
 
     const { loading } = useLoading();
 
     const location = useLocation ();
+
+    const [startClickValue, setStartClickValue] = useState('0'); // 처음시작화면 클릭했는지 
+
+    const [play, setPlay] = useState(false);  // 음악 실행
+
+    
 
     useEffect(() => {
         document.body.style.color = 'white';
@@ -45,48 +53,22 @@ const Root = () => {
         }
     })
 
-    const backgroundMusicUrl = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/m/wow.wav'
-
-    const [backgroundMusic] = useState(new Audio(backgroundMusicUrl));
-
-    const [play, setPlay] = useState(false);
-
-    const [soundBtn, setSoundBtn] = useState('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/soundControl.webp');
-
-
-    const music = {
-        play: () =>{ // 음악 재생
-            let playValue = play === true ? false : true ;
-            setPlay(playValue)
-            if(playValue) {
-                backgroundMusic.play();   //재생
-                setSoundBtn('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/soundControl.webp')
-            }
-            else{
-                backgroundMusic.pause();  //멈춤
-                setSoundBtn('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/soundStop.webp')
-            }		
-            backgroundMusic.loop = true;  // 반복
-        },
-        soundBtn: () =>{
-            return(
-                <ImgBtn  
-                    className='soundBtn imgBtnNoHover'
-                    style={{width: isMobile ?'6vw':'2vw', right: '20px', bottom: '20px'}}
-                    src={soundBtn} 
-                    alt='startBtn' 
-                    onClick={()=>{
-                        music.play();
-                    }}
-                    >
-                </ImgBtn>
-            )
-        }
-    } 
-
-    const [startClickValue, setStartClickValue] = useState('0'); // 처음시작화면 클릭했는지 
-
     const setStartClick = () =>{setStartClickValue('1')}
+    
+   
+
+    const musicSwitch = () =>{ // 음악 재생
+        setPlay(!play)
+        if(play) {
+            backgroundMusic.play();   //재생
+            return true;
+        }
+        else{
+            backgroundMusic.pause();  //멈춤
+            return false;
+        }		
+        
+    }
 
     return (
         <>
@@ -102,13 +84,13 @@ const Root = () => {
                 <MainBtn setStartClick={setStartClick}/>
             }
 
-            <music.soundBtn></music.soundBtn>
+            <MusicBtn musicSwitch={musicSwitch}/>
 
             <Routes>
             {/*  페이지이동 */}
                 {/* 맨처음화면 */}
-                <Route path='/' element={<StartPage music={music}></StartPage>}/>
-                <Route path="/home" element={<Home startClickValue={startClickValue} soundBtn={music.play}/>}/>
+                <Route path='/' element={<StartPage musicSwitch={musicSwitch}></StartPage>}/>
+                <Route path="/home" element={<Home startClickValue={startClickValue}/>}/>
                 <Route path="/video">
                     <Route path="" element={<Video/>}/>
                     <Route path="masterinnovation" element={<Masterinnovation/>}/>

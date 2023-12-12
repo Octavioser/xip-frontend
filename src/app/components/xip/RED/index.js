@@ -9,3 +9,4 @@ export { default as MasterinnovationBunka } from './Video/MasterinnovationBunka'
 export { default as Gallery } from './Works/Gallery'; 
 export { default as Shop } from './Shop/Shop'; 
 export { default as MainBtn } from './MainBtn';
+export { default as MusicBtn } from './MusicBtn';

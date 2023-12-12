@@ -16,7 +16,7 @@ const StartPage = (props) => {
                             src= {startBtn} 
                             alt='startBtn' 
                             onClick={()=>{
-                                props.music.play();
+                                props.musicSwitch();
                             }}
                         >
                         </ImgBtn>

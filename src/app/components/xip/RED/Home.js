@@ -25,7 +25,7 @@ const Home = () => {
                 setDegree(degree);//위치 
                 setX(e.clientX);
                 setY(e.clientY);
-            })
+            }, { passive: true })
         } 
     });
 
