@@ -1,9 +1,43 @@
+import React, { useEffect,useState } from 'react';
+import { useParams } from 'react-router-dom';
+import {useCommon} from 'app/components/xip/REDCommon/Common';
 import ProductSlider from "./ProductSlider";
 import ProductDescription from "./ProductDescription";
 import { isMobile } from 'react-device-detect';
 
-
 const DetailProduct = () => {
+
+    const {prodCd} = useParams();
+
+    const [useEffectCheck, setUseEffectCheck] = useState(0);      // 처음에만 api 호출하도록
+
+    const [productListItem, setProductListItem] = useState([]);   //  상품 정보 state 에 저장
+
+    const {navigate, commonApi, commonShowLoading, commonHideLoading} = useCommon();
+
+    useEffect(() => {       
+        const getItem = async() => {
+            await commonShowLoading();
+            try {
+                let resultData = await commonApi('/shop/shopR003', {prodCd: prodCd});
+                if(!!resultData && resultData !== -1 && resultData.length > 0) {
+                    setProductListItem(resultData)
+                }
+                else {
+                    navigate('/shop')
+                }
+            } catch (error) {
+                
+            } finally {
+                commonHideLoading();
+            }
+            
+        }
+        if(useEffectCheck === 0) { // 처음시작인지 아니면 파라미터가 바뀌었을 경우
+            setUseEffectCheck(1);
+            getItem();
+        }
+    },[commonShowLoading, commonHideLoading, commonApi, useEffectCheck, navigate, prodCd]);
 
     const parentDivStyle = () => {
 
@@ -50,10 +84,10 @@ const DetailProduct = () => {
         <div style={parentDivStyle()}
         >
             <div style={productSliderStyle()}>
-                <ProductSlider/>
+                <ProductSlider prodCd={prodCd}/>
             </div>
             <div style={productDescriptionStyle()}>
-                <ProductDescription/>
+                <ProductDescription productListItem={productListItem}/>
             </div>
         </div>
     )

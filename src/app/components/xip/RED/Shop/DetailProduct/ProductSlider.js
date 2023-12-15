@@ -1,36 +1,74 @@
-import React from "react";
+import React, { useEffect, useState} from 'react';
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { isMobile } from 'react-device-detect';
 
-const ProductSlider = () => {
-  const settings = {
-    arrows: false,
-    dots: true, // 인디케이터 점 표시
-    infinite: true, // 무한 루프
-    speed: 500, // 전환 속도
-    slidesToShow: 1, // 한 번에 보여지는 슬라이드 수
-    slidesToScroll: 1, // 스크롤할 때 넘어가는 슬라이드 수
-    variableWidth: true,
-  };
+const AWS = require('aws-sdk');
+// s3 권한
+const s3 = new AWS.S3({ // 보안 자격 증명 엑세스 키
+    accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
+    secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
+    region: 'ap-northeast-2',
+});
 
-  const imageWidth = isMobile? '59.9vw':'29.9vw';
 
-  return (
-    <div className="carousel" style={{width:isMobile? '60vw':'30vw'}}>
-        <Slider {...settings}>
-            <img src="https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/products/test/testT.gif" alt="1111"
-                style={{width: imageWidth}}
-            />
-            <img src="https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/products/test/testpants.gif" alt="2222"
-                style={{width: imageWidth}}/>
-            <img src="https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/products/test/testT.gif" alt="3333"
-                style={{width: imageWidth}}/>
-        {/* 추가 슬라이드 ... */}
-        </Slider>
-    </div>
-  );
+
+const ProductSlider = (props) => {
+
+    const awsUrl = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/';
+
+    const [imageList, setImageList] = useState([]);   //  상품 정보 state 에 저장
+
+    useEffect(() => {
+        
+        // 이미지 데이터 갖고오기기
+        const getData = async () => {      
+            const imageWidth = isMobile? '59.9vw':'29.9vw'; 
+            let list = [];
+            let displaylistData = [];
+            const bucketName = 'xip-bucket'; 
+            const params = {  // s3 파람
+                Bucket: bucketName,
+                Prefix: `xItem/i/shop/products/${props.prodCd}/detail/`,
+                Delimiter: '/',
+            };
+            const images = await s3.listObjectsV2(params).promise();
+            list = images.Contents
+            for(let i=0; i<list.length; i++) {
+                if(list[i]['Size'] > 0) {
+                    displaylistData = displaylistData.concat([
+                        <img key={i} src={awsUrl + list[i].Key} alt={'image' + i}
+                                style={{width: imageWidth}}/>
+                    ])
+                }
+            }
+            setImageList(displaylistData)
+        }
+
+        getData();
+        
+    },[props.prodCd]);  // useEffect(() => { },[]) 처음에만 동작
+
+
+    const settings = {
+        arrows: false,
+        dots: true, // 인디케이터 점 표시
+        infinite: true, // 무한 루프
+        speed: 500, // 전환 속도
+        slidesToShow: 1, // 한 번에 보여지는 슬라이드 수
+        slidesToScroll: 1, // 스크롤할 때 넘어가는 슬라이드 수
+        variableWidth: true,
+    };
+
+    return (
+        <div className="carousel" style={{width:isMobile? '60vw':'30vw'}}>
+            <Slider {...settings}>
+            {imageList}
+            {/* 추가 슬라이드 ... */}
+            </Slider>
+        </div>
+    );
 };
 
-export default ProductSlider;
+    export default ProductSlider;

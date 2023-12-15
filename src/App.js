@@ -30,7 +30,7 @@ const Root = () => {
 
     const [startClickValue, setStartClickValue] = useState('0'); // 처음시작화면 클릭했는지 
 
-    const [play, setPlay] = useState(false);  // 음악 실행
+    const [play, setPlay] = useState(true);  // 음악 실행
 
     
 
@@ -42,7 +42,7 @@ const Root = () => {
             document.body.style.backgroundImage = 'none';
             document.body.style.backgroundColor = 'red';
 
-            if(location.pathname === '/shop/detailProduct') {
+            if(location.pathname.startsWith('/shop/detailProduct') ) {
                 document.body.style.color = 'black';
                 document.body.style.backgroundColor = 'white';
             }
@@ -58,13 +58,14 @@ const Root = () => {
    
 
     const musicSwitch = () =>{ // 음악 재생
-        setPlay(!play)
         if(play) {
             backgroundMusic.play();   //재생
+            setPlay(false) 
             return true;
         }
         else{
             backgroundMusic.pause();  //멈춤
+            setPlay(true) 
             return false;
         }		
         
@@ -108,7 +109,7 @@ const Root = () => {
                         <Route path="accountDetails" element={<AccountDetails/>}/>
                         <Route path="orderHistory" element={<OrderHistory/>}/>
                     </Route> 
-                    <Route path="detailProduct" element={<DetailProduct/>}/>
+                    <Route path="detailProduct/:prodCd" element={<DetailProduct/>}/>
                     <Route path="cart" element={<Cart/>}/>
                 </Route>
                 {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}

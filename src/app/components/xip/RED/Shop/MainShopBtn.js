@@ -21,6 +21,49 @@ const MainShopBtn = () => {
 
     const mainfont = isMobile? '1.5rem':'20px'
     const subfont = isMobile? '1.3rem':'15px'
+
+    const seasonItem = () => {
+        const item = 
+        [
+            {id: 1, key:'24SS', name: 'S/S 2024'},
+            {id: 2, key:'24FW', name: 'F/W 2024'},
+            {id: 3, key:'25SS', name: 'S/S 2025'}
+        ]
+        return(
+            <div key={'div1'} style={{width:'30vw', textAlign:'left',paddingLeft:'30px'}}>
+                <p key='empty' style={{fontSize: '5px'}}></p>
+                <PBtn //상품 나열 버튼
+                    id='all'
+                    className='pBtnNoRed'
+                    labelText='Shop All'
+                    alt='shopAllBtn'
+                    style={{fontSize: subfont}}
+                    onClick={() =>{
+                        navigate('/shop')
+                    }}
+                >
+                </PBtn>
+                {item.map((e) => {
+                    return(
+                        <PBtn //상품 나열 버튼
+                            key={e.id}
+                            id={e.id}
+                            className='pBtnNoRed'
+                            labelText={e.key}
+                            alt='e'
+                            style={{fontSize: subfont}}
+                            onClick={() =>{
+                                navigate('./shop', {state: e.key})
+                            }}
+                        >
+                        </PBtn>
+                    )
+                }
+                )}
+                <p key='empty2' style={{fontSize: '5px'}}></p>
+            </div>
+        )
+    }
     
 
     return (
@@ -42,8 +85,9 @@ const MainShopBtn = () => {
                     </ImgBtn> 
                     {menuOpen === '1' ?
                         <>  
-                            <p></p>
+                            <p key='empty3'></p>
                                 <PBtn //home
+                                    key='home'
                                     className='pBtnNoRed'
                                     labelText='HOME'
                                     alt='homeBtn'
@@ -56,6 +100,7 @@ const MainShopBtn = () => {
                                 >
                                 </PBtn>
                                 <PBtn //상품 나열 버튼
+                                    key='shop'
                                     className='pBtnNoRed'
                                     labelText='SHOP'
                                     alt='shopBtn'
@@ -66,34 +111,14 @@ const MainShopBtn = () => {
                                 >
                                 </PBtn>
                                 {shopSubOpen ? 
-                                    <>
-                                        <p style={{fontSize: '5px'}}></p>
-                                        <PBtn //상품 나열 버튼
-                                            className='pBtnNoRed'
-                                            labelText='&nbsp;&nbsp;&nbsp;&nbsp;Shop All'
-                                            alt='shopAllBtn'
-                                            style={{fontSize: subfont}}
-                                            onClick={() =>{
-                                                navigate('/shop')
-                                            }}
-                                        >
-                                        </PBtn>
-                                        <PBtn //상품 나열 버튼
-                                            className='pBtnNoRed'
-                                            labelText='&nbsp;&nbsp;&nbsp;&nbsp;S/S 2024'
-                                            alt='ss24'
-                                            style={{fontSize: subfont}}
-                                            onClick={() =>{
-                                                console.log('ss24')
-                                            }}
-                                        >
-                                        </PBtn>
-                                        <p style={{fontSize: '5px'}}></p>
-                                    </>
+                                <>
+                                    {seasonItem()}
+                                </>
                                 :
                                     <></>
                                 } 
                                 <PBtn 
+                                    key='service'
                                     className='pBtnNoRed'
                                     labelText='SERVICE'
                                     alt='service'

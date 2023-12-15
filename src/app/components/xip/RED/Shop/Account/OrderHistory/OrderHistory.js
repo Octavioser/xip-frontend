@@ -1,10 +1,7 @@
 import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import { isMobile } from 'react-device-detect';
-import {useCommon} from 'app/components/xip/REDCommon/Common'
 
 const OrderHistory = () => {
-
-    const {navigate} = useCommon();
 
     const histroyColumn = () => {
         return(
@@ -52,7 +49,7 @@ const OrderHistory = () => {
     }
 
     return (
-        <div style={{display:'flex', position:'relative', width: '100vw', height: '100vh', top: isMobile?'13vh':'2vh',
+        <div style={{display:'flex', position:'relative', width: '100vw', height: '100vh', top: isMobile?'13vh':'',
                     flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}} 
          >
             <div style={{ width:isMobile? '100vw':'60vw', height:'100vh'}}>

@@ -8,12 +8,12 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 
 
 const AWS = require('aws-sdk');
-    // s3 권한
-    const s3 = new AWS.S3({ // 보안 자격 증명 엑세스 키
-        accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
-        secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
-        region: 'ap-northeast-2',
-    });
+// s3 권한
+const s3 = new AWS.S3({ // 보안 자격 증명 엑세스 키
+    accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
+    secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
+    region: 'ap-northeast-2',
+});
 
 // 정보
 const Gallery = () => {

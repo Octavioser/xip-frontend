@@ -15,8 +15,8 @@ const AccountDetails = () => {
     const {state} = useLocation();
 
     useEffect(() => {
-        if(!state) {
-            navigate('/shop')
+        if(!state) { // 유저정보 불러왔는지 체크
+            navigate('/shop') 
         }
     },[state, navigate])
 
