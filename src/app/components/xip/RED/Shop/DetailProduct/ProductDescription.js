@@ -3,23 +3,60 @@ import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 import LoginModal from 'app/components/xip/RED/Login/LoginModal';
 import { isMobile } from 'react-device-detect';
-
+import {useCommon} from 'app/components/xip/REDCommon/Common';
 
 
 const ProductDescription = (props) => {
 
     const [size, setSize] = useState('');
 
-    const {getCookie} = useCookie();
+    const {getCookie, removeCookie} = useCookie();
 
     const [loginModal, setLoginModal] = useState(false);
+
+    const { commonShowLoading, commonHideLoading, commonApi, navigate } = useCommon();
+
+    const apiList = {
+        insertCart: {
+            api: '/shop/shopC102',
+            param: () => {
+                return (
+                    { 
+                        prodCdD:size
+                    }
+                )
+            }
+        }
+    }
     
-    const clickAddToCart = () => {  // add to cart 클릭시
+    const clickAddToCart = async() => {  // add to cart 클릭시
         if(!getCookie('xipToken')) {
             setLoginModal(true);
         }
         else {
-            alert('Added the product to the cart.');
+            if(!size) {
+                alert('Please select a product before adding to cart.')
+                return;
+            }
+            // 장바구니 담기
+            try{
+                await commonShowLoading();
+                let resultData = await commonApi(apiList.insertCart.api, apiList.insertCart.param());
+                if(resultData === -1) {
+                    alert('Registration failed. Please try again.')
+                }
+                else if(resultData === -2 || !resultData || resultData.length < 1){
+                    removeCookie('xipToken') // 토큰 오류시 로그아웃
+                    navigate('/shop')
+                }
+                else {
+                    alert('Added the product to the cart.');
+                }
+            } catch (error) {
+                alert('Please try again.');
+            } finally {
+                commonHideLoading();
+            } 
         }
     }
 

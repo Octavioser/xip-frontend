@@ -1,5 +1,5 @@
 
-import React, {useState, useRef} from 'react';
+import React, {useState} from 'react';
 import {ImgBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import { isMobile } from 'react-device-detect';
 

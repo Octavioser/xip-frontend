@@ -32,8 +32,7 @@ const Gallery = () => {
     
 
 
-    useEffect(() => {
-        console.log('갤러리 실행')
+    useEffect(() => { 
         let list = []
 
         // 이미지 데이터 갖고오기기

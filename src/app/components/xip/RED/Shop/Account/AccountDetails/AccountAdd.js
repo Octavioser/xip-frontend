@@ -20,7 +20,7 @@ const AccountAdd = (props) => {
 
     const apiList = {
         insertAdd: {
-            api: '/shop/shopC102',
+            api: '/shop/shopC101',
             param: () => {
                 return (
                     { 
