@@ -160,3 +160,19 @@ nav {
   align-items: center;
   justify-content: center;
 }
+
+/* 전체 스크롤바의 너비와 배경을 설정합니다 */
+::-webkit-scrollbar {
+  width: 5px; /* 스크롤바의 너비 */
+}
+
+/* 스크롤바 내부의 "thumb" 즉, 사용자가 드래그할 수 있는 부분을 스타일링합니다 */
+::-webkit-scrollbar-thumb {
+  background-color: #c2c1c1; /* thumb의 배경 색상 */
+  border-radius: 10px; /* thumb의 모서리를 둥글게 */
+}
+
+/* 스크롤바의 track 부분에 대한 스타일 */
+::-webkit-scrollbar-track {
+  background-color: transparent; /* 트랙의 배경색을 투명하게 설정 */
+}

@@ -64,11 +64,7 @@ const Home = () => {
             </div>
             <div style={{overflow: 'hidden'}}>
                 {/* 모바일 상태에서는 커서 x */}
-                {isMobile ? 
-                    <></> 
-                : 
-                    <>{spermCursor()}</>
-                }
+                {isMobile && <>{spermCursor()}</>}
             </div>
         </div>
     )

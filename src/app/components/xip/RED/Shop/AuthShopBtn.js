@@ -79,7 +79,7 @@ const AuthShopBtn = () => {
                     }}
                 >
                 </PBtn>
-            {loginModal ? <LoginModal loginModalBtn={loginModalBtn}/> : <></>}  
+            {loginModal && <LoginModal loginModalBtn={loginModalBtn}/> }  
         </div>
     )
 }

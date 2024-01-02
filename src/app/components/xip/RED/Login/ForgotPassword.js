@@ -180,14 +180,8 @@ const ForgotPassword = (props) => {
                     />
                 </>
             }
-            { authCdStatus ? // 인증번호 보낸 상태 (확인전)
-                <>  
-                    <EmailAuthCode checkAuthCodeBtn={checkAuthCodeBtn}/>   {/* 타이머 */}
-                </>
-                :
-                <></>
-            }
-            { canChangePw ? // 인증번호 보내고 확인한 상태
+            { authCdStatus && <EmailAuthCode checkAuthCodeBtn={checkAuthCodeBtn}/>}   {/*인증번호 보낸 상태 (확인전)*/ }
+            { canChangePw && // 인증번호 보내고 확인한 상태
                 <>
                     <p style={{textAlign: 'left'}}>NEW PASSWORD</p>  
                     <form onSubmit={handleSubmit}>
@@ -221,8 +215,6 @@ const ForgotPassword = (props) => {
                         />
                     </form>
                 </>
-                :
-                <></>
             }
             <br/><br/><br/>
             { authCdStatus ? // // 인증번호 보낸 상태 (확인전)

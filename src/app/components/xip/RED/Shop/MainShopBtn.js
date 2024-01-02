@@ -53,7 +53,7 @@ const MainShopBtn = () => {
                             alt='e'
                             style={{fontSize: subfont}}
                             onClick={() =>{
-                                navigate('./shop', {state: e.key})
+                                navigate('./shop', {state: e.key})  // ProductList에 state 값 넘겨주기
                             }}
                         >
                         </PBtn>
@@ -83,7 +83,7 @@ const MainShopBtn = () => {
                         }}
                     >
                     </ImgBtn> 
-                    {menuOpen === '1' ?
+                    {menuOpen === '1' &&
                         <>  
                             <p key='empty3'></p>
                                 <PBtn //home
@@ -110,12 +110,10 @@ const MainShopBtn = () => {
                                     }}
                                 >
                                 </PBtn>
-                                {shopSubOpen ? 
+                                {shopSubOpen && 
                                 <>
                                     {seasonItem()}
                                 </>
-                                :
-                                    <></>
                                 } 
                                 <PBtn 
                                     key='service'
@@ -130,8 +128,6 @@ const MainShopBtn = () => {
                                     >
                                 </PBtn>
                         </>
-                    :
-                        <></>
                     }
                 </div>
             </nav>       

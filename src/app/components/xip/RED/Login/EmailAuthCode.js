@@ -172,9 +172,7 @@ const EmailAuthCode = (props) => {
                     }}
                 />
             </div>
-            { !!codeTimeOut ?
-                <></>
-                :
+            { !codeTimeOut &&
                 <>
                     <p>Time Left: {seconds}s</p>
                     <br></br>

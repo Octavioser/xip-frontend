@@ -173,20 +173,14 @@ const LoginModal = (props) => {
         <p style={{color:'black', textAlign:'center'}}>{message}</p>
         {(showCreateAccount ||  showWebAuthn || showForgotPassword)?
         <>
-            { showCreateAccount ?
+            { showCreateAccount &&
                 <CreateAccount loginModalBtn={props.loginModalBtn} email={email} setMsg={setMsg}/>
-                :
-                <></>
             }
-            { showWebAuthn ?
+            { showWebAuthn &&
                 <WebAuthn loginModalBtn={props.loginModalBtn} email={email} setMsg={setMsg} webAuthLogin={webAuthLogin}/>
-                :
-                <></>
             }
-            { showForgotPassword ?
+            { showForgotPassword &&
                 <ForgotPassword loginModalBtn={props.loginModalBtn} email={email} setMsg={setMsg} />
-                :
-                <></>
             }
         </>
         :

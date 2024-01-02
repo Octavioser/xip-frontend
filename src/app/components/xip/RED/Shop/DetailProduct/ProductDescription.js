@@ -8,7 +8,7 @@ import {useCommon} from 'app/components/xip/REDCommon/Common';
 
 const ProductDescription = (props) => {
 
-    const [size, setSize] = useState('');
+    const [prodCdD, setProdCdD] = useState(''); // 제품코드안에 사이즈가 있음
 
     const {getCookie, removeCookie} = useCookie();
 
@@ -22,7 +22,7 @@ const ProductDescription = (props) => {
             param: () => {
                 return (
                     { 
-                        prodCdD:size
+                        prodCdD:prodCdD
                     }
                 )
             }
@@ -34,7 +34,7 @@ const ProductDescription = (props) => {
             setLoginModal(true);
         }
         else {
-            if(!size) {
+            if(!prodCdD) {
                 alert('Please select a product before adding to cart.')
                 return;
             }
@@ -57,6 +57,23 @@ const ProductDescription = (props) => {
             } finally {
                 commonHideLoading();
             } 
+        }
+    }
+
+    const clickPurchase = async() => {  // add to cart 클릭시
+        if(!getCookie('xipToken')) {
+            setLoginModal(true);
+        }
+        else {
+            if(!prodCdD) {
+                alert('Please select a product before adding to cart.')
+                return;
+            }
+            let item = [{...props.productListItem.find(e => e.prodCdD === prodCdD), prodQty: 1}]
+            
+
+            // 장바구니 담기
+            navigate('/shop/purchase', {state: item})  // putchase에 state 값 넘겨주기
         }
     }
 
@@ -106,20 +123,21 @@ const ProductDescription = (props) => {
         const getSizeDownlist = () => {
             return (
                 <select 
-                    value={size} 
+                    value={prodCdD} 
                     style={downListStyle}
                     onChange={(e) => {
                         const selectedOption = e.target.options[e.target.selectedIndex];
                         const status = selectedOption.getAttribute('status');
-                        if(status === '1') {
-                            setSize(e.target.value);
+                        if(status === '1') { // 판매중인 상태
+                            console.log(e)
+                            setProdCdD(e.target.value);
                         } 
                     }}
                 >
                     <option value="">SELECT A SIZE</option>
                     {item.map(e =>
                         <option key={e.prodCdD} value={e.prodCdD} style={{color:e.prodStatus === '2' ?'red' : 'black'}} status={e.prodStatus}>
-                            {e.prodSize + (e.prodStatus === '2' ? '(SOLD OUT)' : '')}
+                            {e.prodSize + (e.prodStatus === '2' ? '(SOLD OUT)' : '')} 
                         </option>
                     )}
                 </select>
@@ -147,8 +165,8 @@ const ProductDescription = (props) => {
                 <h2 style={{ margin: '5px' }}>{prodDesc}</h2>
                 <br/><br/>
                 
-                <div>
-                    {getSizeDownlist()}
+                <div> {/* 사이즈 고르기 */}
+                    {getSizeDownlist()} 
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', margin: '20px 0' }}>
@@ -159,7 +177,13 @@ const ProductDescription = (props) => {
                             clickAddToCart();
                         }}
                     />
-                    <PBtn style={btnStyle} labelText={'PURCHASE'}/>
+                    <PBtn 
+                        style={btnStyle} 
+                        labelText={'PURCHASE'}
+                        onClick={() => {
+                            clickPurchase();
+                        }}
+                    />
                 </div>
 
                 <ul style={{ listStyle: 'none', padding: '0', textAlign: isMobile?'center':'left' }}>
@@ -173,7 +197,7 @@ const ProductDescription = (props) => {
         <div style={{ width: isMobile? '90vw':'25vw', margin: isMobile? '0' : 'auto', marginLeft: isMobile?'0':'18vw'}}>
             <br/>
             {prodDescription()}
-            {loginModal ? <LoginModal loginModalBtn={loginModalBtn}/> : <></>}
+            {loginModal && <LoginModal loginModalBtn={loginModalBtn}/>}
         </div>
     );
 };

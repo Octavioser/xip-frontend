@@ -22,9 +22,7 @@ const MainBtn = (props) => {
     }
     return (
         <>
-            { window.location.pathname === '/' ?  //처음 화면
-                <></>  /* start.js*/
-            :
+            { !(window.location.pathname === '/') &&  //처음 화면
                 <>
                     {/* x 메뉴버튼 */}
                     <nav>
@@ -56,7 +54,7 @@ const MainBtn = (props) => {
                                     </ImgBtn>
                             }
 
-                            {menuOpen === '1' ?
+                            {menuOpen === '1' &&
                             <>
                                 <Link to="./works"> 
                                     <PBtn //works
@@ -114,10 +112,7 @@ const MainBtn = (props) => {
                                     >
                                     </PBtn>
                                 </Link>
-                            </>
-                            :
-                            <></>
-                            }
+                            </>}
                         </div>
                     </nav>
                 </>

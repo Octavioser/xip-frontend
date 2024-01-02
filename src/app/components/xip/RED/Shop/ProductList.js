@@ -89,7 +89,7 @@ const ProductList = () => {
                         }}
                     >  
                     </ImgBtn>
-                    {productHover === e.prodCd ?
+                    {productHover === e.prodCd &&
                         <>
                             {e.status === '1'|| e.status === '3'  ? // status=1 판매중 status=3 프리오더
                                 <div 
@@ -145,9 +145,6 @@ const ProductList = () => {
                                 </div>
                             }
                         </>
-                        
-                    :
-                        <></>
                     }
                 </div>
             )}

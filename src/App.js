@@ -11,6 +11,7 @@ import Loading from 'app/components/xip/REDCommon/Loading/Loading';
 import DetailProduct from 'app/components/xip/RED/Shop/DetailProduct/DetailProduct.js';
 import Cart from 'app/components/xip/RED/Shop/Cart/Cart';
 import OrderHistory from 'app/components/xip/RED/Shop/Account/OrderHistory/OrderHistory';
+import Purchase from 'app/components/xip/RED/Shop/Purchase/Purchase';
 
 function preloadImage(url) { // 이미지 미리 불러오기
     const img = new Image();
@@ -30,7 +31,7 @@ const Root = () => {
 
     const [startClickValue, setStartClickValue] = useState('0'); // 처음시작화면 클릭했는지 
 
-    const [play, setPlay] = useState(true);  // 음악 실행
+    const [display, setDisPlay] = useState(false);  // 음악아이콘 상태
 
     
 
@@ -57,15 +58,15 @@ const Root = () => {
     
    
 
-    const musicSwitch = () =>{ // 음악 재생
-        if(play) {
+    const musicSwitch = (e) =>{ // 음악 재생
+        if(e) {
             backgroundMusic.play();   //재생
-            setPlay(false) 
+            setDisPlay(true)          //재생하는 버튼 보여주기
             return true;
         }
         else{
             backgroundMusic.pause();  //멈춤
-            setPlay(true) 
+            setDisPlay(false)         //멈춰있는 버튼 보여주기
             return false;
         }		
         
@@ -73,11 +74,7 @@ const Root = () => {
 
     return (
         <>
-            {loading ? 
-                <Loading/>
-            :
-                <></>
-            }
+            {loading && <Loading/>}
             {/* shop 일경우 버튼 삭제 */}
             {location.pathname.substring(0,5) === '/shop' ?
                 <Shop/>
@@ -85,7 +82,7 @@ const Root = () => {
                 <MainBtn setStartClick={setStartClick}/>
             }
 
-            <MusicBtn musicSwitch={musicSwitch}/>
+            <MusicBtn musicSwitch={musicSwitch} playState={display}/>
 
             <Routes>
             {/*  페이지이동 */}
@@ -111,6 +108,7 @@ const Root = () => {
                     </Route> 
                     <Route path="detailProduct/:prodCd" element={<DetailProduct/>}/>
                     <Route path="cart" element={<Cart/>}/>
+                    <Route path="purchase" element={<Purchase/>}/>
                 </Route>
                 {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
                 <Route path="*" element={<NotFound />}/>

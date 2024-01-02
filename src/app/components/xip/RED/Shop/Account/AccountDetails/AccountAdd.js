@@ -233,7 +233,7 @@ const AccountAdd = (props) => {
         <>
             <div style={{ display: 'flex', justifyContent: 'space-between'}}>
                 <p style={{ fontSize: '1.3rem', textAlign: 'left' }}>ADDRESS</p>
-                    {edit  ? // 이름변경 비밀번호 변경하는 화면일때
+                    {edit  && // 이름변경 비밀번호 변경하는 화면일때
                         <ImgBtn
                             style={{width: isMobile? '5vw':'2vw', height: isMobile? '5vw':'2vw', paddingRight:'2vw', paddingTop:isMobile? '5vw':'2vw'}}
                             src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/accountDetails/backArrow.webp'}
@@ -243,8 +243,6 @@ const AccountAdd = (props) => {
                             }}
                         >
                         </ImgBtn>
-                        :
-                        <></>
                     }
             </div>
             { edit ? 
@@ -287,7 +285,7 @@ const AccountAdd = (props) => {
                     </>
                 :
                     <div style={{ textAlign: 'center'}}> {/* 버튼을 감싸는 div를 가운데 정렬 */}
-                        {(!!userItem?.addCount) ? 
+                        {(!!userItem?.addCount) && 
                             <>
                                 <p>{userItem?.addLastNm + ', ' + userItem?.addFirstNm}</p>
                                 <p>{userItem?.company}</p>
@@ -297,8 +295,6 @@ const AccountAdd = (props) => {
                                 <p>{userItem?.addCountry + ', ' + userItem?.postalCd}</p>
                                 <p>{userItem?.phone}</p>
                             </>
-                        :
-                            <></>
                         }
                     </div>
             }

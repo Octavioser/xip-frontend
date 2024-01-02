@@ -154,7 +154,7 @@ const Login = (props) => {
                     }
                 }}
             />
-            {showPw ?
+            {showPw&&
             <>
                 <p style={{textAlign: 'left'}}>PASSWORD</p>  
                 <form onSubmit={handleSubmit}>
@@ -175,8 +175,6 @@ const Login = (props) => {
                     />
                 </form>
             </>
-            :
-            <></>
             }
             <br/><br/><br/>
             
@@ -191,7 +189,7 @@ const Login = (props) => {
             >
             </PBtn>
             <br/>
-            {showPw ?
+            {showPw &&
             <>
             <PBtn
                 className= 'pBtnNoRed'
@@ -228,8 +226,6 @@ const Login = (props) => {
                 >
                 </PBtn>
             </>
-            :
-            <></>
             }
         </div>
     )

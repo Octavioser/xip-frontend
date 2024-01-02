@@ -21,14 +21,14 @@ export const useCommon = () => {
 	};
 
 	const commonEncode = async(str) => { // 암호화
-			try{
-				const secretKey = process.env.REACT_APP_SECRET_LOGIN_KEY
-				const encrypted = CryptoJS.HmacMD5(JSON.stringify(str), secretKey).toString();
-				return encrypted;
-			} catch (error) {
-				console.log(error)
-				return -1;
-			};
+		try{
+			const secretKey = process.env.REACT_APP_SECRET_LOGIN_KEY
+			const encrypted = CryptoJS.HmacMD5(JSON.stringify(str), secretKey).toString();
+			return encrypted;
+		} catch (error) {
+			console.log(error)
+			return -1;
+		};
 	}
 
   	const commonApi = async(url, param) => {

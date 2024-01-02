@@ -54,8 +54,7 @@ const AccountInfo = (props) => {
     }
 
     const saveNmChange = async() => {
-        
-        console.log('saveNmChange 호출!!')
+    
         let message = '';
 
         const firstNm  = !(userEditItem?.firstNm) || ''
@@ -219,7 +218,7 @@ const AccountInfo = (props) => {
         <>
             <div style={{ display: 'flex', justifyContent: 'space-between'}}>
                 <p style={{ fontSize: '1.3rem', textAlign: 'left' }}>ACCOUNT INFORMATION</p>
-                {edit || changePw ? // 이름변경 비밀번호 변경하는 화면일때
+                { (edit || changePw) && // 이름변경 비밀번호 변경하는 화면일때
                     <ImgBtn
                     style={{width: isMobile? '5vw':'2vw', height: isMobile? '5vw':'2vw', paddingRight:'2vw', paddingTop:isMobile? '5vw':'2vw'}}
                         src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/accountDetails/backArrow.webp'}
@@ -230,12 +229,10 @@ const AccountInfo = (props) => {
                         }}
                     >
                     </ImgBtn>
-                    :
-                    <></>
                 }
             </div>
             <div style={{display:'flex', flexWrap: 'wrap',  justifyContent: 'space-between', marginRight: '15%'}}>
-                { edit ?  // edit 클릭 할 경우
+                { edit &&  // edit 클릭 할 경우
                     <>  
                         {textBox.setTopic('First Name')}
                         {textBox.setValue('input', userEditItem?.firstNm, 'firstNm', 16)}
@@ -247,10 +244,8 @@ const AccountInfo = (props) => {
                         {textBox.setTopic('Email')} 
                         {textBox.setValue('input', userEditItem?.email, 'email', 33)} 
                     </>
-                    :
-                    <></>
                 }
-                { changePw ? // chage password 클릭한 경우
+                { changePw && // chage password 클릭한 경우
                     <>  
                         {textBox.setTopic('Account password')}
                         {textBox.setValue('input', userEditItem?.accountPw, 'accountPw', 100, true)} 
@@ -261,10 +256,8 @@ const AccountInfo = (props) => {
                         {textBox.setTopic('Confirm password')} 
                         {textBox.setValue('input', userEditItem?.confirmPw, 'confirmPw', 100, true)} 
                     </>
-                    :
-                    <></>
                 }
-                { (!edit && !changePw) ? // info 처음화면
+                { (!edit && !changePw) && // info 처음화면
                     <>
                         {textBox.setTopic('First Name')}
                         {textBox.setValue('text',userItem?.firstNm)}
@@ -275,8 +268,6 @@ const AccountInfo = (props) => {
                         {textBox.setTopic('Email')}
                         {textBox.setValue('text',userItem?.email)}
                     </>
-                   :
-                   <></>
                 }
             </div>
             <div style={{ textAlign: 'center'}}> {/* 버튼을 감싸는 div를 가운데 정렬 */}
@@ -305,30 +296,34 @@ const AccountInfo = (props) => {
                     >
                     </PBtn>
                 :
-                    <>      {/* 처음 info 화면 */}
+                <div style={{display:'flex', justifyContent: 'center'}}>
+                    <div style={{width:'30%'}}>      {/* 처음 info 화면 */}
+                        <div style={{width:'100%'}}>
+                            <PBtn
+                                className= 'pBtnNoRed'
+                                style={{ 
+                                    textAlign: 'center', 
+                                    display: 'inline-block', 
+                                    padding: '3px 6px',
+                                    border: '2px solid white',  
+                                    fontSize: '1.2rem',  
+                                    margin: 'auto',
+                                }}
+                                labelText= 'CHANGE PASSWORD'
+                                onClick={() => {
+                                    setUserEditItem({...userItem, accountPw: '', newPw: '', confirmPw: ''});
+                                    setChangePw(true)
+                                }}
+                            >
+                            </PBtn>
+                        </div>
+                        <br/>
+                        <div style={{display:'flex', alignContent: 'space-between', width:'100%'}}>
                         <PBtn
                             className= 'pBtnNoRed'
                             style={{ 
                                 textAlign: 'center', 
-                                display: 'inline-block', 
-                                padding: '3px 6px',
-                                border: '2px solid white',  
-                                fontSize: '1.2rem',  
-                                margin: 'auto',
-                            }}
-                            labelText= 'CHANGE PASSWORD'
-                            onClick={() => {
-                                setUserEditItem({...userItem, accountPw: '', newPw: '', confirmPw: ''});
-                                setChangePw(true)
-                            }}
-                        >
-                        </PBtn>
-                        <br/><br/>
-                        <PBtn
-                            className= 'pBtnNoRed'
-                            style={{ 
-                                textAlign: 'center', 
-                                display: 'inline-block', 
+                                display: 'block', 
                                 padding: '3px 6px',
                                 border: '2px solid white',  
                                 fontSize: '1.2rem',  
@@ -341,7 +336,25 @@ const AccountInfo = (props) => {
                             }}
                         >
                         </PBtn>
-                    </>
+                        <PBtn
+                            className= 'pBtnNoRed'
+                            style={{ 
+                                textAlign: 'center', 
+                                display: 'inline-block', 
+                                padding: '3px 6px',
+                                border: '2px solid white',  
+                                fontSize: '1.2rem',  
+                                margin: 'auto',
+                            }}
+                            labelText= 'DELETE FACE ID'
+                            onClick={() => {
+
+                            }}
+                        >
+                        </PBtn>
+                        </div>
+                    </div>
+                </div>
                 }
             </div>
         </>

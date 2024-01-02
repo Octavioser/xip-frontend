@@ -17,9 +17,11 @@ const CreateAccount = (props) => {
 
     const [authCd, setAuthCd] = useState('');            // 이메일 코드
 
-    const [authCdStatus, setAuthCdStatus] = useState(0);          // 이메일 코드 입력창 상태
+    const [page1, setPage1] = useState(true);          // 첫번째 페이지 새로운 이메일 입력창 보이는 페이지
 
-    const [newEmail, setNewEmail] = useState(0);         // 이메일 없으면 패스워드 입력 보이기
+    const [page2, setPage2] = useState(false);          // 두번째 페이지 인증번호 입력창 페이지
+
+    const [page3, setPage3] = useState(false);          // 세번째 페이지 회원정보 입력창 페이지
 
 
     const apiList = {
@@ -48,7 +50,7 @@ const CreateAccount = (props) => {
     // 이메일 확인버튼
     const continueBtn = async(e) => {
         let msg = ''
-        if(authCdStatus === 1){ // 새로운 이메일을 입력하고 인증번호 받는 상태
+        if(page2){ // 새로운 이메일을 입력하고 인증번호 받는 상태
             if( !!e && String(e).length === 6) {  // 검사
                 try {
                     await commonShowLoading();
@@ -56,8 +58,8 @@ const CreateAccount = (props) => {
                     let resultData = await commonApi(apiList.emailAuthCodeCheck.api, {email: email, authCd: e});
                     if (resultData > 0) { // 인증코드가 맞으면
                         msg = ''
-                        setAuthCdStatus(0); // 인증코드 텍스트창 가리기
-                        setNewEmail(1);      // 회원가입 입력창 보이게하기
+                        setPage2(false)    // 인증코드 입력창 닫기
+                        setPage3(true)     // 회원정보 기입 창 보이게하기
                     }
                     else {
                         msg = 'Invalid authentication code. Please try again.'
@@ -76,7 +78,7 @@ const CreateAccount = (props) => {
             }
             
         }    
-        else { // 이메일 검증 단계
+        else { // 이메일 검증 단계 page1
             const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
             if (!emailRegex.test(email)) { // 이메일 유효성 검사
                 msg = 'Please enter a valid email address.'
@@ -91,7 +93,8 @@ const CreateAccount = (props) => {
                     props.setMsg('You already have an account.')
                 }
                 else if(resultData ===0){ // 새로운 이메일
-                    setAuthCdStatus(1); // 이메일 코드 입력창 보이게 하기
+                    setPage1(false);  // 첫번째 페이지 이메일 검사 창   안보이게하기
+                    setPage2(true);
                     props.setMsg('Enter the verification code received via email')
                 }
             } catch (error) {
@@ -169,9 +172,7 @@ const CreateAccount = (props) => {
         <div className='logoImage' style={{height: '35vh', width: textWidth, top: '30%', textAlign: 'center'}}>
             <p style={{color:'black'}}>Create a XIP Account</p>
             
-            { authCdStatus && !newEmail?  // 새로운 이메일한테 인증번호 보낸 상태
-            <></>
-            :
+            { (page1 || page3) &&  // 이메일 input
                 <>
                     <p style={{textAlign: 'left'}}>EMAIL</p>
                     <input 
@@ -180,7 +181,7 @@ const CreateAccount = (props) => {
                         name='email'
                         style={{width: textWidth}} 
                         value={email}
-                        disabled={newEmail || authCdStatus}
+                        disabled={!page1}
                         maxLength="30"
                         onChange={(e)=>{         
                             setEmail(e.target.value.trim())
@@ -193,14 +194,10 @@ const CreateAccount = (props) => {
                     />
                 </>
             }
-            { authCdStatus && !newEmail? // 새로운 이메일한테 인증번호 보낸 상태
-                <>  
-                    <EmailAuthCode checkAuthCodeBtn={continueBtn}/>   {/* 타이머 */}
-                </>
-                :
-                <></>
+            { page2 && // 새로운 이메일한테 인증번호 보낸 상태
+                    <EmailAuthCode checkAuthCodeBtn={continueBtn}/>
             }
-            {newEmail ? // 회원가입이 가능한 이메일이면
+            { page3 && // 회원가입이 가능한 이메일이면
             <>
                 <p style={{textAlign: 'left'}}>PASSWORD</p>  
                 <form onSubmit={handleSubmit}>
@@ -269,19 +266,15 @@ const CreateAccount = (props) => {
                     }}
                 />
             </>
-                :
-            <></>
             }
             <p></p>
-            { authCdStatus && !newEmail? // 새로운 이메일한테 인증번호 보낸 상태
-                <></>
-                :
+            {   !page2 &&  
                 <PBtn
-                    labelText={newEmail ?'CREAT ACCOUNT':'CONTINUE' }
+                    labelText={'CREAT ACCOUNT'}
                     alt='continue'
                     style={{fontSize: '1em', whiteSpace:'nowrap'}} 
                     onClick={async()=>{
-                        if(newEmail) { // 새로운 이메일이면 1 있으면 0
+                        if(page3) { // 새로운 이메일이면 1 있으면 0
                             creatBtn();
                         }
                         else {
