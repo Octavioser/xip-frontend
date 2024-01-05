@@ -3,6 +3,7 @@ import {useCommon} from 'app/components/xip/REDCommon/Common';
 import { useCookie } from 'app/components/xip/RED/Login/Cookie';
 import { PBtn, ImgBtn } from 'app/components/xip/REDCommon/CommonStyle'
 import { isMobile } from 'react-device-detect';
+import { useAppContext } from 'app/components/xip/REDCommon/CommonContext';
 
 const AccountInfo = (props) => {
 
@@ -19,6 +20,8 @@ const AccountInfo = (props) => {
     const [userEditItem, setUserEditItem] = useState({});
 
     const [msg, setMsg] = useState('');
+
+    const { openConfirm } = useAppContext();
 
     const handleSubmit = (event) => { // 폼 제출 로직 처리
         event.preventDefault();
@@ -348,7 +351,7 @@ const AccountInfo = (props) => {
                             }}
                             labelText= 'DELETE FACE ID'
                             onClick={() => {
-
+                                openConfirm('Are you sure?', () => {console.log('11111')});
                             }}
                         >
                         </PBtn>

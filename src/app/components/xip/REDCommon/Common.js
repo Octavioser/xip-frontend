@@ -1,10 +1,10 @@
 import CryptoJS from "crypto-js"; 
-import { useLoading } from 'app/components/xip/REDCommon/Loading/LoadingContext';
+import { useAppContext } from 'app/components/xip/REDCommon/CommonContext';
 import { useCookie } from 'app/components/xip/RED/Login/Cookie';
 import { useNavigate } from 'react-router-dom';
 
 export const useCommon = () => {
-  	const { setLoading } = useLoading();
+  	const { setLoading } = useAppContext();
 
 	const {getCookie} = useCookie();
 

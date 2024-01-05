@@ -6,12 +6,13 @@ import {Credit,Works, Video, StartPage, Home, NotFound,Masterinnovation,Masterin
 import ProductList from 'app/components/xip/RED/Shop/ProductList';
 import Account from 'app/components/xip/RED/Shop/Account/Account';
 import AccountDetails from 'app/components/xip/RED/Shop/Account/AccountDetails/AccountDetails';
-import { LoadingProvider, useLoading } from 'app/components/xip/REDCommon/Loading/LoadingContext'
+import { AppProvider, useAppContext } from 'app/components/xip/REDCommon/CommonContext'
 import Loading from 'app/components/xip/REDCommon/Loading/Loading';
 import DetailProduct from 'app/components/xip/RED/Shop/DetailProduct/DetailProduct.js';
 import Cart from 'app/components/xip/RED/Shop/Cart/Cart';
 import OrderHistory from 'app/components/xip/RED/Shop/Account/OrderHistory/OrderHistory';
 import Purchase from 'app/components/xip/RED/Shop/Purchase/Purchase';
+import ConfirmModal from 'app/components/xip/REDCommon/Confirm/ConfirmModal';
 
 function preloadImage(url) { // 이미지 미리 불러오기
     const img = new Image();
@@ -25,7 +26,7 @@ backgroundMusic.loop = true;  // 반복
 // 메뉴 컴포넌트 (경로이동)
 const Root = () => {
 
-    const { loading } = useLoading();
+    const { loading, confirm} = useAppContext();
 
     const location = useLocation ();
 
@@ -74,6 +75,7 @@ const Root = () => {
 
     return (
         <>
+            {confirm && <ConfirmModal/>}
             {loading && <Loading/>}
             {/* shop 일경우 버튼 삭제 */}
             {location.pathname.substring(0,5) === '/shop' ?
@@ -118,11 +120,11 @@ const Root = () => {
 };
 const App  = () => {
     return (
-        <LoadingProvider>
+        <AppProvider>
             <BrowserRouter>
                 <Root />
             </BrowserRouter>
-        </LoadingProvider>
+        </AppProvider>
     );
 }
 export default App
