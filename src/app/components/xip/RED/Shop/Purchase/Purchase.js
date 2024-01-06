@@ -22,7 +22,12 @@ const Purchase = () => {
 
     const [shippingPrice, setShippingPrice] = useState(3000);
 
+    const {getCookie} = useCookie();
+    
     useEffect(() => {
+        if(!getCookie('xipToken')) {
+            navigate('/shop')
+        }
         if(!state && state.length < 1) {
             navigate('/shop')
         } 
