@@ -6,26 +6,19 @@ import { PBtn } from '../REDCommon/CommonStyle';
 // 정보
 const Credit = () => {
     return (    
-        <div className='logoImage' style={{height: isMobile ? '20vh' : '35vh',width: isMobile ? '90%':'50%', textAlign: 'center'}}>
+        <div className='logoImage' style={{height: isMobile ? '20vh' : '20vh',width: isMobile ? '90%':'50%', textAlign: 'center'}}>
             <>
                 <PBtn
-                    className='pBtnNoHover'
-                    labelText='www.xip.red'
-                >   
-                </PBtn>
-                <PBtn
-                    labelText='@xipchang'
-                    onClick={()=>{window.open('https://instagram.com/xipchang?igshid=YzA2ZDJiZGQ=', '_blank')}}
-                >
-                </PBtn>
-                <PBtn
+                    style={{fontSize: '2.5rem'}}
                     labelText='@xip.red'
                     onClick={()=>{window.open('https://instagram.com/xip.red?igshid=YmMyMTA2M2Y=', '_blank')}}
                 >
                 </PBtn>
+                <p></p>
                 <PBtn
+                    style={{fontSize: '2.5rem'}}
                     className='pBtnNoHover'
-                    labelText='xxipchang@gmail.com'
+                    labelText='contact: xip@xip.red'
                 >
                 </PBtn>
             </>

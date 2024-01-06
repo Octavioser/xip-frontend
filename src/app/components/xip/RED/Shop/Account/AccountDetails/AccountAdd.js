@@ -129,7 +129,8 @@ const AccountAdd = (props) => {
                     city: city,
                     addCountry: addCountry,
                     state: state,
-                    postalCd: postalCd
+                    postalCd: postalCd,
+                    addCount: 1
                 })
                 setEdit(false);
             }

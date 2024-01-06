@@ -53,6 +53,16 @@ const AccountInfo = (props) => {
                     }
                 )
             }
+        },
+        deleteWebauthn: {
+            api: '/shop/shopD301',
+            param: () => {
+                return (
+                    { 
+
+                    }
+                )
+            }
         }
     }
 
@@ -154,6 +164,35 @@ const AccountInfo = (props) => {
         }
     }
 
+    const clickDeleteFaceId = async() => {
+        if(userItem.webAuthId !== '1') {
+            alert('No items to delete as Face ID is not registered.')
+            return;
+        }
+
+        // webauthn 지우기
+        try{
+            await commonShowLoading();
+            let resultData = await commonApi(apiList.deleteWebauthn.api, apiList.deleteWebauthn.param());
+
+            if(resultData === -1) {
+                alert('Registration failed. Please try again.')
+            }
+            else if(resultData === -2){
+                removeCookie('xipToken') // 토큰 오류시 로그아웃
+                navigate('/shop')
+            }
+            else {
+                setUserItem({...userItem, webAuthId: '0'})
+                alert('Successfully Deleted.')
+            }
+        } catch (error) {
+                
+        } finally {
+            commonHideLoading();
+        }
+    }
+
     const wdithLength = '48%'
 
     const heigthLength = '35px'
@@ -229,6 +268,7 @@ const AccountInfo = (props) => {
                         onClick={() => {
                             setChangePw(false);
                             setEdit(false);
+                            setMsg('');
                         }}
                     >
                     </ImgBtn>
@@ -351,7 +391,7 @@ const AccountInfo = (props) => {
                             }}
                             labelText= 'DELETE FACE ID'
                             onClick={() => {
-                                openConfirm('Are you sure?', () => {console.log('11111')});
+                                openConfirm('Are you sure?', () => {clickDeleteFaceId()});
                             }}
                         >
                         </PBtn>

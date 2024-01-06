@@ -107,7 +107,7 @@ const WebAuthn = (props) => {
                             },
                             pubKeyCredParams: [{ type: "public-key", alg: -7 }, { type: "public-key", alg: -257 }], // 사용할 암호 알고리즘
                             challenge: await base64ToArrayBuffer(challenge), // 인증 챌린지, ArrayBuffer
-                            authenticatorSelection: { authenticatorAttachment: "platform" }, // 플랫폼에 내장된 인증 수단 사용
+                            // authenticatorSelection: { authenticatorAttachment: "platform" }, // 플랫폼에 내장된 인증 수단 사용
                             attestation: "direct" // 공개키 증명서 반환 방법
                         }
                     })

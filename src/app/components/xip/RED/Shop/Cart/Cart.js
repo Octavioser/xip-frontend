@@ -172,6 +172,16 @@ const Cart = () => {
         setTotalPrice('₩' + totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") )
     }
 
+    const clickCheckout = async() => {  // PROCEED TO CHECKOUT 클릭시
+        if(!cartList || cartList.length < 1) {
+            alert('Please select a product before adding to cart.')
+            return;
+        }
+
+        // 장바구니 담기
+        navigate('/shop/purchase', {state: cartList})  // putchase에 state 값 넘겨주기
+    }
+
     const productColumn = () => {
         
         
@@ -289,7 +299,7 @@ const Cart = () => {
                             }}
                             labelText= 'PROCEED TO CHECKOUT'
                             onClick={() => {
-
+                                clickCheckout()
                             }}
                         >
                         </PBtn>

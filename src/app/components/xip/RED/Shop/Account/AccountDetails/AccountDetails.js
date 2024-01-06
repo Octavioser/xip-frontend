@@ -5,22 +5,63 @@ import AccountInfo from 'app/components/xip/RED/Shop/Account/AccountDetails/Acco
 import AccountAdd from 'app/components/xip/RED/Shop/Account/AccountDetails/AccountAdd';
 import { useLocation } from 'react-router-dom';
 import { useCommon }  from 'app/components/xip/REDCommon/Common';
-
-
+import { useAppContext } from 'app/components/xip/REDCommon/CommonContext';
+import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 
 const AccountDetails = () => {
 
-    const { navigate } = useCommon();
+    const { commonShowLoading, commonHideLoading, commonApi, navigate} = useCommon();
+
+    const { openConfirm } = useAppContext();
 
     const {state} = useLocation();
+
+    const {getCookie, removeCookie} = useCookie();
 
     useEffect(() => {
         if(!state) { // 유저정보 불러왔는지 체크
             navigate('/shop') 
         }
-    },[state, navigate])
+        if(!getCookie('xipToken')) {
+            navigate('/shop')
+        }
+    },[state, navigate, getCookie])
 
-    
+    const apiList = {
+        deleteAccount: {
+            api: '/shop/shopD302',
+            param: () => {
+                return (
+                    {}
+                )
+            }
+        }
+    }
+
+    const clickDeleteAccount = async() => {
+        // webauthn 지우기
+        try{
+            await commonShowLoading();
+            let resultData = await commonApi(apiList.deleteAccount.api, apiList.deleteAccount.param());
+
+            if(resultData === -1) {
+                alert('Registration failed. Please try again.')
+            }
+            else if(resultData === -2){
+                removeCookie('xipToken') // 토큰 오류시 로그아웃
+                navigate('/shop')
+            }
+            else {
+                alert('Successfully Deleted.')
+                removeCookie('xipToken') // 토큰 오류시 로그아웃
+                navigate('/shop')
+            }
+        } catch (error) {
+                
+        } finally {
+            commonHideLoading();
+        }
+    }
 
     return (
         <div style={{position:'relative', top: isMobile?'20vh':'2vh',textAlign: 'center'}}> 
@@ -57,6 +98,9 @@ const AccountDetails = () => {
                         margin: 'auto',
                     }}
                     labelText= 'DELETE ACCOUNT'
+                    onClick={()=>{
+                        openConfirm( 'Deleting your account will permanently remove all data. This action is irreversible.', () => {clickDeleteAccount()});
+                    }}
                 >
                 </PBtn>
                 <br/><br/><br/>

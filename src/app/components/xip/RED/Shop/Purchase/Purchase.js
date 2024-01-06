@@ -59,8 +59,8 @@ const Purchase = () => {
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center', width:'100vw', height: '100vh',margin: 0,padding: 0}}>
-            <div style={{ display: 'flex', position:'relative', justifyContent: 'space-between', top:'15%', width:isMobile? '100vw':'80vw', height:'85%'}}>
-                <div style={{width: '48%', height:'48%'}}>
+            <div style={{ display: isMobile?'' : 'flex', position:'relative', justifyContent: 'space-between', top: isMobile?'20vh':'15%', width:isMobile? '95vw':'80vw', height:'85%'}}>
+                <div style={{width: isMobile? '90%':'48%', height: isMobile? '30%':'48%'}}>
                     <div style={{fontWeight: 'bold',paddingBottom: '10px',borderBottom: '1px solid #ccc',marginBottom: '20px',}}>SHIPPING ADDRESS</div>
                         <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>hyunsuk, lim</p>
                         <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>company</p>
@@ -69,9 +69,8 @@ const Purchase = () => {
                         <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>United States</p>
                         <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>201-488-0054</p>
                         <p></p>
-                    <div style={{fontWeight: 'bold',paddingBottom: '10px',borderBottom: '1px solid #ccc',marginBottom: '20px',}}>PAYMENT METHOD</div>
                 </div>
-                <div style={{width: '48%', height:'48%'}}>
+                <div style={{width: isMobile? '90%':'48%', height:'48%'}}>
                     <div style={{fontWeight: 'bold',paddingBottom: '10px',borderBottom: '1px solid #ccc',marginBottom: '20px',}}>{`ORDER SUMMARY - (${orderQty}) ITEMS`}</div>
                     <div style={{maxHeight: '100px',overflowY: 'scroll'}}>
                         {setOrderList()}
