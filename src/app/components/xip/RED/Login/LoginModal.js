@@ -83,9 +83,9 @@ const LoginModal = (props) => {
                     publicKey: {
                         challenge: await base64ToArrayBuffer(challenge),
                         allowCredentials: [{
-                             type: "public-key",
-                             id: await base64ToArrayBuffer(webAuthId),
-                             transports: ["internal"]
+                            type: "public-key",
+                            id: await base64ToArrayBuffer(webAuthId),
+                            // transports: ["internal"]
                         }]
                     }
                 });
