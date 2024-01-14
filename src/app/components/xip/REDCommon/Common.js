@@ -4,11 +4,24 @@ import { useCookie } from 'app/components/xip/RED/Login/Cookie';
 import { useNavigate } from 'react-router-dom';
 
 export const useCommon = () => {
-  	const { setLoading } = useAppContext();
+  	const { setLoading, openConfirm, region} = useAppContext();
 
 	const {getCookie} = useCookie();
 
 	const navigate = useNavigate(); // 페이지 이동
+
+	const commonRegion = () => {
+		return region;
+	}
+	/**
+     * 컨펌창
+     * @param msg       텍스트
+     * @param func    확인 눌렀을시 실행할 함수 
+     * ex) openConfirm("정말 삭제하시겠습니까?", () => {console.log("삭제 로직 수행");}))
+     */
+	const commonConfirm = async(msg, func) => {  // 컨펌창
+		openConfirm(msg, func);
+	}
 
 	const commonShowLoading = async() => { // 로딩화면 보이기
 		setLoading(true); 
@@ -55,5 +68,5 @@ export const useCommon = () => {
 			return -1;
 		}
   	};
-	return { commonShowLoading, commonHideLoading, commonApi, commonEncode, navigate};
+	return { commonShowLoading, commonHideLoading, commonApi, commonEncode, navigate, commonConfirm, commonRegion};
 }

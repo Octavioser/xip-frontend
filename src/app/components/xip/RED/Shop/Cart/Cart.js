@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {PBtn, ImgBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import { isMobile } from 'react-device-detect';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
@@ -6,7 +6,7 @@ import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 
 const Cart = () => {
 
-    const { commonShowLoading, commonHideLoading, commonApi, navigate } = useCommon();
+    const { commonShowLoading, commonHideLoading, commonApi, navigate, commonRegion } = useCommon();
 
     const {removeCookie} = useCookie();
     
@@ -15,6 +15,21 @@ const Cart = () => {
     const [useEffectCheck, setUseEffectCheck] = useState(0);      // 처음에만 api 호출하도록
 
     const [totalPrice, setTotalPrice] = useState(0); // 전체 가격
+
+    const [totalUsPrice, setTotalUsPrice] = useState(0); // 달러 전체 가격
+
+    const getTotalPrice = useCallback((list) => {
+        let totalPrice = 0;
+        let totalUsPrice = 0;
+        let item = [...list]    
+        item.forEach((e) => {
+            totalPrice = totalPrice + (e.price * e.prodQty)
+            totalUsPrice = totalUsPrice + (e.usPrice * e.prodQty)
+        })
+        
+        setTotalPrice('₩' + totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") )
+        setTotalUsPrice('$' + totalUsPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") )
+    },[])
 
     useEffect(() => {       
         const getItem = async() => {
@@ -29,12 +44,7 @@ const Cart = () => {
                     navigate('/shop')
                 }
                 else {
-                    let totalPrice = 0;
-                    resultData.forEach((e) => {
-                        totalPrice = totalPrice + (e.price * e.prodQty)
-                    })
-                    
-                    setTotalPrice('₩' + totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") )
+                    getTotalPrice(resultData)
                     setCartList(resultData)
                     
                 }
@@ -49,7 +59,7 @@ const Cart = () => {
             setUseEffectCheck(1);
             getItem();
         }
-    },[commonShowLoading, commonHideLoading, commonApi, useEffectCheck, navigate,removeCookie]);
+    },[commonShowLoading, commonHideLoading, commonApi, useEffectCheck, navigate,removeCookie, getTotalPrice]);
 
     const apiList = {
         updateCartQty: {
@@ -161,17 +171,6 @@ const Cart = () => {
         }
     }
 
-    const getTotalPrice = (list) => {
-        let totalPrice = 0;
-        let item = [...list]
-        
-        item.forEach((e) => {
-            totalPrice = totalPrice + (e.price * e.prodQty)
-        })
-        
-        setTotalPrice('₩' + totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") )
-    }
-
     const clickCheckout = async() => {  // PROCEED TO CHECKOUT 클릭시
         if(!cartList || cartList.length < 1) {
             alert('Please select a product before adding to cart.')
@@ -228,7 +227,13 @@ const Cart = () => {
                                         </PBtn>
                                     </div>
                                 </div>
-                                <div key={'6div'+index} style={{textAlign:'right',width: '10%'}}>{'₩' + (e.price * e.prodQty).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
+                                <div key={'6div'+index} style={{textAlign:'right',width: '10%'}}>
+                                    {commonRegion() === 'USA' ? 
+                                        '$' + (e.usPrice * e.prodQty).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                        :
+                                        '₩' + (e.price * e.prodQty).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                    }    
+                                </div>
                             </div>
                         )
                     }
@@ -252,23 +257,9 @@ const Cart = () => {
                     
                 </div>
                 <br/>
-                <div style={{width: '100%', height:'2px', textAlign: 'center'}}>
-                    <hr 
-                        style={{
-                            border: 'none', 
-                            height:'2px', 
-                            backgroundColor:'white', 
-                            width: '100%',
-                            top:'50%',
-                            left:'5%',
-                            margin: 'auto',
-                            transform: 'translateY(-50%)'
-                        }}>
-                    </hr>
-                </div>
-                <div style={{textAlign:'right'}}>
+                <div style={{borderTop: '2px solid #ccc',textAlign:'right'}}>
                     <p style={{margin: 0, padding: '2px', fontSize:'1.1rem', textAlign:'right', display: 'inline-block', marginRight: '10px'}}>SUBTOTAL</p>
-                    <p style={{margin: 0, padding: '2px', fontSize:'0.9rem', textAlign:'right', display: 'inline-block'}}>{totalPrice}</p>                  
+                    <p style={{margin: 0, padding: '2px', fontSize:'0.9rem', textAlign:'right', display: 'inline-block'}}>{commonRegion() === 'USA' ? totalUsPrice : totalPrice }</p>                  
                 </div>
                 <br/><br/>
                 <div style={{display: 'flex',justifyContent: 'flex-end',alignItems: 'center'}}>

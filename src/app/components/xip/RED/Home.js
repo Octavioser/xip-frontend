@@ -15,10 +15,7 @@ const Home = () => {
     const [degree, setDegree] = useState('');
 
     useEffect(() => {
-        if(isMobile){  // 모바일 상태에서는 커서 x
-
-        }
-        else{
+        if(!isMobile){  // 모바일 상태에서는 커서 x{
             window.addEventListener('mousemove', (e)=>{ // 알아서 혼자 실행됨 
                 let degree = calculateRotate(x, y, e.clientX, e.clientY)
     
@@ -64,7 +61,7 @@ const Home = () => {
             </div>
             <div style={{overflow: 'hidden'}}>
                 {/* 모바일 상태에서는 커서 x */}
-                {isMobile && <>{spermCursor()}</>}
+                {!isMobile && <>{spermCursor()}</>}
             </div>
         </div>
     )

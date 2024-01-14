@@ -6,7 +6,7 @@ import {useCommon} from 'app/components/xip/REDCommon/Common';
 
 const ProductList = () => {
 
-    const {navigate, commonApi, commonShowLoading, commonHideLoading} = useCommon();
+    const {navigate, commonApi, commonShowLoading, commonHideLoading, commonRegion} = useCommon();
 
     const [productHover, setProductHover] = useState('');         // 마우스 올렸을시 바뀌는 값
 
@@ -114,7 +114,11 @@ const ProductList = () => {
                                     }}
                                 >
                                     {e.name}<br></br>
-                                    {'₩' + e.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}    
+                                    {commonRegion() === 'USA' ? 
+                                        '$' + e.usPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                        :
+                                        '₩' + e.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                    }    
                                 </div>
                                 :
                                 <div 

@@ -9,13 +9,9 @@ export const AppProvider = ({ children }) => {
     const [confirm, setConfirm] = useState(false);
     const [confirmMessage, setConfirmMessage] = useState("");
     const [confirmAction, setConfirmAction] = useState(() => () => {});
+    const [region, setRegion] = useState('KOR');
 
-    /**
-     * 컨펌창
-     * @param msg       텍스트
-     * @param func    확인 눌렀을시 실행할 함수 
-     * ex) openConfirm("정말 삭제하시겠습니까?", () => {console.log("삭제 로직 수행");}))
-     */
+    
     const openConfirm = (msg, func) => {
         setConfirmMessage(msg);
         setConfirmAction(() => func);
@@ -28,8 +24,14 @@ export const AppProvider = ({ children }) => {
         setConfirmAction(() => {}); // 액션 초기화
     };
 
+    const value = { 
+        loading, setLoading, 
+        confirm, confirmMessage, openConfirm, closeConfirm, confirmAction, 
+        region, setRegion
+    }
+
     return (
-        <AppContext.Provider value={{ loading, setLoading , confirm, confirmMessage, openConfirm, closeConfirm, confirmAction}}>
+        <AppContext.Provider value={value}>
         {children}
         </AppContext.Provider>
     );

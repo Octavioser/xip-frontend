@@ -3,7 +3,6 @@ import {useCommon} from 'app/components/xip/REDCommon/Common';
 import { useCookie } from 'app/components/xip/RED/Login/Cookie';
 import { PBtn, ImgBtn } from 'app/components/xip/REDCommon/CommonStyle'
 import { isMobile } from 'react-device-detect';
-import { useAppContext } from 'app/components/xip/REDCommon/CommonContext';
 
 const AccountInfo = (props) => {
 
@@ -15,13 +14,11 @@ const AccountInfo = (props) => {
 
     const [changePw, setChangePw] = useState(false);
 
-    const { commonShowLoading, commonHideLoading, commonApi, commonEncode, navigate} = useCommon();
+    const { commonShowLoading, commonHideLoading, commonApi, commonEncode, navigate, commonConfirm} = useCommon();
 
     const [userEditItem, setUserEditItem] = useState({});
 
     const [msg, setMsg] = useState('');
-
-    const { openConfirm } = useAppContext();
 
     const handleSubmit = (event) => { // 폼 제출 로직 처리
         event.preventDefault();
@@ -70,11 +67,12 @@ const AccountInfo = (props) => {
     
         let message = '';
 
-        const firstNm  = !(userEditItem?.firstNm) || ''
-        const lastNm  = !(userEditItem?.lastNm) || ''
+        const firstNm  = userEditItem?.firstNm || ''
+        const lastNm  = userEditItem?.lastNm || ''
 
         if(firstNm === userItem?.firstNm && lastNm === userItem?.lastNm) { // 변경사항이 없을시
             setEdit(false);
+            return
         }  
 
             //  이름 검사
@@ -391,7 +389,7 @@ const AccountInfo = (props) => {
                             }}
                             labelText= 'DELETE FACE ID'
                             onClick={() => {
-                                openConfirm('Are you sure?', () => {clickDeleteFaceId()});
+                                commonConfirm('Are you sure?', () => {clickDeleteFaceId()});
                             }}
                         >
                         </PBtn>

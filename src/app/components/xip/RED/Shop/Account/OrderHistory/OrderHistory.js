@@ -1,7 +1,10 @@
 import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import { isMobile } from 'react-device-detect';
+import { useCommon }  from 'app/components/xip/REDCommon/Common';
 
 const OrderHistory = () => {
+
+    const { navigate} = useCommon();
 
     const histroyColumn = () => {
         return(
@@ -27,6 +30,9 @@ const OrderHistory = () => {
                                     fontSize: '1rem'
                                 }} 
                                 labelText='View Details'
+                                onClick={()=> {
+                                    navigate('../orderDetails')
+                                }}
                             />
                         </div>
                         <p></p>
@@ -54,27 +60,10 @@ const OrderHistory = () => {
          >
             <div style={{ width:isMobile? '100vw':'60vw', height:'100vh'}}>
                 <div style={{marginTop:'10vh'}}>
-                    <p style={{fontSize:'1.5rem',textAlign:'center'}}>ACCOUNT</p>
+                    <h2 style={{textAlign: 'center', letterSpacing: '1.5px'}}>ACCOUNT</h2>
                 </div>
-                <div style={{ padding: '10px 0', textAlign: 'left', height:'0%'}}>
-                    <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>Order History</p>
-                    <div style={{width: '100%', height:'2px', textAlign: 'center'}}>
-                        <hr 
-                            style={{
-                                border: 'none', 
-                                height:'2px', 
-                                backgroundColor:'white', 
-                                width: '100%',
-                                top:'50%',
-                                left:'5%',
-                                margin: 'auto',
-                                transform: 'translateY(-50%)'
-                            }}>
-                        </hr>
-                    </div>
-                </div>
+                <p style={{borderBottom: '2px solid #ccc',textAlign:'left', margin: 0, padding: '0px', fontSize:'1.5rem'}}>Order History</p>
                 <div>
-                    <br/><br/>
                     {histroyColumn()}
                 </div>
                 <br/>

@@ -4,9 +4,11 @@ import LoginModal from 'app/components/xip/RED/Login/LoginModal';
 import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import { isMobile } from 'react-device-detect';
 import { useCommon } from '../../REDCommon/Common';
-
+import { useAppContext } from 'app/components/xip/REDCommon/CommonContext';
 
 const AuthShopBtn = () => {
+
+    const {setRegion} = useAppContext();
 
     const {navigate} = useCommon();
 
@@ -15,6 +17,8 @@ const AuthShopBtn = () => {
     const [loginModal,setLoginModal] = useState(false) // 로그인 팝업창
 
     const [logout, setLogout] = useState(0); // 서버오류로 인한 로그아웃 변경안될시 리프레쉬용
+
+    const [regionOpen, setRegionOpen] = useState(false) // 리전 서브창
 
     const loginCheck = (e) => { // 로그인이 되어있지 않을 시 cart acoount 로그인창 띄우기
         if(!!getCookie('xipToken')) {
@@ -29,8 +33,42 @@ const AuthShopBtn = () => {
         setLoginModal(loginModal ? false : true)
     }
 
+    
+    const subfont = isMobile? '1rem':'12px'
     const fontSize = isMobile? '1.3rem':'15px'
 
+    const regionItem = () => {
+        return(
+            <div key={'div1'} style={{width:'10vw', textAlign:'right',paddingRight:'10px'}}>
+                <p style={{fontSize: '5px'}}></p>
+                <PBtn //원화
+                    className='pBtnNoRed'
+                    labelText='KOR'
+                    alt='KOR'
+                    style={{fontSize: subfont}}
+                    onClick={() =>{
+                        setRegion('KOR')
+                        setRegionOpen(false)
+                    }}
+                >
+                </PBtn>
+                <p style={{fontSize: '2px'}}></p>
+                <PBtn //달러
+                    className='pBtnNoRed'
+                    labelText='USA'
+                    alt='USA'
+                    style={{fontSize: subfont}}
+                    onClick={() =>{
+                        setRegion('USA')
+                        setRegionOpen(false)
+                    }}
+                >
+                </PBtn>
+                <p key='empty2' style={{fontSize: '5px'}}></p>
+            </div>
+        )
+    }
+    
     return (
         <div style={{position: 'absolute', width:'10vw', right: '1vw', top: '2vh', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', zIndex:1}}> 
                 <PBtn  
@@ -68,7 +106,6 @@ const AuthShopBtn = () => {
                 >
                 </PBtn>
             }
-            
                 <PBtn  
                     className='pBtnNoRed'
                     style={{textAlign: 'right', margin: '2px', fontSize:fontSize}}
@@ -79,6 +116,22 @@ const AuthShopBtn = () => {
                     }}
                 >
                 </PBtn>
+
+                <PBtn  
+                    className='pBtnNoRed'
+                    style={{textAlign: 'right', margin: '2px', fontSize:fontSize}}
+                    labelText='REGION'
+                    alt='REGION' 
+                    onClick={()=>{
+                        setRegionOpen(!regionOpen)
+                    }}
+                >
+                </PBtn>
+                {regionOpen && 
+                <>
+                    {regionItem()}
+                </>
+                } 
             {loginModal && <LoginModal loginModalBtn={loginModalBtn}/> }  
         </div>
     )

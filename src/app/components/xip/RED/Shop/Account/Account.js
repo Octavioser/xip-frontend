@@ -13,37 +13,12 @@ const Account = () => {
     // const menulength = photoSrc.length
     const menulength = 3;
 
-    const apiList = {
-        selectDetailAccount: {
-            api: '/shop/shopR001',
-            param: () => {
-                return (
-                    {}
-                )
-            }
-        }
-    }
-
-    const getUserItem = async() => {
-        try{
-            await commonShowLoading();
-            let resultData = await commonApi(apiList.selectDetailAccount.api, apiList.selectDetailAccount.param());
-            if (resultData === -2 || !resultData || resultData.length < 1){
-                removeCookie('xipToken') // 토큰 오류시 로그아웃
-                navigate('/shop', { replace: true })
-            }
-            else {
-                navigate('./accountDetails', {state: resultData})
-            }
-        } catch (error) {
-            console.log(error);
-        } finally {
-            commonHideLoading();
-        }
-    }
-
     const showOrderHistory = () => {
         navigate('./orderHistory')
+    }
+
+    const showAccountDetails = () => {
+        navigate('./accountDetails')
     }
 
 
@@ -67,7 +42,7 @@ const Account = () => {
                         labelText='Account Details'
                         alt='Account Details'
                         onClick={() => {
-                            getUserItem();
+                            showAccountDetails();
                         }}
                     >
                     </PBtn>

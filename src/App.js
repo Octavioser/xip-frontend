@@ -13,6 +13,7 @@ import Cart from 'app/components/xip/RED/Shop/Cart/Cart';
 import OrderHistory from 'app/components/xip/RED/Shop/Account/OrderHistory/OrderHistory';
 import Purchase from 'app/components/xip/RED/Shop/Purchase/Purchase';
 import ConfirmModal from 'app/components/xip/REDCommon/Confirm/ConfirmModal';
+import OrderDetails from 'app/components/xip/RED/Shop/Account/OrderHistory/OrderDetails';
 
 function preloadImage(url) { // 이미지 미리 불러오기
     const img = new Image();
@@ -75,14 +76,15 @@ const Root = () => {
 
     return (
         <>
-            {confirm && <ConfirmModal/>}
-            {loading && <Loading/>}
-            {/* shop 일경우 버튼 삭제 */}
+            {confirm && <ConfirmModal/>}  {/* 컨펌창 */} 
+            {loading && <Loading/>}       {/* 로딩창 */}
+            {/* shop 일경우 버튼 삭제 */}            
             {location.pathname.substring(0,5) === '/shop' ?
                 <Shop/>
             :
                 <MainBtn setStartClick={setStartClick}/>
             }
+
 
             <MusicBtn musicSwitch={musicSwitch} playState={display}/>
 
@@ -107,6 +109,7 @@ const Root = () => {
                         <Route path="" element={<Account/>}/>
                         <Route path="accountDetails" element={<AccountDetails/>}/>
                         <Route path="orderHistory" element={<OrderHistory/>}/>
+                        <Route path="orderDetails" element={<OrderDetails/>}/>
                     </Route> 
                     <Route path="detailProduct/:prodCd" element={<DetailProduct/>}/>
                     <Route path="cart" element={<Cart/>}/>

@@ -14,7 +14,7 @@ const ProductDescription = (props) => {
 
     const [loginModal, setLoginModal] = useState(false);
 
-    const { commonShowLoading, commonHideLoading, commonApi, navigate } = useCommon();
+    const { commonShowLoading, commonHideLoading, commonApi, navigate , commonRegion} = useCommon();
 
     const apiList = {
         insertCart: {
@@ -116,7 +116,10 @@ const ProductDescription = (props) => {
         let titleItem = item[0]
 
         let name = titleItem?.name 
-        let price = titleItem?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        let price = '₩' + titleItem?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        if(commonRegion() === 'USA') {
+            price = '$' + titleItem?.usPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        }
         let prodDesc = titleItem?.prodDesc
         let prodDescD = titleItem?.prodDescD || ''
 
@@ -158,7 +161,7 @@ const ProductDescription = (props) => {
         return (
             <>
                 <h2 style={{ textAlign: 'center', fontWeight: 'bold', margin: '5px'}}>{name}</h2>
-                <h2 style={{ textAlign: 'center', margin: '5px'}}>{'₩' + price}</h2>
+                <h2 style={{ textAlign: 'center', margin: '5px'}}>{price}</h2>
                 <br/><br/>
 
                 <br/><br/>

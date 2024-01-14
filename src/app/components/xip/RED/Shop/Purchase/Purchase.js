@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {PBtn, ImgBtn} from 'app/components/xip/REDCommon/CommonStyle';
+import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import { isMobile } from 'react-device-detect';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
 import {useCookie} from 'app/components/xip/RED/Login/Cookie';
@@ -10,7 +10,7 @@ const Purchase = () => {
 
     const {state} = useLocation();   // 메인버튼에서 state 값 받아오기
 
-    const { commonShowLoading, commonHideLoading, commonApi, navigate } = useCommon();
+    const { commonShowLoading, commonHideLoading, commonApi, navigate , commonRegion } = useCommon();
 
     const [modal, seModal] = useState(false);
 
@@ -20,29 +20,71 @@ const Purchase = () => {
 
     const [orderSubTotalPrice, setSubOrderTotalPrice] = useState(0);
 
+    const [orderSubTotalUsPrice, setSubOrderTotalUsPrice] = useState(0);
+
     const [shippingPrice, setShippingPrice] = useState(3000);
 
-    const {getCookie} = useCookie();
+    const {getCookie, removeCookie} = useCookie();
+
+    const [userItem, setUserItem] = useState({});
+
+    const [useEffectCheck, setUseEffectCheck] = useState(0);      // 처음에만 api 호출하도록
     
     useEffect(() => {
         if(!getCookie('xipToken')) {
             navigate('/shop')
         }
-        if(!state && state.length < 1) {
+        if(!state || state.length < 1) {
             navigate('/shop')
         } 
         else{
             let qty = 0;
-            let subTotalPrice = 0;   // 제품가격       
+            let subTotalPrice = 0;   // 제품가격
+            let subTotalUSPrice = 0;   // 달러 제품가격       
             state.forEach(e => {
                 qty = qty + e.prodQty
                 subTotalPrice = subTotalPrice + e.price * e.prodQty
+                subTotalUSPrice = subTotalUSPrice + e.usPrice * e.prodQty
             });
             setOrderQty(qty)
             setSubOrderTotalPrice(subTotalPrice)
+            setSubOrderTotalUsPrice(subTotalUSPrice)
             setItemList(state)
         }
-    },[state])
+    },[state,getCookie, navigate])
+
+    useEffect(()=>{
+        if(commonRegion() === 'USA') {
+            setShippingPrice(20)
+        }
+        else {
+            setShippingPrice(3000)
+        } 
+    },[commonRegion])
+
+    useEffect(()=>{
+        const getUserItem = async() => {
+            try{
+                await commonShowLoading();
+                let resultData = await commonApi('/shop/shopR001', {});
+                if (resultData === -2 || !resultData || resultData.length < 1){
+                    removeCookie('xipToken') // 토큰 오류시 로그아웃
+                    navigate('/shop')
+                }
+                else {
+                    setUserItem(resultData[0])
+                }
+            } catch (error) {
+                console.log(error);
+            } finally {
+                commonHideLoading();
+            }
+        }
+        if(useEffectCheck === 0) {
+            setUseEffectCheck(1);
+            getUserItem();
+        }
+    },[navigate, commonApi, commonHideLoading, commonShowLoading, removeCookie, setUserItem, useEffectCheck])
 
     const setOrderList = () => {
         let list = [...itemList];
@@ -54,7 +96,11 @@ const Purchase = () => {
                         <span>{e.name}</span>
                         <span>{'SIZE ' + e.prodSize}</span>
                         <span >{e.prodQty}</span>
-                        <span>{'₩' + e.price}</span>
+                        {   commonRegion() === 'USA' ?
+                            <span>{'$' + e.usPrice}</span>
+                            :
+                            <span>{'₩' + e.price}</span>
+                        }
                     </div>
                 )}
             </>
@@ -65,32 +111,48 @@ const Purchase = () => {
     return (
         <div style={{ display: 'flex', justifyContent: 'center', width:'100vw', height: '100vh',margin: 0,padding: 0}}>
             <div style={{ display: isMobile?'' : 'flex', position:'relative', justifyContent: 'space-between', top: isMobile?'20vh':'15%', width:isMobile? '95vw':'80vw', height:'85%'}}>
-                <div style={{width: isMobile? '90%':'48%', height: isMobile? '30%':'48%'}}>
-                    <div style={{fontWeight: 'bold',paddingBottom: '10px',borderBottom: '1px solid #ccc',marginBottom: '20px',}}>SHIPPING ADDRESS</div>
-                        <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>hyunsuk, lim</p>
-                        <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>company</p>
-                        <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>7910 SW Nimbus Ave, NYZ46730M</p>
-                        <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>Beaverton, Oregon, 97008</p>
-                        <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>United States</p>
-                        <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>201-488-0054</p>
-                        <p></p>
+                <div style={{width: isMobile? '100%':'48%', height: isMobile? '30%':'48%'}}>
+                    <div style={{fontWeight: 'bold',paddingBottom: '10px',borderBottom: '2px solid #ccc',marginBottom: '20px'}}>SHIPPING ADDRESS</div>
+                    <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.addLastNm + ', ' + userItem?.addFirstNm}</p>
+                    {!!(userItem?.company) && <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.company}</p>}
+                    <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.add1 + ', ' + userItem?.add2}</p>
+                    <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.state + ', ' + userItem?.city + ', ' + userItem?.postalCd}</p>
+                    <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.addCountry}</p>
+                    <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.postalCd}</p>
+                    <p></p>
                 </div>
-                <div style={{width: isMobile? '90%':'48%', height:'48%'}}>
-                    <div style={{fontWeight: 'bold',paddingBottom: '10px',borderBottom: '1px solid #ccc',marginBottom: '20px',}}>{`ORDER SUMMARY - (${orderQty}) ITEMS`}</div>
+                <div style={{width: isMobile? '100%':'48%', height:'48%'}}>
+                    <div style={{fontWeight: 'bold',paddingBottom: '10px',borderBottom: '2px solid #ccc',marginBottom: '20px',}}>{`ORDER SUMMARY - (${orderQty}) ITEMS`}</div>
                     <div style={{maxHeight: '100px',overflowY: 'scroll'}}>
                         {setOrderList()}
                     </div>
-                    <div style={{borderTop: '1px solid #ccc',paddingTop: '10px',display: 'flex',justifyContent: 'space-between',fontWeight: 'bold',marginTop: '20px',}}>
+                    <div style={{borderTop: '2px solid #ccc',paddingTop: '10px',display: 'flex',justifyContent: 'space-between',fontWeight: 'bold',marginTop: '20px',}}>
                         <span>Subtotal</span>
-                        <span>{'₩' + orderSubTotalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                        <span>
+                            {   commonRegion() === 'USA' ?
+                                '$' + orderSubTotalUsPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                :
+                                '₩' + orderSubTotalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            }
+                        </span>
                     </div>
-                    <div style={{borderTop: '1px solid #ccc',paddingTop: '10px',display: 'flex',justifyContent: 'space-between',fontWeight: 'bold',marginTop: '20px',}}>
+                    <div style={{borderTop: '2px solid #ccc',paddingTop: '10px',display: 'flex',justifyContent: 'space-between',fontWeight: 'bold',marginTop: '20px',}}>
                         <span>Shipping total</span>
-                        <span>{'₩' + shippingPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                        <span>
+                            {   (commonRegion() === 'USA' ? '$' : '₩')
+                                 + shippingPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            }
+                        </span>
                     </div>
-                    <div style={{borderTop: '1px solid #ccc',paddingTop: '10px',display: 'flex',justifyContent: 'space-between',fontWeight: 'bold',marginTop: '20px',}}>
+                    <div style={{borderTop: '2px solid #ccc',paddingTop: '10px',display: 'flex',justifyContent: 'space-between',fontWeight: 'bold',marginTop: '20px',}}>
                         <span>Order total (USD)</span>
-                        <span>{'₩' + (orderSubTotalPrice + shippingPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                        <span>
+                            {   commonRegion() === 'USA' ?
+                                '$' + (orderSubTotalUsPrice + shippingPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                :
+                                '₩' + (orderSubTotalPrice + shippingPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            }
+                        </span>
                     </div>
                     <div style={{display:'flex', height:'50%',justifyContent: 'center',alignItems: 'center'}}>
                         <PBtn 
