@@ -109,7 +109,7 @@ const Login = (props) => {
             resultData = await commonApi(apiList.login.api, await apiList.login.param())
             if(resultData && resultData.length > 0) {
                 const expiresTime =  new Date();
-                expiresTime.setTime(expiresTime.getTime() + (12 * 60 * 60 * 1000))
+                expiresTime.setTime(expiresTime.getTime() + (12 * 60 * 60 * 1000)) // 12시간 후
                 props.setMsg('')
                 setCookie('xipToken', resultData[0].token, {path: '/', expires: expiresTime}); // 쿠키 저장
                 props.loginModalBtn(false)

@@ -110,6 +110,7 @@ const LoginModal = (props) => {
                     setMessage('')
                     setCookie('xipToken', resultData[0].token, {path: '/', expires: expiresTime}); // 쿠키 저장
                     props.loginModalBtn(false)
+                    return true;
                 }
                 else {
                     // 로그인 실패 

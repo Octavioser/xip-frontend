@@ -53,7 +53,7 @@ const ProductList = () => {
             return;
         }
         else {
-            navigate(`./detailProduct/${e.prodCd}`)
+            navigate(`./detailproduct/${e.prodCd}`)
         }
     }
     

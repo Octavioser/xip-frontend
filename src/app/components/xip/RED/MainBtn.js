@@ -12,7 +12,7 @@ const MainBtn = (props) => {
     
     const menuMainBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/mainXLogo.webp'
 
-    const [menuOpen, setMenuOpen] = useState('0');                 // 헤더 메뉴 버튼 닫음 0 열림 1
+    const [menuOpen, setMenuOpen] = useState(false);                 // 헤더 메뉴 버튼 닫음 0 열림 1
 
     const {navigate} = useCommon();
 
@@ -35,8 +35,7 @@ const MainBtn = (props) => {
                                     alt='menuButton' 
                                     style={{top:'10vw', left: '10vh', height: isMobile ? '10vh':'15vh'}}
                                     onClick={() =>{
-                                        let menuValue = menuOpen === '1' ? '0' : '1'
-                                        setMenuOpen(menuValue) // 메인 메뉴버튼 클릭시 열리고 닫기
+                                        setMenuOpen(!menuOpen) // 메인 메뉴버튼 클릭시 열리고 닫기
                                         props.setStartClick()// 스타트 버튼 클릭햇으면
                                     }}
                                 >
@@ -54,15 +53,14 @@ const MainBtn = (props) => {
                                     </ImgBtn>
                             }
 
-                            {menuOpen === '1' &&
+                            {menuOpen &&
                             <>
                                 <Link to="./works"> 
                                     <PBtn //works
                                         labelText='works'
                                         alt='worksBtn'
                                         onClick={() =>{
-                                            let menuValue = menuOpen === '1' ? '0' : '1'
-                                            setMenuOpen(menuValue) 
+                                            setMenuOpen(false) 
                                         }}
                                     >
                                     </PBtn>
@@ -72,8 +70,7 @@ const MainBtn = (props) => {
                                         labelText='video'
                                         alt='videoBtn'
                                         onClick={() =>{
-                                            let menuValue = menuOpen === '1' ? '0' : '1'
-                                            setMenuOpen(menuValue) 
+                                            setMenuOpen(false) 
                                         }}
                                     >
                                     </PBtn>
@@ -83,8 +80,7 @@ const MainBtn = (props) => {
                                         labelText='sound'
                                         alt='soundBtn'
                                         onClick={() =>{
-                                            let menuValue = menuOpen === '1' ? '0' : '1'
-                                            setMenuOpen(menuValue)
+                                            setMenuOpen(false)
                                             window.open('https://linktr.ee/cuechoi', '_blank') 
                                         }}
                                     >
@@ -95,8 +91,7 @@ const MainBtn = (props) => {
                                         labelText='shop'
                                         alt='shopBtn'
                                         onClick={() =>{
-                                            let menuValue = menuOpen === '1' ? '0' : '1'
-                                            setMenuOpen(menuValue) 
+                                            setMenuOpen(false) 
                                         }}
                                     >
                                     </PBtn>
@@ -106,8 +101,7 @@ const MainBtn = (props) => {
                                         labelText='credit'
                                         alt='creditBtn'
                                         onClick={() =>{
-                                            let menuValue = menuOpen === '1' ? '0' : '1'
-                                            setMenuOpen(menuValue) 
+                                            setMenuOpen(false) 
                                         }}
                                     >
                                     </PBtn>

@@ -31,7 +31,7 @@ const OrderHistory = () => {
                                 }} 
                                 labelText='View Details'
                                 onClick={()=> {
-                                    navigate('../orderDetails')
+                                    navigate('../orderdetails')
                                 }}
                             />
                         </div>

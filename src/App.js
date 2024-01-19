@@ -1,19 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import { BrowserRouter, Routes, Route, useLocation} from 'react-router-dom';
-
-
-import {Credit,Works, Video, StartPage, Home, NotFound,Masterinnovation,MasterinnovationBunka,Gallery, Shop, MainBtn, MusicBtn} from 'app/components/xip/RED'; //index.js
-import ProductList from 'app/components/xip/RED/Shop/ProductList';
-import Account from 'app/components/xip/RED/Shop/Account/Account';
-import AccountDetails from 'app/components/xip/RED/Shop/Account/AccountDetails/AccountDetails';
 import { AppProvider, useAppContext } from 'app/components/xip/REDCommon/CommonContext'
-import Loading from 'app/components/xip/REDCommon/Loading/Loading';
-import DetailProduct from 'app/components/xip/RED/Shop/DetailProduct/DetailProduct.js';
-import Cart from 'app/components/xip/RED/Shop/Cart/Cart';
-import OrderHistory from 'app/components/xip/RED/Shop/Account/OrderHistory/OrderHistory';
-import Purchase from 'app/components/xip/RED/Shop/Purchase/Purchase';
-import ConfirmModal from 'app/components/xip/REDCommon/Confirm/ConfirmModal';
-import OrderDetails from 'app/components/xip/RED/Shop/Account/OrderHistory/OrderDetails';
+
+import {
+    Loading, ConfirmModal,
+    Credit, Works, Video, StartPage, Home, NotFound,Masterinnovation,MasterinnovationBunka,Gallery, Shop, MainBtn, MusicBtn,
+    ProductList, Account, AccountDetails, DetailProduct, Cart, OrderHistory, Purchase, OrderDetails, Xipengineering} from 'app/components/xip/RED'; //index.js
 
 function preloadImage(url) { // 이미지 미리 불러오기
     const img = new Image();
@@ -38,14 +30,14 @@ const Root = () => {
     
 
     useEffect(() => {
-        document.body.style.color = 'white';
+        document.body.style.color = 'white'; //폰트
         // 배경화면 변경
-        if(location.pathname.substring(0,5) === '/shop' ) {
+        if(location.pathname.substring(0,5).toLowerCase() === '/shop' ) {
             // shop 이용시 배경화면 변경
             document.body.style.backgroundImage = 'none';
             document.body.style.backgroundColor = 'red';
 
-            if(location.pathname.startsWith('/shop/detailProduct') ) {
+            if((location.pathname.toLowerCase()).startsWith('/shop/detailproduct') ) {
                 document.body.style.color = 'black';
                 document.body.style.backgroundColor = 'white';
             }
@@ -79,10 +71,12 @@ const Root = () => {
             {confirm && <ConfirmModal/>}  {/* 컨펌창 */} 
             {loading && <Loading/>}       {/* 로딩창 */}
             {/* shop 일경우 버튼 삭제 */}            
-            {location.pathname.substring(0,5) === '/shop' ?
+            {location.pathname.substring(0,5).toLowerCase() === '/shop' ?
                 <Shop/>
             :
-                <MainBtn setStartClick={setStartClick}/>
+                <>
+                {location.pathname.substring(0,15).toLowerCase() !== '/xipengineering' && <MainBtn setStartClick={setStartClick}/>}
+                </>
             }
 
 
@@ -107,14 +101,15 @@ const Root = () => {
                     <Route path="" element={<ProductList/>}/>
                     <Route path="account">
                         <Route path="" element={<Account/>}/>
-                        <Route path="accountDetails" element={<AccountDetails/>}/>
-                        <Route path="orderHistory" element={<OrderHistory/>}/>
+                        <Route path="accountdetails" element={<AccountDetails/>}/>
+                        <Route path="orderhistory" element={<OrderHistory/>}/>
                         <Route path="orderDetails" element={<OrderDetails/>}/>
                     </Route> 
-                    <Route path="detailProduct/:prodCd" element={<DetailProduct/>}/>
+                    <Route path="detailproduct/:prodCd" element={<DetailProduct/>}/>
                     <Route path="cart" element={<Cart/>}/>
                     <Route path="purchase" element={<Purchase/>}/>
                 </Route>
+                <Route path="/xipengineering" element={<Xipengineering/>}/>
                 {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
                 <Route path="*" element={<NotFound />}/>
             </Routes>

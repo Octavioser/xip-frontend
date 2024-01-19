@@ -10,3 +10,20 @@ export { default as Gallery } from './Works/Gallery';
 export { default as Shop } from './Shop/Shop'; 
 export { default as MainBtn } from './MainBtn';
 export { default as MusicBtn } from './MusicBtn';
+
+export { default as Loading } from '../REDCommon/Loading/Loading';
+export { default as ConfirmModal } from '../REDCommon/Confirm/ConfirmModal';
+
+export { default as ProductList } from './Shop/ProductList';
+export { default as Account } from './Shop/Account/Account';
+export { default as AccountDetails } from './Shop/Account/AccountDetails/AccountDetails';
+export { default as DetailProduct } from './Shop/DetailProduct/DetailProduct';
+export { default as Cart } from './Shop/Cart/Cart';
+export { default as Purchase } from './Shop/Purchase/Purchase';
+export { default as OrderDetails } from './Shop/Account/OrderHistory/OrderDetails';
+export { default as OrderHistory } from './Shop/Account/OrderHistory/OrderHistory';
+export { default as Xipengineering } from './Xipengineering/Xipengineering';
+
+
+
+
