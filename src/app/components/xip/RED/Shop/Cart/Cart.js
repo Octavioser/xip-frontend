@@ -77,12 +77,12 @@ const Cart = () => {
     }
 
     const productQty = {
-        up: async(e, prodCdD) => {
+        up: async(index, prodCdD) => {
             try {
                 await commonShowLoading();
 
                 let list = [...cartList]
-                let qty = list[e].prodQty + 1
+                let qty = list[index].prodQty + 1
 
                 let resultData = await commonApi(apiList.updateCartQty.api, apiList.updateCartQty.param(prodCdD, qty, 'UP'));
 
@@ -97,7 +97,7 @@ const Cart = () => {
                     alert('The requested quantity is not available.')
                 }
                 else {
-                    list[e].prodQty = qty
+                    list[index].prodQty = qty
                     setCartList(list);
                     getTotalPrice(list);
                 }
@@ -109,18 +109,12 @@ const Cart = () => {
             
         },
 
-        down: async(e, prodCdD) => {
+        down: async(index, prodCdD) => {
             try {
                 await commonShowLoading();
 
                 let list = [...cartList]
-                let qty = list[e].prodQty - 1
-
-
-                if(qty < 1) {
-                    console.log('삭제')
-                    return
-                }
+                let qty = list[index].prodQty - 1
 
                 let resultData = await commonApi(apiList.updateCartQty.api, apiList.updateCartQty.param(prodCdD, qty, 'DOWN'));
 
@@ -132,9 +126,16 @@ const Cart = () => {
                     navigate('/shop')
                 }
                 else {
-                    list[e].prodQty = qty
-                    setCartList(list)
-                    getTotalPrice(list);
+                    if(qty < 1) {
+                        list.splice(index,1) // 객체삭제
+                        setCartList(list)
+                        getTotalPrice(list);
+                    }
+                    else {
+                        list[index].prodQty = qty
+                        setCartList(list)
+                        getTotalPrice(list);
+                    }
                 }
             } catch (error) {
                 console.log(error)
@@ -143,7 +144,7 @@ const Cart = () => {
             }
         },
 
-        delete: async(e, prodCdD) => {
+        delete: async(index, prodCdD) => {
             try {
                 let list = [...cartList]
 
@@ -159,7 +160,7 @@ const Cart = () => {
                     navigate('/shop')
                 }
                 else {
-                    list.splice(e,1) // 객체삭제
+                    list.splice(index,1) // 객체삭제
                     setCartList(list)
                     getTotalPrice(list);
                 }

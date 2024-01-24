@@ -1,30 +1,86 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
 import {useCookie} from 'app/components/xip/RED/Login/Cookie';
-import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
-import {XBTDataGrid, XBTSearchFrame, XBTTextField} from '../XipengineeringXBT'
+import {XBTDataGrid, XBTSearchFrame, XBTTextField, XBTDatePicker} from '../XipengineeringXBT'
 
 const UserInfo = () => {
 
-    const [changeList, setChangeList] = useState([])
+    const { commonShowLoading, commonHideLoading, commonApi, navigate} = useCommon();
+
+    const {getCookie, removeCookie} = useCookie();
+
+    const [dataList, setDataList] = useState([])
+
+    const [name, setName] = useState('')
+
+    const [fromDt, setFromDt] = useState('')
+
+    const [toDt, setTodt] = useState('')
+
+    const apiList = {
+        selectUsers: {
+            api: '/xipengineering/incuR002',
+            param: () => {
+                return (
+                    {
+                        name: name,
+                        fromDt: fromDt,
+                        toDt: toDt
+                    }
+                )
+            }
+        }
+    }
+
+    const getUserItem = async() => {
+        try{
+            await commonShowLoading();
+            let resultData = await commonApi(apiList.selectUsers.api, apiList.selectUsers.param());
+            if(resultData === -2) {
+                removeCookie('xipToken') // 토큰 오류시 로그아웃
+                navigate('/shop')
+            }
+            else {
+                setDataList(resultData)
+            }
+        } catch (error) {
+                
+        } finally {
+            commonHideLoading();
+        }
+    }                    
+
 
     let columnList = [  {name:'firstNm', header:'이름', type: 'text'},
-                            {name:'lastNm', header:'성', type: 'text'},
-                            {name:'email', header:'이메일', type: 'text'},
-                            {name:'creatDt', header:'가입일시', type: 'text'},
-                            {name:'nickNm', header:'별명', type: 'input'}]
-    let dataList = [{firstNm:'lim', lastNm:'hyusuk', email:'limtotal@xip.red', creatDt:'20230101', nickNm:'111'},
-                    {firstNm:'이창민', lastNm:'개새끼', email:'gaeseki@xip.red', creatDt:'20231001', nickNm:''},
-                    {firstNm:'쥐', lastNm:'강', email:'injungson@xip.red', creatDt:'20240101', nickNm:''}]    
-                    
+                        {name:'lastNm', header:'성', type: 'text'},
+                        {name:'email', header:'이메일', type: 'text'},
+                        {name:'creatDt', header:'가입일시', type: 'text'}]
 
     return (
         <>
-            <XBTSearchFrame>
+            <XBTSearchFrame
+                onClick={()=>{
+                    getUserItem();
+                }}
+            >
                 <XBTTextField
                     labelText={'이름'}
                     onChange={(e) => {
-                        console.log(e)
+                        setName(e)
+                    }}
+                />
+                <XBTDatePicker
+                    required={true}
+                    labelText={'가입일시'}
+                    onChange={(e) => {
+                        setFromDt(e)
+                    }}
+                />
+                <XBTDatePicker
+                    required={true}
+                    labelText={'~'}
+                    onChange={(e) => {
+                        setTodt(e)
                     }}
                 />
             </XBTSearchFrame>

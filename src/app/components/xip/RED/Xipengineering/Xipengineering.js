@@ -41,7 +41,7 @@ const Xipengineering = () => {
     },[commonApi, commonHideLoading, commonShowLoading, getCookie, navigate, useEffectCheck, removeCookie, setCookie])
 
     return(
-        <div style={{position:'fixed',backgroundColor:'white', width:'100%', height:'100%', color:'black'}}>
+        <div className="default-cursor-page" style={{position:'fixed',backgroundColor:'white', width:'100%', height:'100%', color:'black'}}>
             <XipengineeringMenu/>
         </div>
     )

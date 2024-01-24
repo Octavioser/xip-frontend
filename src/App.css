@@ -61,6 +61,15 @@ html{
   cursor: url("https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/cursor-7.cur"), default;
 }
 
+/* 특정 페이지에 대한 스타일 재정의 */
+.default-cursor-page {
+  cursor: default;
+}
+
+.requiredDatepicker {
+  background-color: rgba(255, 0, 0, 0.12);
+}
+
 nav {
   position: fixed;
   z-index: 10;

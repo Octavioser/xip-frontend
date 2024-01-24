@@ -18,7 +18,7 @@ const XipengineeringMenu = () => {
                     id={index}
                     key={index}
                     className= 'pBtnNoRed'
-                    style={{border: '2px solid #E8E8E8', fontSize: '1rem', backgroundColor:'white', padding: '7px', borderRadius:'10px'}}
+                    style={{border: '2px solid #E8E8E8', fontSize: '0.9rem', backgroundColor:'white', padding: '7px', borderRadius:'10px', fontWeight:'600'}}
                     labelText={e.name}
                     alt={e.name}
                     onClick={() =>{
