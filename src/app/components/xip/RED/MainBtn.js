@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useLocation} from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { useCommon } from '../REDCommon/Common';
@@ -9,7 +10,7 @@ import {ImgBtn, PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 const MainBtn = (props) => {
          
     // 메뉴
-    
+    const location = useLocation();
     const menuMainBtn = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/mainXLogo.webp'
 
     const [menuOpen, setMenuOpen] = useState(false);                 // 헤더 메뉴 버튼 닫음 0 열림 1
@@ -22,13 +23,13 @@ const MainBtn = (props) => {
     }
     return (
         <>
-            { !(window.location.pathname === '/') &&  //처음 화면
+            { !(location.pathname === '/') &&  //처음 화면
                 <>
                     {/* x 메뉴버튼 */}
                     <nav>
                         <div style={{marginLeft:'0.5vw', marginTop:'0.5vh', width:'10vw'}}>
                             {/* 홈화면이면 리스트를 보여주고 아니면 뒤로가기 */}
-                            {window.location.pathname === '/home' ?
+                            {location.pathname === '/home' ?
                                 <ImgBtn  //맨 왼쪽 위 메뉴 버튼
                                     src={menuMainBtn} 
                                     className='imgBtnNoRed'

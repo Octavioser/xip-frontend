@@ -68,5 +68,29 @@ export const useCommon = () => {
 			return -1;
 		}
   	};
-	return { commonShowLoading, commonHideLoading, commonApi, commonEncode, navigate, commonConfirm, commonRegion};
+
+	const commonGetS3Img = async(type, code) => {
+		try{
+			let result = [];
+			await fetch('https://xf0vgf3mof.execute-api.ap-northeast-2.amazonaws.com/prod/geturl', 
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({"type": type,"code": code})
+			}).then(response => 
+				response.json()
+			).then(json  => {
+				result = json
+			});
+			return result;
+		}
+		catch (error) {
+			console.log(error)
+			return -1;
+		}
+		
+	}
+	return { commonShowLoading, commonHideLoading, commonApi, commonEncode, navigate, commonConfirm, commonRegion, commonGetS3Img};
 }

@@ -23,7 +23,7 @@ const OrderHistory = () => {
             try{
                 await commonShowLoading();
                 let resultData = await commonApi('/shop/shopR005', {});
-                if (resultData === -2 || !resultData || resultData.length < 1){
+                if (resultData === -2){
                     removeCookie('xipToken') // 토큰 오류시 로그아웃
                     navigate('/shop')
                 }
@@ -69,7 +69,7 @@ const OrderHistory = () => {
                                     }} 
                                     labelText='View Details'
                                     onClick={()=> {
-                                        navigate('../orderdetails')
+                                        navigate(`../orderdetails/${e.orderCd}`)
                                     }}
                                 />
                             </div>
@@ -111,10 +111,10 @@ const OrderHistory = () => {
     }
 
     return (
-        <div style={{display:'flex', position:'relative', width: '100vw', height: '100vh', top: isMobile?'13vh':'',
+        <div style={{display:'flex', position:'relative', width: '100%', height: '100%', top: isMobile?'13vh':'',
                     flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}} 
          >
-            <div style={{ width:isMobile? '100vw':'60vw', height:'100vh'}}>
+            <div style={{ width:isMobile? '100%':'60%', height:'100%'}}>
                 <div style={{marginTop:'10vh'}}>
                     <h2 style={{textAlign: 'center', letterSpacing: '1.5px'}}>ACCOUNT</h2>
                 </div>

@@ -8,7 +8,7 @@ const XipengineeringMenu = () => {
 
     const [category, setCategory] = useState('');
 
-    const [title, setTitle] = useState('테스트');
+    const [title, setTitle] = useState('');
 
     const categoryColumns = () => {
         let list = [{key:'user', name:'회원'}]
@@ -33,15 +33,14 @@ const XipengineeringMenu = () => {
 
     return(
         <>
-            <div style={{position:'relative', width:'100%', height:'10%', borderBottom:'3px solid #E1E1E1', backgroundColor:'#FA0000'}}>
-                <h2 style={{position:'absolute', margin:0, padding:0, bottom:5, left:5}}>{title}</h2>
+            <div style={{position:'relative', width:'100%', height:'10%', borderBottom:'3px solid #E1E1E1'}}>
+                <h2 style={{position:'absolute', margin:0, padding:0, bottom:5, left:40}}>{title}</h2>
             </div>
-            <div style={{position:'relative', width:'100%', height:'2%'}}></div>
-            <div style={{position:'relative', width:'100%', height:'88%', display: 'flex'}}>
+            <div style={{position:'relative', width:'100%', height:'4%'}}></div>
+            <div style={{position:'relative', width:'100%', height:'86%', display: 'flex'}}>
 
                 <div style={{position:'relative', width:'10%' ,height:'100%' }}>
                     {/* 왼쪽 목록 */}
-                    <div style={{position:'relative', width:'100%', height:'3%'}}></div>
                     <div style={{position:'relative', backgroundColor:'#FAFAFA', width:'100%' ,height:'97%', textAlign:'center'
                                 , borderRight:'2px solid #E1E1E1', borderLeft:'2px solid #E1E1E1', borderBottom:'2px solid #E1E1E1', borderTop:'2px solid black'}}>
                         <div style={{position:'relative', width:'100%', height:'5px'}}></div>

@@ -1,9 +1,44 @@
+import React, { useEffect,useState } from 'react';
+import { useParams } from 'react-router-dom';
+import {useCommon} from 'app/components/xip/REDCommon/Common';
 import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import { isMobile } from 'react-device-detect';
 
 const OrderDetails = () => {
 
+    const {orderCd} = useParams();
 
+    const [useEffectCheck, setUseEffectCheck] = useState(0);      // 처음에만 api 호출하도록
+
+    const [orderItem, setOrderItem] = useState([]);   //  주문 정보 state 에 저장
+
+    const {navigate, commonApi, commonShowLoading, commonHideLoading} = useCommon();
+
+    useEffect(() => {       
+        console.log(orderCd)
+        // const getItem = async() => {
+        //     await commonShowLoading();
+        //     try {
+        //         let resultData = await commonApi('/shop/shopR003', {prodCd: prodCd});
+        //         if(!!resultData && resultData !== -1 && resultData.length > 0) {
+        //             setProductListItem(resultData)
+        //         }
+        //         else {
+        //             navigate('/shop')
+        //         }
+        //     } catch (error) {
+                
+        //     } finally {
+        //         commonHideLoading();
+        //     }
+            
+        // }
+        // if(useEffectCheck === 0) { // 처음시작인지 아니면 파라미터가 바뀌었을 경우
+        //     setUseEffectCheck(1);
+        //     getItem();
+        // }
+    },[]);
+    // [commonShowLoading, commonHideLoading, commonApi, useEffectCheck, navigate, prodCd]
 
     return (
         <div style={{display:'flex', position:'relative', width: '100%', top: isMobile?'13vh':'',

@@ -3,52 +3,49 @@ import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { isMobile } from 'react-device-detect';
-
-const AWS = require('aws-sdk');
-// s3 권한
-const s3 = new AWS.S3({ // 보안 자격 증명 엑세스 키
-    accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
-    secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
-    region: 'ap-northeast-2',
-});
-
+import {useCommon} from 'app/components/xip/REDCommon/Common';
 
 
 const ProductSlider = (props) => {
 
+    const {commonGetS3Img, commonShowLoading, commonHideLoading} = useCommon();
+
     const awsUrl = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/';
 
-    const [imageList, setImageList] = useState([]);   //  상품 정보 state 에 저장
+    const [useEffectCheck, setUseEffectCheck] = useState(0);      // 처음에만 api 호출하도록
+
+    const [imageList, setImageList] = useState([]);   //  상품 정보 state 에 저장\
 
     useEffect(() => {
         
         // 이미지 데이터 갖고오기기
-        const getData = async () => {      
-            const imageWidth = isMobile? '59.9vw':'29.9vw'; 
-            let list = [];
-            let displaylistData = [];
-            const bucketName = 'xip-bucket'; 
-            const params = {  // s3 파람
-                Bucket: bucketName,
-                Prefix: `xItem/i/shop/products/${props.prodCd}/detail/`,
-                Delimiter: '/',
-            };
-            const images = await s3.listObjectsV2(params).promise();
-            list = images.Contents
-            for(let i=0; i<list.length; i++) {
-                if(list[i]['Size'] > 0) {
+        const getData = async () => {     
+            let displaylistData = []; 
+            try {
+                await commonShowLoading();
+                const imageWidth = isMobile? '59.9vw':'29.9vw'; 
+                
+                let list = await commonGetS3Img('product', props.prodCd);
+                for(let i=0; i<list.length; i++) {
+                    console.log(list[i])
                     displaylistData = displaylistData.concat([
-                        <img key={i} src={awsUrl + list[i].Key} alt={'image' + i}
+                        <img key={i} src={awsUrl + list[i]} alt={'image' + i}
                                 style={{width: imageWidth}}/>
                     ])
                 }
+            } catch (error) {
+                console.log(error)
+            } finally {
+                commonHideLoading();
             }
+            
             setImageList(displaylistData)
         }
-
-        getData();
-        
-    },[props.prodCd]);  // useEffect(() => { },[]) 처음에만 동작
+        if(useEffectCheck === 0) { // 처음시작인지 아니면 파라미터가 바뀌었을 경우
+            setUseEffectCheck(1);
+            getData();
+        }
+    },[props.prodCd,commonGetS3Img,commonHideLoading,commonShowLoading,useEffectCheck]);  // useEffect(() => { },[]) 처음에만 동작
 
 
     const settings = {

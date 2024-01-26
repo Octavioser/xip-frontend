@@ -52,8 +52,6 @@ export const XBTSearchFrame = (props) => {
 
     return (
         <>
-            <div style={{position:'relative', width:'100%' ,height:'3%', textAlign:'center'}}></div>
-
             <div style={{display:'flex', position:'relative', width:'100%' ,height:'12%', textAlign:'center', border:'3px solid #E1E1E1'}}>
                 {/* 검색 창 */}
                 
