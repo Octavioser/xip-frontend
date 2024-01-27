@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import {useCommon} from 'app/components/xip/REDCommon/Common';
 import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import { isMobile } from 'react-device-detect';
+import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 
 const OrderDetails = () => {
 
@@ -10,35 +11,99 @@ const OrderDetails = () => {
 
     const [useEffectCheck, setUseEffectCheck] = useState(0);      // 처음에만 api 호출하도록
 
-    const [orderItem, setOrderItem] = useState([]);   //  주문 정보 state 에 저장
+    const [orderItem, setOrderItem] = useState({});   //  주문 정보 state 에 저장
+
+    const {getCookie, removeCookie} = useCookie();
 
     const {navigate, commonApi, commonShowLoading, commonHideLoading} = useCommon();
 
-    useEffect(() => {       
-        console.log(orderCd)
-        // const getItem = async() => {
-        //     await commonShowLoading();
-        //     try {
-        //         let resultData = await commonApi('/shop/shopR003', {prodCd: prodCd});
-        //         if(!!resultData && resultData !== -1 && resultData.length > 0) {
-        //             setProductListItem(resultData)
-        //         }
-        //         else {
-        //             navigate('/shop')
-        //         }
-        //     } catch (error) {
+    useEffect(() => {    
+        if(!getCookie('xipToken')) {
+            navigate('/shop')
+        }   
+        const getItem = async() => {
+            await commonShowLoading();
+            try {
+                let resultData = await commonApi('/shop/shopR006', {orderCd: orderCd});
+                if(resultData === -2) {
+                    removeCookie('xipToken') // 토큰 오류시 로그아웃
+                    navigate('/shop')
+                }
+                else if(!!resultData && resultData.length > 0) {
+                    setOrderItem(resultData[0])
+                    
+                }
+                else {
+                    navigate('/shop')
+                }
+            } catch (error) {
                 
-        //     } finally {
-        //         commonHideLoading();
-        //     }
+            } finally {
+                commonHideLoading();
+            }
             
-        // }
-        // if(useEffectCheck === 0) { // 처음시작인지 아니면 파라미터가 바뀌었을 경우
-        //     setUseEffectCheck(1);
-        //     getItem();
-        // }
-    },[]);
-    // [commonShowLoading, commonHideLoading, commonApi, useEffectCheck, navigate, prodCd]
+        }
+        if(useEffectCheck === 0) { // 처음시작인지 아니면 파라미터가 바뀌었을 경우
+            setUseEffectCheck(1);
+            getItem();
+        }
+    },[commonShowLoading, commonHideLoading, commonApi, useEffectCheck, navigate,orderCd,removeCookie,getCookie]);
+
+
+    const orderStatus = () => {
+
+        let className = 'pBtnNoHover';
+
+        let labelText = orderItem.orderStatus
+
+        let func = () => {}
+
+        if(orderItem.orderStatus === 'SHIPPED') {
+            className = 'pBtnNoRed'
+            labelText = 'SHIPPED'
+            func = () => {
+                console.log('운송장번호 조회')
+            }
+        }
+        
+        return (
+            <PBtn 
+                className= {className}
+                style={{ 
+                    textAlign: 'center', 
+                    padding: '3px 6px',
+                    border: '2px solid white',  
+                    fontSize: '1.5rem'
+                }} 
+                labelText={labelText}
+                onClick={()=> {
+                    func();
+                }}
+            />
+        )
+    }
+
+    const orderDetailList = () => {
+        let list = [...(orderItem?.orderDetails || [])]
+
+
+        return (
+            <>
+                {list.map(e => 
+                    <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center'}}>
+                            <img key = {e.prodCdD + 'img'} src={e.imageSrc} alt={e.name} style={{width: isMobile? '20vw':'9vw'}}/>
+                            <div key = {e.prodCdD + 'div1'}>{e.name}</div>
+                            <div key = {e.prodCdD + 'div2'}>{'SIZE' + e.prodSize}</div>
+                            <div key = {e.prodCdD + 'div3'} style={{display: 'flex', alignItems: 'center', border: '2px solid white'}}>
+                                <div key = {e.prodCdD + 'div4'} style={{display: 'inline-block', padding: '1px 10px'}}>{e.prodQty}</div>
+                            </div>
+                        <div key = {e.prodCdD + 'div5'} >{e.prodPrice}</div>
+                    </div>
+                )}
+            </>
+        )
+        
+    }
 
     return (
         <div style={{display:'flex', position:'relative', width: '100%', top: isMobile?'13vh':'',
@@ -52,47 +117,54 @@ const OrderDetails = () => {
                     <div style={{display: 'flex', justifyContent: 'space-between',alignItems: 'center',padding: '10px', borderBottom: '2px solid #ccc'}}>
                         <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>Order Number</p>
                         <p></p>
-                        <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>000001</p>
+                        <p></p>
+                        <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>{orderItem?.orderCd}</p>
                         <p></p>
                     </div>
 
                     <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center',padding: '20px'}}>
-                        <div>
+                        <div style={{width:'49%'}}>
                             <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>Date Placed</p>
                         </div>
                         <div></div>
-                        <div>
-                            <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>May 3, 2020</p>
+                        <div style={{width:'49%', textAlign:'center'}}>
+                            <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>{orderItem?.orderDt}</p>
                         </div>
                         <div></div>
                     </div>  
                     <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center',padding: '20px'}}>
-                        <div>
+                        <div style={{width:'49%'}}>
                             <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>SHIPPING METHOD</p>
                         </div>
                         <div></div>
-                        <div>
-                            <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>Express</p>
+                        <div style={{width:'49%', textAlign:'center'}}>
+                            <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>{orderItem?.shippingMethod}</p>
                         </div>
                         <div></div>
                     </div>  
                     <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center',padding: '20px'}}>
-                        <div>
+                        <div style={{width:'49%'}}>
                             <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>PAYMENT METHOD</p>
                         </div>
                         <div></div>
-                        <div>
-                            <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>VISA 4934********8697</p>
+                        <div style={{width:'49%', textAlign:'center'}}>
+                            <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>{orderItem?.payMethod}</p>
                         </div>
                         <div></div>
                     </div>  
                     <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center',padding: '20px'}}>
-                        <div>
+                        <div style={{width:'49%'}}>
                             <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>SHIPPING ADDRESS</p>
                         </div>
                         <div></div>
-                        <div>
-                            <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>BILLING ADDRESS</p>
+                        <div style={{width:'49%', textAlign:'center'}}>
+                            <p style={{margin:0, padding: 1}}>{orderItem?.addLastNm + ', ' + orderItem?.addFirstNm}</p>
+                            {!!(orderItem?.company) && <p style={{margin:0, padding: 1}}>{orderItem?.company}</p>}
+                            <p style={{margin:0, padding: 1}}>{orderItem?.add1 + ', ' + orderItem?.add2}</p>
+                            <p style={{margin:0, padding: 1}}>{orderItem?.state + ', ' + orderItem?.city + ', ' + orderItem?.postalCd}</p>
+                            <p style={{margin:0, padding: 1}}>{orderItem?.addCountry}</p>
+                            <p style={{margin:0, padding: 1}}>{orderItem?.postalCd}</p>
+                            <p></p>
                         </div>
                         <div></div>
                     </div>
@@ -102,36 +174,14 @@ const OrderDetails = () => {
                         <p></p>
                         <p></p>
                         <div>
-                            <PBtn 
-                                className= 'pBtnNoRed'
-                                style={{ 
-                                    textAlign: 'center', 
-                                    padding: '3px 6px',
-                                    border: '2px solid white',  
-                                    fontSize: '1.5rem'
-                                }} 
-                                labelText='Track Order'
-                                onClick={()=> {
-
-                                }}
-                            />
+                            {orderStatus()}
                         </div>
                     </div>
                     
                     <br/>
 
                     <div style={{display: 'flex', justifyContent: 'space-between',alignItems: 'center',padding: '10px', borderBottom: '2px solid #ccc', fontSize:'1.5rem'}}>Order Details</div>
-
-
-                    <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center'}}>
-                        <img src="https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/products/test/testT.gif" alt="testT" style={{width: isMobile? '20vw':'9vw'}}/>
-                        <div>XIP UNIFORM JERSEY</div>
-                        <div>SIZE M</div>
-                        <div style={{display: 'flex', alignItems: 'center', border: '2px solid white'}}>
-                            <div style={{display: 'inline-block', padding: '1px 10px'}}>1</div>
-                            </div>
-                        <div>₩128,000</div>
-                    </div>
+                        {orderDetailList()}
                     <br/><br/>
 
                     <div style={{display: 'flex', justifyContent: 'space-between',alignItems: 'center',padding: '10px', borderTop: '2px solid #ccc', fontSize:'1.5rem'}}>Order Summary</div>
@@ -140,11 +190,12 @@ const OrderDetails = () => {
                         <div style={{width:'95%'}}>
                             <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center'}}>
                                 <p style={{margin: 0, fontSize:'1.2rem'}}>Subtotal</p>
-                                <p style={{margin: 0, fontSize:'1.2rem'}}>₩600000</p>
+                                <p style={{margin: 0, fontSize:'1.2rem'}}>{orderItem?.subtotal}</p>
                             </div>
                             <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center'}}>
                                 <p style={{margin: 0, fontSize:'1.2rem'}}>Shipping total</p>
-                                <p style={{margin: 0, fontSize:'1.2rem'}}>₩4500</p>
+                                <p style={{margin: 0, fontSize:'1.2rem'}}>{orderItem?.shippingAmount
+}</p>
                             </div>
                             <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center'}}>
                                 <p style={{margin: 0, fontSize:'1.2rem'}}>Duties and taxes</p>
@@ -153,7 +204,7 @@ const OrderDetails = () => {
                             <br/>
                             <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center'}}>
                                 <p></p>
-                                <p style={{margin: 0, fontSize:'1.2rem'}}>ORDER TOTAL ₩604500</p>
+                                <p style={{margin: 0, fontSize:'1.2rem'}}>ORDER TOTAL {orderItem?.totalAmount}</p>
                             </div>
                         </div>
                     </div>

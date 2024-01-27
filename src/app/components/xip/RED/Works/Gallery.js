@@ -10,7 +10,7 @@ import {useCommon} from 'app/components/xip/REDCommon/Common';
 // 정보
 const Gallery = () => {
 
-    const {commonGetS3Img, commonShowLoading, commonHideLoading} = useCommon();
+    const {commonApi, commonShowLoading, commonHideLoading} = useCommon();
 
     const {galleryType} = useParams();
     
@@ -40,8 +40,10 @@ const Gallery = () => {
                 let resultList = []
 
                 // 이미지 갖고오기
-                let list = await commonGetS3Img('work', galleryType);
-                
+                let resultData = await commonApi('/main/mainR001', {imageCd: galleryType});
+
+                let list = (resultData[0].imgSrc).split('|')
+
                 // 슬라이드 팝업 열기 함수
                 const setImgTag = (imageWidth, awsUrl, i) => {  
                     return (
@@ -123,7 +125,7 @@ const Gallery = () => {
             setUseEffectCheck(1);
             getData();
         }
-    },[galleryType,commonGetS3Img,commonHideLoading,commonShowLoading,useEffectCheck]);  // useEffect(() => { },[]) 처음에만 동작
+    },[galleryType,commonHideLoading,commonShowLoading,useEffectCheck,commonApi]);  // useEffect(() => { },[]) 처음에만 동작
 
 
     const arrowSize = isMobile? '5vw' : '2vw' ;

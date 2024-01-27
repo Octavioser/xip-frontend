@@ -116,7 +116,7 @@ const ProductDescription = (props) => {
         let titleItem = item[0]
 
         let name = titleItem?.name 
-        let price = '₩' + titleItem?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        let price = '₩' + (titleItem?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")|| '')
         if(commonRegion() === 'USA') {
             price = '$' + titleItem?.usPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }
@@ -157,7 +157,7 @@ const ProductDescription = (props) => {
                 </>
             )
         }
-
+        
         return (
             <>
                 <h2 style={{ textAlign: 'center', fontWeight: 'bold', margin: '5px'}}>{name}</h2>

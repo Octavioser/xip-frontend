@@ -13,15 +13,20 @@ const DetailProduct = () => {
 
     const [productListItem, setProductListItem] = useState([]);   //  상품 정보 state 에 저장
 
-    const {navigate, commonApi, commonShowLoading, commonHideLoading} = useCommon();
+    const [imgList, setImgList] = useState([]); // s3 이미지
+
+    const {navigate, commonApi, commonShowLoading, commonHideLoading, commonGetS3Img} = useCommon();
 
     useEffect(() => {       
         const getItem = async() => {
             await commonShowLoading();
             try {
+                let list = [];
                 let resultData = await commonApi('/shop/shopR003', {prodCd: prodCd});
                 if(!!resultData && resultData !== -1 && resultData.length > 0) {
                     setProductListItem(resultData)
+                    list = (resultData[0].imgSrc).split('|')
+                    setImgList(list);
                 }
                 else {
                     navigate('/shop')
@@ -37,7 +42,7 @@ const DetailProduct = () => {
             setUseEffectCheck(1);
             getItem();
         }
-    },[commonShowLoading, commonHideLoading, commonApi, useEffectCheck, navigate, prodCd]);
+    },[commonShowLoading, commonHideLoading, commonApi, useEffectCheck, navigate, prodCd, commonGetS3Img]);
 
     const parentDivStyle = () => {
 
@@ -84,7 +89,7 @@ const DetailProduct = () => {
         <div style={parentDivStyle()}
         >
             <div style={productSliderStyle()}>
-                <ProductSlider prodCd={prodCd}/>
+                <ProductSlider imgList={imgList}/>
             </div>
             <div style={productDescriptionStyle()}>
                 <ProductDescription productListItem={productListItem}/>
