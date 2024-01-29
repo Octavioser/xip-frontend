@@ -211,6 +211,7 @@ const Gallery = () => {
                     onSlide={(currentIndex) => setSelectedImage(currentIndex)}
                     renderLeftNav={renderLeftNav}
                     renderRightNav={renderRightNav}
+                    lazyLoad={true}
                 />
             </div>}
         </>  
