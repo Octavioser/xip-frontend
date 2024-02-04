@@ -190,7 +190,7 @@ const OrderDetails = () => {
                         <div style={{width:'95%'}}>
                             <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center'}}>
                                 <p style={{margin: 0, fontSize:'1.2rem'}}>Subtotal</p>
-                                <p style={{margin: 0, fontSize:'1.2rem'}}>{orderItem?.subtotal}</p>
+                                <p style={{margin: 0, fontSize:'1.2rem'}}>{orderItem?.subTotal}</p>
                             </div>
                             <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center'}}>
                                 <p style={{margin: 0, fontSize:'1.2rem'}}>Shipping total</p>

@@ -4,23 +4,61 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale'; // 한국어 변환
 
+
+export const XBTDropDown = (props) => {
+    return (
+        <>
+            <p style={{margin:'10px',fontSize:'0.8rem', fontWeight:'600'}}>{props.labelText}</p>
+            <select  
+                style={{ width: '15%'}}
+                onChange={(e)=>{
+                    props.onChange(e.target.value)
+                }}
+            >
+                {props.list.map(item => (
+                    <option key={item.key} value={item.value}>
+                        {item.name}
+                    </option>
+                ))}
+            </select>
+        </>
+    )
+}
+
+
 export const XBTDatePicker = (props) => {
 
-    const [startDate, setStartDate] = useState('');
+    const getTimeType = (time) => {
+        try {
+            let value = new Date(time.slice(0,4) + '-' + time.slice(4,6) + '-' + time.slice(6,8))
+            if(String(value) === 'Invalid Date') {
+                return '';
+            }
+            else {
+                return value
+            }
+        } catch (error) {
+            return '';
+        }
+    }
 
     return (
         <>
             <p style={{margin:'10px',fontSize:'0.8rem', fontWeight:'600'}}>{props.labelText}</p>
             <DatePicker
                 className={props?.required && "requiredDatepicker"}
-                selected={startDate}
+                selected={getTimeType(props.value)}
                 locale={ko}
                 dateFormat="yyyy-MM-dd"
                 minDate={new Date('2023-10-01')}
                 onChange={(date) => {
-                    setStartDate(date)
-                    date.setHours(date.getHours() + 9); // 9시간 더하기
-                    props.onChange(date.toISOString().substring(0,10).replace(/-/g,''))
+                    if(!!date) {
+                        date.setHours(date.getHours() + 9); // 9시간 더하기
+                        props.onChange(date.toISOString().substring(0,10).replace(/-/g,''))
+                    }
+                    else {
+                        props.onChange('')
+                    }
                 }}
             />
         </>
@@ -29,17 +67,14 @@ export const XBTDatePicker = (props) => {
 
 export const XBTTextField = (props) => {
 
-    const [text, setText] = useState(['']);
-
     return (
         <>
             <p style={{margin:'10px',fontSize:'0.8rem', fontWeight:'600'}}>{props.labelText}</p>
             <input 
                 style={{margin:'10px'}}
                 type="text" 
-                value={text} 
+                value={props.value} 
                 onChange={(e)=>{
-                    setText(e.target.value)
                     props.onChange(e.target.value)
                 }} 
             />
@@ -161,11 +196,58 @@ export const XBTDataGrid = (props) => {
         
     }
 
+    // 푸터
+    const setFooter = () => {
+        if(! props.footer) {
+            return <></>
+        }
+
+        let columnList = [...props.columnList] || []
+
+        let footerItem = {}
+        
+        for(let i=0; i<dataList.length; i++) {
+            for(let j=0; j<columnList.length; j++) {
+                let columnName = columnList[j]['name']
+                if(!!columnList[j].footer) {
+                    footerItem[columnName] = Number(footerItem[columnName] || 0) + Number(dataList[i][columnName] || 0)
+                }
+                else {
+                    footerItem[columnName] = '' 
+                }
+           }
+        }
+
+        return (
+            <tfoot style={{position:'relative', backgroundColor:'#F3E2A9',width:'100%', height: '4%' 
+            , borderRight:'2px solid #E1E1E1', borderLeft:'2px solid #E1E1E1', borderBottom:'2px solid #E1E1E1', fontSize:'0.8rem'}}>
+                <tr>
+                    <th key={'fth' + 0} style={{ border: '2px solid #E8E8E8'}}>합계</th>
+                {columnList.map((e, index) => 
+                    <th key={'fth' + (index + 1)} style={{ border: '2px solid #E8E8E8'}}>{footerItem[e.name]}</th>
+                )}
+                </tr>
+            </tfoot>
+        )
+    }
+
     return (
         <>
-            <div style={{position:'relative', backgroundColor:'white',width:'100%', height:'3%'}}></div>
-                <div  style={{position:'relative', backgroundColor:'#FAFAFA',width:'100%', height:'87%' 
-                            , borderRight:'2px solid #E1E1E1', borderLeft:'2px solid #E1E1E1', borderBottom:'2px solid #E1E1E1', borderTop:'2px solid black', fontSize:'0.8rem'}}>
+            <div style={{position:'relative', backgroundColor:'white',width:'100%', height:'3%'}}></div> {/* XBTSearchFrame 사이 */}
+
+            <div  
+                style={{
+                    position:'relative', 
+                    backgroundColor:'#FAFAFA',
+                    width:'100%', 
+                    height:'84%' , 
+                    borderRight:'2px solid #E1E1E1', 
+                    borderLeft:'2px solid #E1E1E1', 
+                    borderBottom:'2px solid #E1E1E1', 
+                    borderTop:'2px solid black', 
+                    fontSize:'0.8rem',
+                    overflowY: 'scroll'
+                }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead style={{ backgroundColor: '#F4F4F4'}}>
                         {setColumns()}
@@ -173,8 +255,9 @@ export const XBTDataGrid = (props) => {
                     <tbody  style={{ backgroundColor: 'white'}}>
                         {setTable()}
                     </tbody>
+                    {setFooter()}
                 </table>
             </div>
-        </>
+    </>
     )
 }
