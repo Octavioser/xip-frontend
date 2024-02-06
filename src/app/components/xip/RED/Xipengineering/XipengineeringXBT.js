@@ -185,6 +185,13 @@ export const XBTDataGrid = (props) => {
                                     </td>
                                 )
                             }
+                            if(j.type === 'button') {
+                                return (
+                                    <td key={'btn' + [j.name] + index} style={{ border: '2px solid #E8E8E8' }}>
+                                        <button type="button" onClick={()=>j.onClick(dataList[index])}>{dataList[index]?.[j.name]}</button>
+                                    </td>
+                                )
+                            }
                             // j.type이 'text'나 'input' 이외의 경우에 대한 처리
                             return <td key={'default' + [j.name] + index}>N/A</td>;
                         })}
@@ -246,7 +253,7 @@ export const XBTDataGrid = (props) => {
                     borderBottom:'2px solid #E1E1E1', 
                     borderTop:'2px solid black', 
                     fontSize:'0.8rem',
-                    overflowY: 'scroll'
+                    overflow: 'auto'
                 }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead style={{ backgroundColor: '#F4F4F4'}}>
