@@ -338,17 +338,38 @@ const AccountInfo = (props) => {
                     </PBtn>
                 :
                 <div style={{display:'flex', justifyContent: 'center'}}>
-                    <div style={{width:'30%'}}>      {/* 처음 info 화면 */}
+                    <div style={{width:'100%'}}>      {/* 처음 info 화면 */}
                         <div style={{width:'100%'}}>
                             <PBtn
                                 className= 'pBtnNoRed'
                                 style={{ 
                                     textAlign: 'center', 
                                     display: 'inline-block', 
-                                    padding: '3px 6px',
+                                    padding: '3px 20px',
                                     border: '2px solid white',  
                                     fontSize: '1.2rem',  
                                     margin: 'auto',
+                                }}
+                                labelText= 'EDIT'
+                                onClick={() => {
+                                    setUserEditItem({...userItem, accountPw: '', newPw: '', confirmPw: ''});
+                                    setEdit(true)
+                                }}
+                            >
+                            </PBtn>
+                        </div>
+                        <br/>
+                        <div style={{display:'flex', justifyContent: 'space-between', width:'100%'}}>
+                        <PBtn/><PBtn/>
+                        <PBtn
+                                className= 'pBtnNoRed'
+                                style={{ 
+                                    textAlign: 'center', 
+                                    display: 'inline-block', 
+                                    padding: '3px 4px',
+                                    margin: '3px',
+                                    border: '2px solid white',  
+                                    fontSize: '1.2rem',  
                                 }}
                                 labelText= 'CHANGE PASSWORD'
                                 onClick={() => {
@@ -357,35 +378,15 @@ const AccountInfo = (props) => {
                                 }}
                             >
                             </PBtn>
-                        </div>
-                        <br/>
-                        <div style={{display:'flex', alignContent: 'space-between', width:'100%'}}>
-                        <PBtn
-                            className= 'pBtnNoRed'
-                            style={{ 
-                                textAlign: 'center', 
-                                display: 'block', 
-                                padding: '3px 6px',
-                                border: '2px solid white',  
-                                fontSize: '1.2rem',  
-                                margin: 'auto',
-                            }}
-                            labelText= 'EDIT'
-                            onClick={() => {
-                                setUserEditItem({...userItem, accountPw: '', newPw: '', confirmPw: ''});
-                                setEdit(true)
-                            }}
-                        >
-                        </PBtn>
                         <PBtn
                             className= 'pBtnNoRed'
                             style={{ 
                                 textAlign: 'center', 
                                 display: 'inline-block', 
-                                padding: '3px 6px',
+                                padding: '3px 4px',
+                                margin: '3px',
                                 border: '2px solid white',  
                                 fontSize: '1.2rem',  
-                                margin: 'auto',
                             }}
                             labelText= 'DELETE FACE ID'
                             onClick={() => {
@@ -393,6 +394,7 @@ const AccountInfo = (props) => {
                             }}
                         >
                         </PBtn>
+                        <PBtn/><PBtn/>
                         </div>
                     </div>
                 </div>

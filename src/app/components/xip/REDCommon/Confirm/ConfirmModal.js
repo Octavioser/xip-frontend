@@ -25,7 +25,7 @@ const ConfirmModal = () => {
                     left: '50%',  /* 왼쪽에서 중앙 */
                     top: '50%',    /* 위에서 중앙*/
                     width: isMobile? '90vw':'25vw',
-                    height: isMobile? '80vh':'20vh',
+                    height: '20vh',
                     backgroundColor: 'rgba(255, 0, 0, 0.66)',
                     transform: 'translate(-50%, -50%)'
                 }

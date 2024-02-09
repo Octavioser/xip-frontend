@@ -96,7 +96,7 @@ const XIP2020 = (props) => {
                 />
                 <XBTDatePicker
                     required={true}
-                    labelText={'구매일시'}
+                    labelText={'주문날짜'}
                     value={fromDt}
                     onChange={(e) => {
                         setFromDt(e)
@@ -119,7 +119,7 @@ const XIP2020 = (props) => {
                 }}
             >
             </XBTDataGrid>
-            {dialog && <XIP2020Dialog orderCd={dialogOrderCd} modalBtn={() => setDialog(false)}/>}
+            {dialog && <XIP2020Dialog orderCd={dialogOrderCd} modalBtn={() => setDialog(false)} getPurchaseOrder={() => getPurchaseOrder()}/>}
         </>
     )
 }

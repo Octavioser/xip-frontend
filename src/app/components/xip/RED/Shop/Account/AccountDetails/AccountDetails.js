@@ -85,7 +85,7 @@ const AccountDetails = () => {
     return (
         <div style={{position:'relative', top: isMobile?'20vh':'2vh',textAlign: 'center'}}> 
             <h2 style={{textAlign: 'center', letterSpacing: '1.5px'}}>ACCOUNT DETAILS</h2>
-            <div style={{width: isMobile? '90%':'60%', margin: 'auto'}}>
+            <div style={{width: isMobile? '95%':'60%', margin: 'auto'}}>
             <p style={{borderBottom: '2px solid #ccc', textAlign: 'left', margin: 0, padding: '2px', fontSize:'1.5rem'}}>Your Account</p>
                 {!!userItem[0] &&
                     <>

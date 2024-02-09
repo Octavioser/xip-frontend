@@ -327,7 +327,7 @@ const AccountAdd = (props) => {
                             style={{ 
                                 textAlign: 'center', 
                                 display: 'inline-block', 
-                                padding: '3px 6px',
+                                padding: '3px 20px',
                                 border: '2px solid white',  
                                 fontSize: '1.2rem',  
                                 margin: 'auto',

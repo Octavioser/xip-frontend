@@ -43,6 +43,46 @@ const OrderHistory = () => {
         
     },[navigate, getCookie, commonApi, commonHideLoading, commonShowLoading, removeCookie, useEffectCheck])
 
+    const apiList = {
+        updateCancleOrder: {
+            api: '/shop/shopU204',
+            param: (orderCd) => {
+                return (
+                    {
+                        orderCd:orderCd
+                    }
+                )
+            }
+        }
+    }
+
+    const cancelOrder = async(orderCd, index) => {
+        try{
+            await commonShowLoading();
+            let resultData = await commonApi(apiList.updateCancleOrder.api, apiList.updateCancleOrder.param(orderCd));
+            if (resultData === -2){
+                removeCookie('xipToken') // 토큰 오류시 로그아웃
+                navigate('/shop')
+            }
+            else if (resultData === 1) {
+                let list = [...orderList]
+                console.log(list)
+                console.log(index)
+                list[index].orderStatus = 'CANCELLING'
+                console.log(list)
+                setOrderList(list)
+                alert('Request submitted successfully.')
+            }
+            else {
+                alert('Registration failed. Please try again.')
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            commonHideLoading();
+        }
+    }
+
     const histroyColumn = () => {
         let list = [...orderList] || []
         return(
@@ -77,7 +117,7 @@ const OrderHistory = () => {
                             <div key={index +'div5'}>
                                 {e.orderStatus === 'SHIPPED' &&   // 배송중일때 배송조회
                                     <PBtn 
-                                        className= 'pBtnNoRed'
+                                        className= 'pBtnNoHover'
                                         style={{ 
                                             textAlign: 'center', 
                                             padding: '3px 6px',
@@ -98,8 +138,32 @@ const OrderHistory = () => {
                                         }} 
                                         labelText='Cancel Order'
                                         onClick={() => {
-                                            commonConfirm('Are you sure?', () => {console.log('취소요청!')});
+                                            commonConfirm('Are you sure?', () => {cancelOrder(e.orderCd, index)});
                                         }}
+                                    />
+                                }
+                                {e.orderStatus === 'CANCELLING' &&   // 배송중일때 배송조회
+                                    <PBtn 
+                                        className= 'pBtnNoHover'
+                                        style={{ 
+                                            textAlign: 'center', 
+                                            padding: '3px 6px',
+                                            border: '2px solid white',  
+                                            fontSize: '1rem'
+                                        }} 
+                                        labelText='Cancelling'
+                                    />
+                                }
+                                {e.orderStatus === 'CANCELLED' &&   // 배송중일때 배송조회
+                                    <PBtn 
+                                        className= 'pBtnNoHover'
+                                        style={{ 
+                                            textAlign: 'center', 
+                                            padding: '3px 6px',
+                                            border: '2px solid white',  
+                                            fontSize: '1rem'
+                                        }} 
+                                        labelText='Cancelled'
                                     />
                                 }
                             </div>

@@ -74,13 +74,18 @@ const XIP2020Dialog = (props) => {
     const saveTracking = async() => {
         await commonShowLoading();
         try {
-            let resultData = await commonApi('/xipengineering/incuU001', {orderCd: props.orderCd, trackingNum: trackingNum});
+            let resultData = await commonApi('/xipengineering/incuU201', {orderCd: props.orderCd, trackingNum: trackingNum});
             if(resultData === -2){
                 removeCookie('xipToken') // 토큰 오류시 로그아웃
                 navigate('/shop')
             }
             else if(resultData === 1) {
                 alert('저장완료')
+                props.modalBtn()
+                props.getPurchaseOrder()
+            }
+            else if(resultData === 0) {
+                alert('운송장등록된 상품입니다.')
             }
             else {
                 alert('오류입니다. 다시 시도해주세요.')

@@ -92,7 +92,7 @@ const XIP2010 = (props) => {
                 />
                 <XBTDatePicker
                     required={true}
-                    labelText={'구매일시'}
+                    labelText={'주문날짜'}
                     value={fromDt}
                     onChange={(e) => {
                         setFromDt(e)

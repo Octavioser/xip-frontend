@@ -90,7 +90,7 @@ const OrderDetails = () => {
         return (
             <>
                 {list.map(e => 
-                    <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center'}}>
+                    <div key = {e.prodCdD + 'div0'} style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center'}}>
                             <img key = {e.prodCdD + 'img'} src={e.imageSrc} alt={e.name} style={{width: isMobile? '20vw':'9vw'}}/>
                             <div key = {e.prodCdD + 'div1'}>{e.name}</div>
                             <div key = {e.prodCdD + 'div2'}>{'SIZE' + e.prodSize}</div>
