@@ -11,6 +11,7 @@ export const XBTDropDown = (props) => {
             <p style={{margin:'10px',fontSize:'0.8rem', fontWeight:'600'}}>{props.labelText}</p>
             <select  
                 style={{ width: '15%'}}
+                value={props.value}
                 onChange={(e)=>{
                     props.onChange(e.target.value)
                 }}
@@ -167,11 +168,11 @@ export const XBTDataGrid = (props) => {
                             }
                             if(j.type === 'input') {
                                 return (
-                                    <td key={'inputtd' + [j.name] + index} style={{ border: '2px solid #E8E8E8' }}>
+                                    <td key={'inputtd' + [j.name] + index} style={{ border: '2px solid #E8E8E8', padding:0, margin: 0 }}>
                                         <input 
                                             key={'input' + [j.name] + index}
                                             style={{
-                                                width: '100%',      /* 입력 필드의 너비를 100%로 설정 */
+                                                width: '90%',      /* 입력 필드의 너비를 100%로 설정 */
                                                 boxSizing: 'border-box', /* border와 padding이 width에 포함되도록 설정 */
                                                 padding: 0,     /* 적당한 padding 설정 */
                                                 margin: 0        /* margin을 0으로 설정 */
@@ -189,6 +190,19 @@ export const XBTDataGrid = (props) => {
                                 return (
                                     <td key={'btn' + [j.name] + index} style={{ border: '2px solid #E8E8E8' }}>
                                         <button type="button" onClick={()=>j.onClick(dataList[index])}>{dataList[index]?.[j.name]}</button>
+                                    </td>
+                                )
+                            }
+                            if(j.type === 'link') {
+                                console.log(j.labelText)
+                                return (
+                                    <td key={'link' + [j.name] + index} style={{ border: '2px solid #E8E8E8'}}>
+                                        <PBtn
+                                            style={{fontSize:'0.8rem', textDecoration: 'underline' }}
+                                            labelText={j.labelText}
+                                            onClick={()=>{window.open(`https://trace.cjlogistics.com/next/tracking.html?wblNo=${dataList[index]?.[j.name]}`, '_blank')}}
+                                        >
+                                        </PBtn>
                                     </td>
                                 )
                             }

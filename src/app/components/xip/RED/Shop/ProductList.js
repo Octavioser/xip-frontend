@@ -113,7 +113,8 @@ const ProductList = () => {
                                         onClick(e);
                                     }}
                                 >
-                                    {e.name}<br></br>
+                                    {e.status === '3' && <>Pre-order<br/></>}
+                                    {e.name}<br/>
                                     {commonRegion() === 'USA' ? 
                                         '$' + e.usPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                         :

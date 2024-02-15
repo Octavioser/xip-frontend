@@ -118,7 +118,7 @@ const OrderDetails = () => {
                         <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>Order Number</p>
                         <p></p>
                         <p></p>
-                        <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>{orderItem?.orderCd}</p>
+                        <p style={{margin: 0, padding: '2px', fontSize:'1.5rem'}}>XIP-{orderItem?.orderCd}</p>
                         <p></p>
                     </div>
 

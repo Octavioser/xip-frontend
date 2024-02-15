@@ -18,9 +18,9 @@ const XIP2020 = (props) => {
 
     const [orderStatus, setOrderStatus] = useState('1')
 
-    const [fromDt, setFromDt] = useState(props.date.startDate)
+    const [fromDt, setFromDt] = useState(props.date.beforeMonth)
 
-    const [toDt, setTodt] = useState(props.date.endDate)
+    const [toDt, setTodt] = useState(props.date.today)
 
     const apiList = {
         selectPurchaseOrder: {

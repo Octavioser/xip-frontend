@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
 import {useCookie} from 'app/components/xip/RED/Login/Cookie';
-const XIP2020Dialog = (props) => {
+const XIP2040Dialog = (props) => {
 
     const { commonShowLoading, commonHideLoading, commonApi, navigate} = useCommon();
 
@@ -11,23 +11,28 @@ const XIP2020Dialog = (props) => {
 
     const [useEffectCheck, setUseEffectCheck] = useState(0);
 
-    const [trackItem, setTrackItem] = useState({});
+    const [dataItem, setDataItem] = useState([]);
 
-    const [trackingNum, setTrackingNum] = useState('')
+    const [reason, setReason] = useState('');
+
+    const [cancelPrice, setCancelPrice] = useState(0)
 
     useEffect(() => {
         const getItem = async() => {
             await commonShowLoading();
             try {
-                let resultData = await commonApi('/xipengineering/incuR005', {orderCd: props.orderCd});
+                let resultData = await commonApi('/xipengineering/incuR008', {orderCd: props.orderCd});
                 if(resultData === -2){
                     removeCookie('xipToken') // 토큰 오류시 로그아웃
                     navigate('/shop')
                 }
                 else if(resultData.length > 0) {
-                    console.log(resultData[0]?.trackingNum || '')
-                    setTrackingNum(resultData[0]?.trackingNum || '')
-                    setTrackItem(resultData[0])
+                    let totalPrice = 0
+                    resultData.forEach((e) => {
+                        totalPrice = e.price + totalPrice
+                    })
+                    setCancelPrice(totalPrice)
+                    setDataItem(resultData)
                 }
                 else {
                     alert('데이터없음 오류')
@@ -37,7 +42,6 @@ const XIP2020Dialog = (props) => {
             } finally {
                 commonHideLoading();
             }
-            
         }
         if(useEffectCheck === 0) { // 처음시작인지 
             setUseEffectCheck(1);
@@ -45,57 +49,62 @@ const XIP2020Dialog = (props) => {
         }
     },[commonShowLoading, commonHideLoading, commonApi, useEffectCheck, navigate,removeCookie,props.orderCd])
 
-    const setAddPtag = (text) => {
+    const apiList = {
+        updateCanceled: {
+            api: '/xipengineering/incuU202',
+            param: () => {
+                return (
+                    {
+                        cancelAmount: cancelPrice,
+                        reason: reason,
+                        orderCd: props.orderCd
+                    }
+                )
+            }
+        }
+    }
+
+
+    const getProdTd = () => {
+        if(!dataItem || dataItem.length < 0) {
+            return(<></>)
+        }
+        let data = [...dataItem]
         return (
-            <p style={{margin:'0px', padding:'4px', border:'2px solid #E1E1E1', wordBreak: 'break-word'}}>{text}</p>
+            <>
+                {data.map((e, index) =>
+                <tr  key={'prodtr' + index}>
+                    <td key={'prodcd' + index} style={{ border: '2px solid #E8E8E8', height: '40px', fontSize:'0.9rem'}}>{e.prodCdD}</td>
+                    <td key={'prodnm' + index} style={{ border: '2px solid #E8E8E8', height: '40px', fontSize:'0.9rem'}}>{e.name}</td>
+                    <td key={'prodsz' + index} style={{ border: '2px solid #E8E8E8', height: '40px', fontSize:'0.9rem'}}>{e.prodSize}</td>
+                    <td key={'prodqty' + index} style={{ border: '2px solid #E8E8E8', height: '40px', fontSize:'0.9rem'}}>{e.prodQty}</td>
+                    <td key={'price' + index} style={{ border: '2px solid #E8E8E8', height: '40px', fontSize:'0.9rem'}}>{e.price}</td>
+                    <td key={'currency' + index} style={{ border: '2px solid #E8E8E8', height: '40px', fontSize:'0.9rem'}}>{e.currency}</td>
+                </tr>
+                )}
+            </>
         )
     }
 
-    const getProdTd = () => {
-        if(!!(trackItem.trackingProd) && trackItem.trackingProd) {
-            let data = [...(trackItem.trackingProd)]
-            return (
-                <>
-                    {data.map((e, index) =>
-                    <tr  key={'prodtr' + index}>
-                        <td key={'prodcd' + index} style={{ border: '2px solid #E8E8E8', height: '40px', fontSize:'0.9rem'}}>{e.prodCdD}</td>
-                        <td key={'prodnm' + index} style={{ border: '2px solid #E8E8E8', height: '40px', fontSize:'0.9rem'}}>{e.name}</td>
-                        <td key={'prodsz' + index} style={{ border: '2px solid #E8E8E8', height: '40px', fontSize:'0.9rem'}}>{e.prodSize}</td>
-                        <td key={'prodqty' + index} style={{ border: '2px solid #E8E8E8', height: '40px', fontSize:'0.9rem'}}>{e.prodQty}</td>
-                    </tr>
-                    )}
-                </>
-            )
-        }
-        
-        return(<></>)        
-    }
-
-    const saveTracking = async() => {
-        await commonShowLoading();
-        try {
-            let resultData = await commonApi('/xipengineering/incuU201', {orderCd: props.orderCd, trackingNum: trackingNum});
-            if(resultData === -2){
+    const cancelOrder = async(e) => {
+        try{
+            await commonShowLoading();
+            let resultData = await commonApi(apiList.updateCanceled.api, apiList.updateCanceled.param());
+            if(resultData === -2) {
                 removeCookie('xipToken') // 토큰 오류시 로그아웃
                 navigate('/shop')
             }
-            else if(resultData === 1) {
-                alert('저장완료')
-                props.modalBtn()
-                props.getPurchaseOrder()
-            }
-            else if(resultData === 0) {
-                alert('운송장등록된 상품입니다.')
+            else if(resultData === 1){
+                alert('취소 완료')
             }
             else {
-                alert('오류입니다. 다시 시도해주세요.')
+                alert('오류입니다.')
             }
         } catch (error) {
-            
+                
         } finally {
             commonHideLoading();
         }
-        
     }
 
     return (
@@ -143,23 +152,8 @@ const XIP2020Dialog = (props) => {
             >
             </PBtn>
             <div style={{width:'99%', height:'99%', color:'black', border:'2px solid #E1E1E1'}}>
-                <div style={{display:'flex', width:'100%', height:'80%'}}>
-                    <div style={{width:'50%', height:'100%', overflow: 'auto'}}>
-                        {setAddPtag(`배송방법 : ${trackItem?.shippingMethod}`)}
-                        {setAddPtag(`성(주소) : ${trackItem?.addLastNm}`)}
-                        {setAddPtag(`이름(주소) : ${trackItem?.addFirstNm}`)}
-                        {setAddPtag(`전화번호 : ${trackItem?.phone}`)}
-                        {setAddPtag(`회사 : ${trackItem?.company}`)}
-                        {setAddPtag('주소1 :')}
-                        {setAddPtag(`${trackItem?.add1}`)}
-                        {setAddPtag('주소2 :')}
-                        {setAddPtag(`${trackItem?.add2}`)}
-                        {setAddPtag(`도시 : ${trackItem?.city}`)}
-                        {setAddPtag(`국가 : ${trackItem?.addCountry}`)}
-                        {setAddPtag(`주 : ${trackItem?.state}`)}
-                        {setAddPtag(`우편번호 : ${trackItem?.postalCd}`)}
-                    </div>
-                    <div style={{width:'50%', height:'100%'}}>
+                <div style={{display:'flex', width:'100%', height:'70%', overflow: 'auto'}}>
+                    <div style={{width:'100%', height:'100%'}}>
                         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                             <thead style={{ backgroundColor: '#F4F4F4'}}>
                                 <tr>
@@ -167,6 +161,8 @@ const XIP2020Dialog = (props) => {
                                     <th style={{ border: '2px solid #E8E8E8'}}>제품이름</th>
                                     <th style={{ border: '2px solid #E8E8E8'}}>제품사이즈</th>
                                     <th style={{ border: '2px solid #E8E8E8'}}>제품수량</th>
+                                    <th style={{ border: '2px solid #E8E8E8'}}>가격</th>
+                                    <th style={{ border: '2px solid #E8E8E8'}}>통화</th>
                                 </tr>
                             </thead>
                             <tbody  style={{ backgroundColor: 'white', textAlign:'center'}}>
@@ -175,21 +171,32 @@ const XIP2020Dialog = (props) => {
                         </table>
                     </div>
                 </div>
-                <div style={{width:'100%', height:'20%', border: '2px solid #E8E8E8', fontWeight:'700'}}>
-                    <div style={{border: '2px solid #E8E8E8', display: 'inline-block', height:'33%'}}>운송장 등록</div>
-                    <div style={{display:'flex', alignItems:'center', justifyContent:'center',height:'33%'}}>
+                <div style={{width:'100%', height:'30%', border: '2px solid #E8E8E8', fontWeight:'700'}}>
+                    <div style={{display:'flex', alignItems:'center', justifyContent:'center',height:'85%'}}>
+                        <p style={{padding:20}}>사유:</p>
+                        <textarea 
+                            cols="40" 
+                            rows="5"
+                            maxlength="100"
+                            value={reason}
+                            onChange={(e)=>(
+                                setReason(e.target.value)
+                            )}
+                        >
+                        </textarea>
+                        <p style={{padding:20}}>취소금액:</p>
                         <input 
                             id='text'
-                            type='text'
+                            type='number'
                             name='text'
-                            value={trackingNum}
+                            value={cancelPrice}
                             onChange={(e)=>{         
-                                setTrackingNum(e.target.value.trim())
+                                setCancelPrice(e.target.value.trim())
                             }}
                         ></input>
                     </div>
-                    <div style={{height:'33%', textAlign:'right'}}>
-                        <button style={{margin:'5px'}} onClick={() => {saveTracking()}}>운송장 등록</button>
+                    <div style={{width: '100%', padding:0, margin:0, textAlign: 'right', height:'15%'}}>
+                        <button style={{fontSize:'0.8rem'}} onClick={() => {cancelOrder()}}>주문 취소</button>
                     </div>
                 </div>
             </div>
@@ -198,4 +205,4 @@ const XIP2020Dialog = (props) => {
     )
 }
 
-export default XIP2020Dialog;
+export default XIP2040Dialog;

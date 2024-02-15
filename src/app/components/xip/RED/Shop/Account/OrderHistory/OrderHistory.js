@@ -93,7 +93,7 @@ const OrderHistory = () => {
                             <p>
                                 {e.orderDt}<br/>
                                 {e.orderStatus}<br/>
-                                {'Order #' + e.orderCd}<br/>
+                                {'Order #XIP-' + e.orderCd}<br/>
                                 {e.totalAmount}<br/>
                             </p>
                         </div>

@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
 import {useCookie} from 'app/components/xip/RED/Login/Cookie';
-import {XBTDataGrid, XBTSearchFrame, XBTDatePicker, XBTDropDown} from '../../XipengineeringXBT'
+import {XBTDataGrid, XBTSearchFrame, XBTDatePicker, XBTTextField} from '../../XipengineeringXBT'
 
-const XIP2010 = (props) => {
+const XIP2050 = (props) => {
 
     const { commonShowLoading, commonHideLoading, commonApi, navigate} = useCommon();
 
@@ -11,19 +11,19 @@ const XIP2010 = (props) => {
 
     const [dataList, setDataList] = useState([])
 
-    const [orderStatus, setOrderStatus] = useState('')
+    const [email, setEmail] = useState('')
 
     const [fromDt, setFromDt] = useState(props.date.beforeMonth)
 
     const [toDt, setTodt] = useState(props.date.today)
 
     const apiList = {
-        selectOrders: {
-            api: '/xipengineering/incuR003',
+        selectCanceled: {
+            api: '/xipengineering/incuR009',
             param: () => {
                 return (
                     {
-                        orderStatus: orderStatus,
+                        userEmail:email,
                         fromDt: fromDt,
                         toDt: toDt
                     }
@@ -32,7 +32,7 @@ const XIP2010 = (props) => {
         }
     }
 
-    const getOrderItem = async() => {
+    const getCancelItem = async() => {
 
         if(fromDt === '' || toDt === '') {
             alert('날짜를 입력해주세요.')
@@ -41,7 +41,7 @@ const XIP2010 = (props) => {
 
         try{
             await commonShowLoading();
-            let resultData = await commonApi(apiList.selectOrders.api, apiList.selectOrders.param());
+            let resultData = await commonApi(apiList.selectCanceled.api, apiList.selectCanceled.param());
             if(resultData === -2) {
                 removeCookie('xipToken') // 토큰 오류시 로그아웃
                 navigate('/shop')
@@ -56,40 +56,20 @@ const XIP2010 = (props) => {
         }
     }                    
 
-
     let columnList = [{name:'orderCd', header:'주문번호', type: 'text'},
+                      {name:'userNm', header:'유저이름', type: 'text'},
+                      {name:'email', header:'이메일', type: 'text'},
                       {name:'orderDt', header:'주문날짜', type: 'text'},
-                      {name:'orderStatus', header:'주문상태', type: 'text'},
-                      {name:'krwSubTotal', header:'원화_제품금액', type: 'text', footer: true},
-                      {name:'krwShippingAmount', header:'원화_배송비', type: 'text', footer: true},
-                      {name:'krwTotalAmount', header:'원화_총금액', type: 'text', footer: true},
-                      {name:'usdSubTotal', header:'달러_제품금액', type: 'text', footer: true},
-                      {name:'usdShippingAmount', header:'달러_배송비', type: 'text', footer: true},
-                      {name:'usdTotalAmount', header:'달러_총금액', type: 'text', footer: true}]
-
-    let dropDownList = [{key:'전체', name: '전체', value:''},
-                        {key:'배송전', name: '배송전', value:'1'},
-                        {key:'배송후', name:'배송후', value:'2'},
-                        {key:'완료', name:'완료', value:'3'},
-                        {key:'취소요청', name:'취소요청', value:'0'},
-                        {key:'취소완료', name:'취소완료', value:'-1'}]
-
+                      {name:'cancelDt', header:'취소날짜', type: 'text'},
+                      {name:'cancelAmount', header:'취소금액', type: 'text'}]
 
     return (
         <>
             <XBTSearchFrame
                 onClick={()=>{
-                    getOrderItem();
+                    getCancelItem();
                 }}
             >
-                <XBTDropDown
-                    labelText={'구매상태'}
-                    list={dropDownList}
-                    value={orderStatus}
-                    onChange={(e) => {
-                        setOrderStatus(e)
-                    }}
-                />
                 <XBTDatePicker
                     required={true}
                     labelText={'주문날짜'}
@@ -106,17 +86,23 @@ const XIP2010 = (props) => {
                         setTodt(e)
                     }}
                 />
+                <XBTTextField
+                    labelText={'이메일'}
+                    value={email}
+                    onChange={(e) => {
+                        setEmail(e)
+                    }}
+                />
             </XBTSearchFrame>
             <XBTDataGrid
-                footer={true}
                 columnList={columnList}
                 dataList={dataList}
                 onChange= {(e) => {
-                    
+                    console.log(e)
                 }}
             >
             </XBTDataGrid>
         </>
     )
 }
-export default XIP2010;
+export default XIP2050;

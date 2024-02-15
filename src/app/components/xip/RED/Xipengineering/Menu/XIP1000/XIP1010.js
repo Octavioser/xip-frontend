@@ -13,9 +13,9 @@ const XIP1010 = (props) => {
 
     const [name, setName] = useState('')
 
-    const [fromDt, setFromDt] = useState(props.date.startDate)
+    const [fromDt, setFromDt] = useState(props.date.beforeMonth)
 
-    const [toDt, setTodt] = useState(props.date.endDate)
+    const [toDt, setTodt] = useState(props.date.today)
 
     const apiList = {
         selectUsers: {
