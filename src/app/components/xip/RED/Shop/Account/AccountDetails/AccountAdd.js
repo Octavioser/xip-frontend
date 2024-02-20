@@ -2,8 +2,9 @@ import React, { useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common';
 import { useCookie } from 'app/components/xip/RED/Login/Cookie';
 import { PBtn, ImgBtn } from 'app/components/xip/REDCommon/CommonStyle'
-import {getCountryDataList} from 'countries-list'
 import { isMobile } from 'react-device-detect';
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
 
 const AccountAdd = (props) => {
     const [userItem, setUserItem] = useState(props.userItem);
@@ -33,6 +34,7 @@ const AccountAdd = (props) => {
                         add2: userEditItem?.add2,
                         city: userEditItem?.city,
                         addCountry: userEditItem?.addCountry,
+                        iso2: userEditItem?.iso2,
                         state: userEditItem?.state,
                         postalCd: userEditItem?.postalCd,
                     }
@@ -54,6 +56,7 @@ const AccountAdd = (props) => {
         const add2 = userEditItem?.add2 || ''
         const city = userEditItem?.city || ''
         const addCountry = userEditItem?.addCountry || ''
+        const iso2 = userEditItem?.iso2 || ''
         const state = userEditItem?.state || ''
         const postalCd = userEditItem?.postalCd || ''
 
@@ -78,28 +81,28 @@ const AccountAdd = (props) => {
             return
         }
 
-        //  이름 검사
+        //  도시 검사
         if(city.trim() === '') {
             message = 'Enter your city.'
             setMsg(message)
             return
         }
 
-        //  이름 검사
-        if(addCountry.trim() === '') {
+        //  나라 검사
+        if(addCountry.trim() === '' || iso2.trim() === '') {
             message = 'Enter your country.'
             setMsg(message)
             return
         }
 
-        //  이름 검사
+        //  주 검사
         if(state.trim() === '') {
             message = 'Enter your state.'
             setMsg(message)
             return
         }
 
-        //  이름 검사
+        //  우편번호 검사
         if(postalCd.trim() === '') {
             message = 'Enter your zip postalCd.'
             setMsg(message)
@@ -128,6 +131,7 @@ const AccountAdd = (props) => {
                     add2: add2,
                     city: city,
                     addCountry: addCountry,
+                    iso2: iso2,
                     state: state,
                     postalCd: postalCd,
                     addCount: 1
@@ -154,13 +158,20 @@ const AccountAdd = (props) => {
             )
         },
     
-        setValue: (value, id, maxLength, type) => {
+        setValue: (value, id, maxLength, type) => { // textBox.setValue(userEditItem?.phone, 'phone', 20, 'number')
             let inputWidth = '65%'
             if(!isMobile && (id ==='add1' || id === 'add2')){
                 inputWidth = '100%'
             }
             return (
                 <div style={{ display:'flex', width: 'auto', flexGrow: 1, marginLeft: isMobile? '' :'10%', height: heigthLength, justifyContent: isMobile? 'center' :'left', alignItems: 'center'}}>
+                {id === 'phone' ? 
+                    <PhoneInput
+                        defaultCountry="kr"
+                        value={value}
+                        onChange={(e) => setUserEditItem({...userEditItem, [id]:e})}
+                    />
+                    :
                     <input 
                         type={"text"}
                         style={{ width: inputWidth}} 
@@ -180,6 +191,7 @@ const AccountAdd = (props) => {
                         }}
                         >
                     </input>
+                }
                 </div>
             )
         },
@@ -190,35 +202,38 @@ const AccountAdd = (props) => {
             )
         },
 
-        setCountryDropDown: (id) => {
-            let array = getCountryDataList()
-            array.sort((a, b) => {
-                if(a.iso3 === 'KOR') {
-                    return -1;
-                }
-                else if(b.iso3 === 'KOR') {
-                    return 1;
-                }
-                else if(a.name.toLowerCase() > b.name.toLowerCase()){
-                    return 1;
-                }
-                else if(a.name.toLowerCase() < b.name.toLowerCase()) {
-                    return -1;
-                }
-                else {
-                    return 0;
-                }       
-            });
+        setCountryDropDown: () => {
+            const countries = [
+                { name: "South Korea", iso2: "KR", iso3: "KOR" }, // 대한민국을 첫 번째로 배치
+                { name: "Australia", iso2: "AU", iso3: "AUS" },
+                { name: "Canada", iso2: "CA", iso3: "CAN" },
+                { name: "China", iso2: "CN", iso3: "CHN" },
+                { name: "France", iso2: "FR", iso3: "FRA" },
+                { name: "Germany", iso2: "DE", iso3: "DEU" },
+                { name: "Hong Kong", iso2: "HK", iso3: "HKG" },
+                { name: "Japan", iso2: "JP", iso3: "JPN" },
+                { name: "Spain", iso2: "ES", iso3: "ESP" },
+                { name: "United Kingdom", iso2: "GB", iso3: "GBR" },
+                { name: "United States", iso2: "US", iso3: "USA" }
+            ];
+
+            const handleChange = (e) => {
+                const iso3 = e.target.value;
+                const country = countries.find(c => c.iso3 === iso3);
+                console.log(iso3)
+                setUserEditItem({...userEditItem, addCountry:iso3,iso2:country.iso2});
+            };
+
             return(
             <>
                 <div style={{ display:'flex', width: 'auto', flexGrow: 1, marginLeft: isMobile? '' :'10%', height: heigthLength, justifyContent: isMobile? 'center' :'left', alignItems: 'center'}}>
                     <select  
                         style={{ width: '67%'}}
                         onChange={(e)=>{
-                            setUserEditItem({...userEditItem, [id]:e.target.value})
+                            handleChange(e)
                         }}
                     >
-                        {array.map(item => (
+                        {countries.map(item => (
                             <option key={item.iso3} value={item.iso3}>
                                 {item.name}
                             </option>
@@ -274,7 +289,7 @@ const AccountAdd = (props) => {
                         {textBox.setValue(userEditItem?.city, 'city', 33, 'text')}
 
                         {textBox.setTopic('Country/Region')}
-                        {textBox.setCountryDropDown('addCountry')}
+                        {textBox.setCountryDropDown()}
 
                         {textBox.setTopic('State/Province')}
                         {textBox.setValue(userEditItem?.state, 'state', 33, 'text')}
@@ -334,7 +349,7 @@ const AccountAdd = (props) => {
                             }}
                             labelText= 'EDIT'
                             onClick={() => {
-                                setUserEditItem({...userItem, addCountry:'KOR'});
+                                setUserEditItem({...userItem, addCountry:'KOR', iso2:'KR'});
                                 setEdit(true)
                             }}
                         >

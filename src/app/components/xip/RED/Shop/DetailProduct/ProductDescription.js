@@ -129,17 +129,19 @@ const ProductDescription = (props) => {
                     value={prodCdD} 
                     style={downListStyle}
                     onChange={(e) => {
-                        const selectedOption = e.target.options[e.target.selectedIndex];
-                        const status = selectedOption.getAttribute('status');
-                        if(status === '1') { // 판매중인 상태
-                            console.log(e)
+                        if(e.target.value === '') {
+                            setProdCdD(e.target.value)
+                            return;
+                        }
+                        let value = item.find(c => c.prodCdD === e.target.value)
+                        if(value.prodStatus === '1') { // 판매중인 상태
                             setProdCdD(e.target.value);
                         } 
                     }}
                 >
                     <option value="">SELECT A SIZE</option>
                     {item.map(e =>
-                        <option key={e.prodCdD} value={e.prodCdD} style={{color:e.prodStatus === '2' ?'red' : 'black'}} status={e.prodStatus}>
+                        <option key={e.prodCdD} value={e.prodCdD} style={{color:e.prodStatus === '2' ?'red' : 'black'}}>
                             {e.prodSize + (e.prodStatus === '2' ? '(SOLD OUT)' : '')} 
                         </option>
                     )}

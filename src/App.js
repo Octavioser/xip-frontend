@@ -86,7 +86,7 @@ const Root = () => {
             {/*  페이지이동 */}
                 {/* 맨처음화면 */}
                 <Route path='/' element={<StartPage musicSwitch={musicSwitch}></StartPage>}/>
-                <Route path="/home" element={<Home startClickValue={startClickValue}/>}/>
+                {location.pathname.substring(0,5).toLowerCase() === '/home' && <Route path="/home" element={<Home startClickValue={startClickValue}/>}/>}
                 <Route path="/video">
                     <Route path="" element={<Video/>}/>
                     <Route path="masterinnovation" element={<Masterinnovation/>}/>

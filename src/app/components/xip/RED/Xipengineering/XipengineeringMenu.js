@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
+import {PBtn, ImgBtn} from 'app/components/xip/REDCommon/CommonStyle';
 
 import {XIP1010, XIP2010, XIP2020, XIP2030, XIP2040, XIP2050, XIP3010} from 'app/components/xip/RED/Xipengineering';
 const XipengineeringMenu = () => {
@@ -63,6 +63,15 @@ const XipengineeringMenu = () => {
         <>
             <div style={{position:'relative', width:'100%', height:'10%', borderBottom:'3px solid #E1E1E1'}}>
                 <h2 style={{position:'absolute', margin:0, padding:0, bottom:5, left:40}}>{title}</h2>
+                <ImgBtn  //맨 왼쪽 위 메뉴 버튼
+                    src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/xipengineering/main/email_icon.webp'} 
+                    className='imgBtnNoRed'
+                    alt='email'
+                    style={{position:'absolute', margin:0, padding:0, bottom:5, right:40, width:'50px'}}
+                    onClick={() =>{
+                        window.open('https://pix.awsapps.com/mail', '_blank') 
+                    }}
+                ></ImgBtn>
             </div>
             <div style={{position:'relative', width:'100%', height:'4%'}}></div>
             <div style={{position:'relative', width:'100%', height:'83%', display: 'flex'}}>

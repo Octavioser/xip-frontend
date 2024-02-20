@@ -72,6 +72,7 @@ const AccountInfo = (props) => {
 
         if(firstNm === userItem?.firstNm && lastNm === userItem?.lastNm) { // 변경사항이 없을시
             setEdit(false);
+            setMsg('')
             return
         }  
 
@@ -97,6 +98,7 @@ const AccountInfo = (props) => {
             else {
                 setEdit(false);
                 setUserItem({...userItem, firstNm: firstNm, lastNm:lastNm})
+                setMsg('')
             }
         } catch (error) {
                 
@@ -154,6 +156,7 @@ const AccountInfo = (props) => {
             }
             else {
                 setChangePw(false);
+                setMsg('');
             }
         } catch (error) {
                 

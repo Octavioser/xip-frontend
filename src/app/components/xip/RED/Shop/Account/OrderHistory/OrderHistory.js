@@ -53,6 +53,16 @@ const OrderHistory = () => {
                     }
                 )
             }
+        },
+        updateCancellingCancel: {
+            api: '/shop/shopU205',
+            param: (orderCd) => {
+                return (
+                    {
+                        orderCd:orderCd
+                    }
+                )
+            }
         }
     }
 
@@ -66,12 +76,33 @@ const OrderHistory = () => {
             }
             else if (resultData === 1) {
                 let list = [...orderList]
-                console.log(list)
-                console.log(index)
                 list[index].orderStatus = 'CANCELLING'
-                console.log(list)
                 setOrderList(list)
                 alert('Request submitted successfully.')
+            }
+            else {
+                alert('Registration failed. Please try again.')
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            commonHideLoading();
+        }
+    }
+
+    const Cancellingcancel = async(orderCd, index) => {
+        try{
+            await commonShowLoading();
+            let resultData = await commonApi(apiList.updateCancellingCancel.api, apiList.updateCancellingCancel.param(orderCd));
+            if (resultData === -2){
+                removeCookie('xipToken') // 토큰 오류시 로그아웃
+                navigate('/shop')
+            }
+            else if (resultData === 1) {
+                let list = [...orderList]
+                list[index].orderStatus = 'PURCHASED'
+                setOrderList(list)
+                alert('Order cancellation reversed.')
             }
             else {
                 alert('Registration failed. Please try again.')
@@ -151,7 +182,10 @@ const OrderHistory = () => {
                                             border: '2px solid white',  
                                             fontSize: '1rem'
                                         }} 
-                                        labelText='Cancelling'
+                                        labelText='Cancelling' 
+                                        onClick={() => {
+                                            commonConfirm('Are you sure?', () => {Cancellingcancel(e.orderCd, index)});
+                                        }}
                                     />
                                 }
                                 {e.orderStatus === 'CANCELLED' &&   // 배송중일때 배송조회

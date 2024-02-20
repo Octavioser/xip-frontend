@@ -11,7 +11,7 @@ const XIP3010 = (props) => {
 
     const [dataList, setDataList] = useState([])
 
-    const [fromDt, setFromDt] = useState(props.date.beforeMonth)
+    const [fromDt, setFromDt] = useState(props.date.today)
 
     const [toDt, setTodt] = useState(props.date.today)
 
@@ -22,11 +22,24 @@ const XIP3010 = (props) => {
                 return (
                     {
                         fromDt: fromDt,
-                        toDt: toDt
+                        toDt: toDt,
+                        season: '',
                     }
                 )
             }
-        }
+        },
+        updateProdOrder: {
+            api: '/xipengineering/incuU203',
+            param: (soldQty,totalQty,prodCd) => {
+                return (
+                    {
+                        soldQty: soldQty,
+                        totalQty: totalQty,
+                        prodCd: prodCd
+                    }
+                )
+            }
+        },
     }
 
     const getProdOrder= async() => {
@@ -53,19 +66,42 @@ const XIP3010 = (props) => {
         }
     }                    
 
-    let columnList = [{name:'prodCdD', header:'제품코드', type: 'text'},
-                      {name:'name', header:'제품이름', type: 'text'},
-                      {name:'prodSize', header:'사이즈', type: 'text'},
-                      {name:'soldQty', header:'판매수량', type: 'text'},
-                      {name:'totalQty', header:'총 수량', type: 'input'},
-                      {name:'stockQty', header:'재고수량(총수량 - 판매수량)', type: 'text'},
-                      {name:'prodQty', header:'주문수량', type: 'text'},
-                      {name:'krwSubTotal', header:'원화 판매금액', type: 'text'},
-                      {name:'usdSubTotal', header:'달러 판매금액', type: 'text'},
-                      {name:'editBtn', header:'수정버튼', type:'button', 
-                      onClick:(e)=>{
-                        console.log(e)
-                      }}]
+    let columnList = [
+                        {name:'prodCdD', header:'제품코드', type: 'text'},
+                        {name:'name', header:'제품이름', type: 'text'},
+                        {name:'prodSize', header:'사이즈', type: 'text'},
+                        {name:'soldQty', header:'판매수량', type: 'number', editable:true},
+                        {name:'totalQty', header:'총 수량', type: 'number', editable:true},
+                        {name:'stockQty', header:'재고수량(총수량 - 판매수량)', type: 'text'},
+                        {name:'prodQty', header:'주문수량', type: 'text'},
+                        {name:'krwSubTotal', header:'원화 판매금액', type: 'text'},
+                        {name:'usdSubTotal', header:'달러 판매금액', type: 'text'},
+                        {name:'saveBtn', header:'수정버튼', type:'button', 
+                            onClick: async(e)=>{
+                                if(Number(e.soldQty) > Number(e.totalQty)) { // 판매수량이 총 수량보다 많을경우
+                                    alert('판매수량이 총 수량보다 많습니다.')
+                                }
+                                try{
+                                    await commonShowLoading();
+                                    let resultData = await commonApi(apiList.updateProdOrder.api, apiList.updateProdOrder.param(Number(e.soldQty), Number(e.totalQty), e.prodCdD));
+                                    if(resultData === -2) {
+                                        removeCookie('xipToken') // 토큰 오류시 로그아웃
+                                        navigate('/shop')
+                                    }
+                                    else if(resultData === 1){
+                                        
+                                    }
+                                    else {
+                                        alert('오류입니다. 다시시도해주세요')
+                                    }
+                                } catch (error) {
+                                        
+                                } finally {
+                                    commonHideLoading();
+                                }
+                            }
+                        }
+                    ]
 
     return (
         <>

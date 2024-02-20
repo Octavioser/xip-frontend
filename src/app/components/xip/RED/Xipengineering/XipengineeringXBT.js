@@ -114,10 +114,13 @@ export const XBTSearchFrame = (props) => {
 
 export const XBTDataGrid = (props) => {
 
-    const [dataList, setDataList] = useState([])
+    const [data, setData] = useState([])
+
+    const [isEditing, setIsEditing] = useState('');
 
     useEffect(()=>{
-        setDataList([...props.dataList])
+        let item = JSON.parse(JSON.stringify(props.dataList))
+        setData(item)
     }, [props.dataList]); // 의존성 배열로 props.dataList를 전달
 
 
@@ -143,53 +146,67 @@ export const XBTDataGrid = (props) => {
 
          // 데이터 입력시 
         const onChangeSetData = async(e, index, j) => {
-            let datastr = [...dataList]
+            let datastr = [...data]
             let oldList = [...props.dataList]
             datastr[index][j.name] = e.target.value
-            setDataList(datastr)  
+            setData(datastr)  
             return({
                 oldData : oldList,
-                newData : dataList,
+                newData : data,
                 column: j.name,
                 targetData : datastr[index],
                 targetOldData : oldList[index]
             });
         }
+
+        // 입력 완료 및 포커스 잃었을 때의 이벤트 핸들러
+        const handleBlur = () => {
+            setIsEditing('');
+        };
+
+        // 엔터 키 입력 처리
+        const handleKeyPress = (e) => {
+            if (e.key === 'Enter')
+            setIsEditing(false); // 편집 모드 종료
+        };
+
         return (
-            dataList.map((e, index) => { 
+            data.map((e, index) => { 
                 return (
                     <tr key={'dtr' + index}>
                         <td key={'dtd' + index} style={{ border: '2px solid #E8E8E8' }}>{index + 1}</td>
                         {columnList.map((j) => {  // 1개 로우 데이터 만들기
-                            if(j.type === 'text') {
+                            if(j.type === 'text' || j.type === 'number') {
                                 return (
-                                    <td key={'text' + [j.name] + index} style={{ border: '2px solid #E8E8E8' }}>{dataList[index]?.[j.name]}</td>
-                                )
-                            }
-                            if(j.type === 'input') {
-                                return (
-                                    <td key={'inputtd' + [j.name] + index} style={{ border: '2px solid #E8E8E8', padding:0, margin: 0 }}>
+                                    <td onDoubleClick={() =>{setIsEditing(index + j.name)}} key={'text' + [j.name] + index} style={{ border: '2px solid #E8E8E8' }}>
+                                    {!!j?.editable && isEditing === index + j.name? 
                                         <input 
-                                            key={'input' + [j.name] + index}
-                                            style={{
-                                                width: '90%',      /* 입력 필드의 너비를 100%로 설정 */
-                                                boxSizing: 'border-box', /* border와 padding이 width에 포함되도록 설정 */
-                                                padding: 0,     /* 적당한 padding 설정 */
-                                                margin: 0        /* margin을 0으로 설정 */
-                                            }} 
-                                            type="text" 
-                                            value={dataList[index]?.[j.name]} 
-                                            onChange={async(item)=>{
-                                                props.onChange(await onChangeSetData(item, index, j))
-                                            }} 
-                                        />
+                                        key={'input' + [j.name] + index}
+                                        style={{
+                                            width: '90%',      /* 입력 필드의 너비를 100%로 설정 */
+                                            boxSizing: 'border-box', /* border와 padding이 width에 포함되도록 설정 */
+                                            padding: 0,     /* 적당한 padding 설정 */
+                                            margin: 0        /* margin을 0으로 설정 */
+                                        }} 
+                                        type={j.type}
+                                        value={e?.[j.name]}
+                                        onBlur={handleBlur} 
+                                        onKeyDown={handleKeyPress}
+                                        onChange={async(item)=>{
+                                            props.onChange(await onChangeSetData(item, index, j))
+                                        }} 
+                                        autoFocus // 자동으로 포커스 잡아줌
+                                    />
+                                        :
+                                        <>{e?.[j.name]}</>
+                                    }
                                     </td>
                                 )
                             }
                             if(j.type === 'button') {
                                 return (
                                     <td key={'btn' + [j.name] + index} style={{ border: '2px solid #E8E8E8' }}>
-                                        <button type="button" onClick={()=>j.onClick(dataList[index])}>{dataList[index]?.[j.name]}</button>
+                                        <button type="button" onClick={()=>j.onClick(e)}>{e?.[j.name]}</button>
                                     </td>
                                 )
                             }
@@ -200,7 +217,7 @@ export const XBTDataGrid = (props) => {
                                         <PBtn
                                             style={{fontSize:'0.8rem', textDecoration: 'underline' }}
                                             labelText={j.labelText}
-                                            onClick={()=>{window.open(`https://trace.cjlogistics.com/next/tracking.html?wblNo=${dataList[index]?.[j.name]}`, '_blank')}}
+                                            onClick={()=>{window.open(`https://trace.cjlogistics.com/next/tracking.html?wblNo=${e?.[j.name]}`, '_blank')}}
                                         >
                                         </PBtn>
                                     </td>
@@ -227,11 +244,11 @@ export const XBTDataGrid = (props) => {
 
         let footerItem = {}
         
-        for(let i=0; i<dataList.length; i++) {
+        for(let i=0; i<data.length; i++) {
             for(let j=0; j<columnList.length; j++) {
                 let columnName = columnList[j]['name']
                 if(!!columnList[j].footer) {
-                    footerItem[columnName] = Number(footerItem[columnName] || 0) + Number(dataList[i][columnName] || 0)
+                    footerItem[columnName] = Number(footerItem[columnName] || 0) + Number(data[i][columnName] || 0)
                 }
                 else {
                     footerItem[columnName] = '' 

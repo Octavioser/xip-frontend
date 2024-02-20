@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { PBtn } from '../../REDCommon/CommonStyle';
 import {useCommon} from '../../REDCommon/Common';
-import { isMobile } from 'react-device-detect';
 import EmailAuthCode from 'app/components/xip/RED/Login/EmailAuthCode';
 
 const CreateAccount = (props) => {
@@ -166,124 +165,125 @@ const CreateAccount = (props) => {
         // 폼 제출 로직 처리
     };
 
-    const textWidth = isMobile? '60vw' : '15vw'
 
     return (
-        <div className='logoImage' style={{height: '35vh', width: textWidth, top: '30%', textAlign: 'center'}}>
-            <p style={{color:'black'}}>Create a XIP Account</p>
-            
-            { (page1 || page3) &&  // 이메일 input
+        <div style={{display: 'grid', justifyContent: 'center', width:'100%', height:'80%'}}>
+            <div style={{ width: '100%', textAlign: 'center'}}>
+                <p style={{color:'black'}}>Create a XIP Account</p>
+                
+                { (page1 || page3) &&  // 이메일 input
+                    <>
+                        <p style={{textAlign: 'left'}}>EMAIL</p>
+                        <input 
+                            id='email'
+                            type='email'
+                            name='email'
+                            style={{width: '100%'}} 
+                            value={email}
+                            disabled={!page1}
+                            maxLength="30"
+                            onChange={(e)=>{         
+                                setEmail(e.target.value.trim())
+                            }}
+                            onKeyUp={(e)=> {  
+                                if(e.code === "Enter" && email) {
+                                    continueBtn(); // 엔터 클릭
+                                }
+                            }}
+                        />
+                    </>
+                }
+                { page2 && // 새로운 이메일한테 인증번호 보낸 상태
+                        <EmailAuthCode checkAuthCodeBtn={continueBtn}/>
+                }
+                { page3 && // 회원가입이 가능한 이메일이면
                 <>
-                    <p style={{textAlign: 'left'}}>EMAIL</p>
+                    <p style={{textAlign: 'left'}}>PASSWORD</p>  
+                    <form onSubmit={handleSubmit}>
+                        <input 
+                            id='password' 
+                            type='password'
+                            autoComplete="off"
+                            style={{width: '100%'}} 
+                            value={pw}
+                            onChange={(e)=>{
+                                setPw(e.target.value.trim())
+                            }}
+                            onKeyUp={(e)=> {  
+                                if(e.code === "Enter") {
+                                    creatBtn(); // 엔터 클릭
+                                }
+                            }}
+                        />
+                    </form>
+                    <p style={{textAlign: 'left'}}>CONFIRM PASSWORD</p>  
+                    <form onSubmit={handleSubmit}>
+                        <input 
+                            id='confirm password' 
+                            type='password'
+                            autoComplete="off"
+                            style={{width: '100%'}} 
+                            value={confirmPw}
+                            onChange={(e)=>{
+                                setConfirmPw(e.target.value.trim())
+                            }}
+                            onKeyUp={(e)=> {  
+                                if(e.code === "Enter") {
+                                    creatBtn(); // 엔터 클릭
+                                }
+                            }}
+                        />
+                    </form>
+                    <p style={{textAlign: 'left'}}>FIRST NAME</p>  
                     <input 
-                        id='email'
-                        type='email'
-                        name='email'
-                        style={{width: textWidth}} 
-                        value={email}
-                        disabled={!page1}
-                        maxLength="30"
-                        onChange={(e)=>{         
-                            setEmail(e.target.value.trim())
+                        id='firstNm' 
+                        type='text' 
+                        style={{width: '100%'}} 
+                        value={firstNm}
+                        onChange={(e)=>{
+                            setFirstNm(e.target.value)
                         }}
                         onKeyUp={(e)=> {  
-                            if(e.code === "Enter" && email) {
-                                continueBtn(); // 엔터 클릭
+                            if(e.code === "Enter") {
+                                creatBtn(); // 엔터 클릭
+                            }
+                        }}
+                    />
+                    <p style={{textAlign: 'left'}}>LAST NAME</p>  
+                    <input 
+                        id='lastNm' 
+                        type='text' 
+                        style={{width: '100%'}} 
+                        value={lastNm}
+                        onChange={(e)=>{
+                            setLastNm(e.target.value)
+                        }}
+                        onKeyUp={(e)=> {  
+                            if(e.code === "Enter") {
+                                creatBtn(); // 엔터 클릭
                             }
                         }}
                     />
                 </>
-            }
-            { page2 && // 새로운 이메일한테 인증번호 보낸 상태
-                    <EmailAuthCode checkAuthCodeBtn={continueBtn}/>
-            }
-            { page3 && // 회원가입이 가능한 이메일이면
-            <>
-                <p style={{textAlign: 'left'}}>PASSWORD</p>  
-                <form onSubmit={handleSubmit}>
-                    <input 
-                        id='password' 
-                        type='password'
-                        autoComplete="off"
-                        style={{width: textWidth}} 
-                        value={pw}
-                        onChange={(e)=>{
-                            setPw(e.target.value.trim())
-                        }}
-                        onKeyUp={(e)=> {  
-                            if(e.code === "Enter") {
-                                creatBtn(); // 엔터 클릭
+                }
+                <p></p>
+                {   !page2 &&  
+                    <PBtn
+                        labelText={'CREAT ACCOUNT'}
+                        alt='continue'
+                        style={{fontSize: '1em', whiteSpace:'nowrap'}} 
+                        onClick={async()=>{
+                            if(page3) { // 새로운 이메일이면 1 있으면 0
+                                creatBtn();
+                            }
+                            else {
+                                continueBtn();
                             }
                         }}
-                    />
-                </form>
-                <p style={{textAlign: 'left'}}>CONFIRM PASSWORD</p>  
-                <form onSubmit={handleSubmit}>
-                    <input 
-                        id='confirm password' 
-                        type='password'
-                        autoComplete="off"
-                        style={{width: textWidth}} 
-                        value={confirmPw}
-                        onChange={(e)=>{
-                            setConfirmPw(e.target.value.trim())
-                        }}
-                        onKeyUp={(e)=> {  
-                            if(e.code === "Enter") {
-                                creatBtn(); // 엔터 클릭
-                            }
-                        }}
-                    />
-                </form>
-                <p style={{textAlign: 'left'}}>FIRST NAME</p>  
-                <input 
-                    id='firstNm' 
-                    type='text' 
-                    style={{width: textWidth}} 
-                    value={firstNm}
-                    onChange={(e)=>{
-                        setFirstNm(e.target.value)
-                    }}
-                    onKeyUp={(e)=> {  
-                        if(e.code === "Enter") {
-                            creatBtn(); // 엔터 클릭
-                        }
-                    }}
-                />
-                <p style={{textAlign: 'left'}}>LAST NAME</p>  
-                <input 
-                    id='lastNm' 
-                    type='text' 
-                    style={{width: textWidth}} 
-                    value={lastNm}
-                    onChange={(e)=>{
-                        setLastNm(e.target.value)
-                    }}
-                    onKeyUp={(e)=> {  
-                        if(e.code === "Enter") {
-                            creatBtn(); // 엔터 클릭
-                        }
-                    }}
-                />
-            </>
-            }
-            <p></p>
-            {   !page2 &&  
-                <PBtn
-                    labelText={'CREAT ACCOUNT'}
-                    alt='continue'
-                    style={{fontSize: '1em', whiteSpace:'nowrap'}} 
-                    onClick={async()=>{
-                        if(page3) { // 새로운 이메일이면 1 있으면 0
-                            creatBtn();
-                        }
-                        else {
-                            continueBtn();
-                        }
-                    }}
-                >
-                </PBtn>
-            }       
+                    >
+                    </PBtn>
+                }       
+            </div>
         </div>
     )
 }

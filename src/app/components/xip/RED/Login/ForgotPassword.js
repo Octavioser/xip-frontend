@@ -62,7 +62,7 @@ const ForgotPassword = (props) => {
             await commonShowLoading();
             let resultData = await commonApi(apiList.checkEmail.api, apiList.checkEmail.param());    // 없으면 0 있으면 1
             if(resultData > 0) {     // 이미 가입된 이메일이여서 이메일 발송
-                setAuthCdStatus(1); 
+                setAuthCdStatus(true); 
                 props.setMsg('Enter the verification code received via email.')
             }
             else if(resultData === 0){   // 새로운 이메일
@@ -88,7 +88,7 @@ const ForgotPassword = (props) => {
                 if (resultData > 0) { // 인증코드가 맞으면
                     msg = 'Please enter a new password.'
                     sewCanChangePw(true);   // 이메일 변경가능
-                    setAuthCdStatus(0); // 인증코드 텍스트창 가리기
+                    setAuthCdStatus(false); // 인증코드 텍스트창 가리기
                 }
                 else {
                     msg = 'Invalid authentication code. Please try again.'
@@ -209,7 +209,7 @@ const ForgotPassword = (props) => {
                             }}
                             onKeyUp={(e)=> {  
                                 if(e.code === "Enter") {
-                                    
+                                    changePw()
                                 }
                             }}
                         />

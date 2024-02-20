@@ -4,9 +4,6 @@ import ModelViewer from '../REDCommon/3D/ModelViewer'
 import model from '../REDCommon/3D/XIP_ALUMINUM_EMISSION4.glb'
 import { isMobile } from 'react-device-detect';
 
-
-
-
 const Home = () => {
 
     // 정자 커서 관련
@@ -15,16 +12,17 @@ const Home = () => {
     const [degree, setDegree] = useState('');
 
     useEffect(() => {
-        if(!isMobile){  // 모바일 상태에서는 커서 x{
-            window.addEventListener('mousemove', (e)=>{ // 알아서 혼자 실행됨 
-                let degree = calculateRotate(x, y, e.clientX, e.clientY)
-    
-                setDegree(degree);//위치 
-                setX(e.clientX);
-                setY(e.clientY);
-            }, { passive: true })
-        } 
-    });
+        const handleMouseMove = (e) => {
+            let degree = calculateRotate(x, y, e.clientX, e.clientY)
+            setDegree(degree);
+            setX(e.clientX + 'px'); // 'px' 단위 명시
+            setY(e.clientY + 'px'); // 'px' 단위 명시
+        };
+        // Cleanup function
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+        };
+    }, [x, y]); // 의존성 배열에 x, y, isMobile 추가
 
     const calculateRotate = (oldX, oldY, x, y) => {   // 마우스 커서 꼬리 방향 구하기
         let radians = Math.atan2(x - oldX, y - oldY)

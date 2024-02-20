@@ -246,6 +246,11 @@ const WebAuthn = (props) => {
                         onChange={(e)=>{
                             setPw(e.target.value.trim())
                         }}
+                        onKeyUp={(e)=> {  
+                            if(e.code === "Enter") {
+                                handelCreate(); // 엔터 클릭
+                            }
+                        }}
                     />
                 </form>
                 <br/><br/><br/><br/>

@@ -10,7 +10,7 @@ const Purchase = () => {
 
     const {state} = useLocation();   // 메인버튼에서 state 값 받아오기
 
-    const { commonShowLoading, commonHideLoading, commonApi, navigate , commonRegion } = useCommon();
+    const { commonShowLoading, commonHideLoading, commonApi, navigate} = useCommon();
 
     const [modal, seModal] = useState(false);
 
@@ -54,13 +54,13 @@ const Purchase = () => {
     },[state,getCookie, navigate])
 
     useEffect(()=>{
-        if(commonRegion() === 'USA') {
-            setShippingPrice(20)
+        if(userItem.addCountry === 'KOR') {
+            setShippingPrice(3000)
         }
         else {
-            setShippingPrice(3000)
+            setShippingPrice(20)
         } 
-    },[commonRegion])
+    },[userItem.addCountry])
 
     useEffect(()=>{
         const getUserItem = async() => {
@@ -96,7 +96,7 @@ const Purchase = () => {
                         <span>{e.name}</span>
                         <span>{'SIZE ' + e.prodSize}</span>
                         <span >{e.prodQty}</span>
-                        {   commonRegion() === 'USA' ?
+                        {   userItem.addCountry === 'USA' ?
                             <span>{'$' + e.usPrice}</span>
                             :
                             <span>{'₩' + e.price}</span>
@@ -108,18 +108,34 @@ const Purchase = () => {
         )
     }
 
+    const clickCheckOut = () => {
+        if(!userItem.addCount) {
+            alert("Please add an address in the Acoount Details section." )
+            return;
+        }
+        seModal(true);
+    }
+
     return (
         <div style={{ display: 'flex', justifyContent: 'center', width:'100vw', height: '100vh',margin: 0,padding: 0}}>
             <div style={{ display: isMobile?'' : 'flex', position:'relative', justifyContent: 'space-between', top: isMobile?'20vh':'15%', width:isMobile? '95vw':'80vw', height:'85%'}}>
                 <div style={{width: isMobile? '100%':'48%', height: isMobile? '30%':'48%'}}>
                     <div style={{fontWeight: 'bold',paddingBottom: '10px',borderBottom: '2px solid #ccc',marginBottom: '20px'}}>SHIPPING ADDRESS</div>
-                    <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.addLastNm + ', ' + userItem?.addFirstNm}</p>
-                    {!!(userItem?.company) && <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.company}</p>}
-                    <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.add1 + ', ' + userItem?.add2}</p>
-                    <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.state + ', ' + userItem?.city + ', ' + userItem?.postalCd}</p>
-                    <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.addCountry}</p>
-                    <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.postalCd}</p>
-                    <p></p>
+                    {!!userItem.addCount ?
+                        <>
+                            <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.addLastNm + ', ' + userItem?.addFirstNm}</p>
+                            {!!(userItem?.company) && <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.company}</p>}
+                            <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.add1 + ', ' + userItem?.add2}</p>
+                            <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.state + ', ' + userItem?.city + ', ' + userItem?.postalCd}</p>
+                            <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.addCountry}</p>
+                            <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.postalCd}</p>
+                            <p></p>
+                        </>
+                        :
+                        <>
+                            <p>Please add an address in the <a style={{textDecoration: 'underline'}} href="/shop/account/accountdetails">Acoount Details</a> section.</p>
+                        </>
+                    }
                 </div>
                 <div style={{width: isMobile? '100%':'48%', height:'48%'}}>
                     <div style={{fontWeight: 'bold',paddingBottom: '10px',borderBottom: '2px solid #ccc',marginBottom: '20px',}}>{`ORDER SUMMARY - (${orderQty}) ITEMS`}</div>
@@ -129,7 +145,7 @@ const Purchase = () => {
                     <div style={{borderTop: '2px solid #ccc',paddingTop: '10px',display: 'flex',justifyContent: 'space-between',fontWeight: 'bold',marginTop: '20px',}}>
                         <span>Subtotal</span>
                         <span>
-                            {   commonRegion() === 'USA' ?
+                            {   userItem.addCountry === 'USA' ?
                                 '$' + orderSubTotalUsPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 :
                                 '₩' + orderSubTotalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -139,7 +155,7 @@ const Purchase = () => {
                     <div style={{borderTop: '2px solid #ccc',paddingTop: '10px',display: 'flex',justifyContent: 'space-between',fontWeight: 'bold',marginTop: '20px',}}>
                         <span>Shipping total</span>
                         <span>
-                            {   (commonRegion() === 'USA' ? '$' : '₩')
+                            {   (userItem.addCountry === 'USA' ? '$' : '₩')
                                  + shippingPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                             }
                         </span>
@@ -147,7 +163,7 @@ const Purchase = () => {
                     <div style={{borderTop: '2px solid #ccc',paddingTop: '10px',display: 'flex',justifyContent: 'space-between',fontWeight: 'bold',marginTop: '20px',}}>
                         <span>Order total (USD)</span>
                         <span>
-                            {   commonRegion() === 'USA' ?
+                            {   userItem.addCountry === 'USA' ?
                                 '$' + (orderSubTotalUsPrice + shippingPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 :
                                 '₩' + (orderSubTotalPrice + shippingPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -166,7 +182,7 @@ const Purchase = () => {
                             }}
                             labelText= 'CHECKOUT'
                             onClick={() => {
-                                seModal(true);
+                                clickCheckOut();
                             }}
                         >
                         </PBtn>

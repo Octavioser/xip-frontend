@@ -35,10 +35,13 @@ const EmailAuthCode = (props) => {
         const intervalId = setInterval(() => {
             setSeconds(seconds - 1);
         }, 1000);
-
         // Cleanup 함수 컴포넌트가 사라진 후에도 계속 실행되지 않도록 하여 메모리 누수를 방지
         return () => clearInterval(intervalId);
     }, [seconds]);
+
+    useEffect(() => {
+        authCd1Ref.current.focus();
+    },[])
 
 
     const codeStyle = {
