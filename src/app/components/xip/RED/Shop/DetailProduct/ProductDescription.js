@@ -193,13 +193,14 @@ const ProductDescription = (props) => {
 
                 <ul style={{ listStyle: 'none', padding: '0', textAlign: isMobile?'center':'left' }}>
                     {getProdDescD()}
+                    <br/><br/><br/><br/><br/>
                 </ul>
             </>
         )
     }
 
     return (
-        <div style={{ width: isMobile? '90vw':'25vw', margin: isMobile? '0' : 'auto', marginLeft: isMobile?'0':'18vw'}}>
+        <div style={{ width: isMobile? '90%':'50%', margin: isMobile? '0' : 'auto'}}>
             <br/>
             {prodDescription()}
             {loginModal && <LoginModal loginModalBtn={loginModalBtn}/>}

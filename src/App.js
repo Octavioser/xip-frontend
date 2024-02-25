@@ -113,6 +113,9 @@ const Root = () => {
                 {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
                 <Route path="*" element={<NotFound />}/>
             </Routes>
+            {location.pathname.substring(0,5).toLowerCase() === '/shop'  && 
+                <div style={{ position: 'relative', bottom:0, left:0, backgroundColor:'red', width:'100%', height:'10vh'}}></div>
+            }
         </>
     );
 };

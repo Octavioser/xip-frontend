@@ -204,7 +204,7 @@ const Cart = () => {
                                 </ImgBtn>
                                 <img key={'img'+index} src={e.imageSrc} alt={e.name} style={{width: '15%'}}/>
                                 <div key={'1div'+index} style={{width: '20%'}}>{e.name}</div>
-                                <div key={'2div'+index} style={{width: '10%'}}>{'SIZE ' + e.prodSize}</div>
+                                <div key={'2div'+index} style={{width: '5%'}}>{e.prodSize}</div>
                                 <div key={'3div'+index} style={{display: 'flex', alignItems: 'center',justifyContent: 'space-between', border: '2px solid white', width:'8%'}}>
                                     <div key={'4div'+index} style={{display: 'inline-block', padding: '1px 10px', width:'100%'}}>{e.prodQty}</div>
                                     <div key={'5div'+index} style={{display: 'inline-block', padding: '1px 3px', textAlign:'right'}}>
@@ -245,17 +245,19 @@ const Cart = () => {
     }
 
     return (
-        <div style={{display:'flex', width: '100vw', height: '100vh', 
-                    flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}} 
+        <div style={{display:'flex', width: '100%', minHeight:'100vh',
+                    flexDirection: 'row',justifyContent: 'center'}} 
          >
-            <div style={{ width:isMobile? '100vw':'60vw', height:'100vh'}}>
-                <div style={{marginTop:'10vh',top:'5vh'}}>
+
+            <div style={{ width:isMobile? '90%':'60%'}}>
+            <div style={{ width:'100%', height:isMobile? '10%':'10%'}}/>
+                <div>
                     <p style={{fontSize:'1.5rem',textAlign:'center'}}>CART</p>
                 </div>
                 <div>
-                    
-                        {productColumn()}
-                    
+                    {productColumn()}
+                    {productColumn()}
+
                 </div>
                 <br/>
                 <div style={{borderTop: '2px solid #ccc',textAlign:'right'}}>

@@ -49,18 +49,15 @@ const DetailProduct = () => {
         let item = 
             isMobile ?
                     {
-                        width: '100vw', 
-                        height: '100vh'
+                        width: '100%', 
+                        height: '100%'
                     }
                     :
                     {
                         display:'flex',  
-                        overflow: 'hidden', 
-                        width: '100vw', 
-                        height: '100vh', 
+                        width: '100%', 
+                        minHeight: '100vh', 
                         flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center'
                     }   
         return(item)
     }
@@ -68,18 +65,18 @@ const DetailProduct = () => {
     const productSliderStyle = () => {
         let item = 
             isMobile ? 
-                {display:'flex', justifyContent: 'center',  alignItems: 'center', position: 'relative', top:'10vh'}
+                {display:'flex', justifyContent: 'center',  position: 'relative', top:'10vh', width:'100%'}
                 :
-                {display:'flex', justifyContent: 'center',  alignItems: 'center'}
+                {display:'flex', justifyContent: 'center',  position: 'relative', width:'50%', top:'7vh'}
         return(item)
     }
 
     const productDescriptionStyle = () => {
         let item = 
             isMobile ? 
-                {display:'flex', justifyContent: 'center',  alignItems: 'center', position: 'relative', top:'10vh'}
+                {display:'flex', justifyContent: 'center',  alignItems: 'center', position: 'relative', top:'15vh'}
                 :
-                {display:'flex', justifyContent: 'center',  alignItems: 'center', width:'50vw', height:'40vw'}
+                {display:'flex', position:'relative', justifyContent: 'center',  alignItems: 'center', width:'50%', height:'40&', top:'10vh'}
         return(item)
     }
 

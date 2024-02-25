@@ -117,7 +117,7 @@ const Purchase = () => {
     }
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', width:'100vw', height: '100vh',margin: 0,padding: 0}}>
+        <div style={{ display: 'flex', justifyContent: 'center', height:'100vh', width:'100%'}}>
             <div style={{ display: isMobile?'' : 'flex', position:'relative', justifyContent: 'space-between', top: isMobile?'20vh':'15%', width:isMobile? '95vw':'80vw', height:'85%'}}>
                 <div style={{width: isMobile? '100%':'48%', height: isMobile? '30%':'48%'}}>
                     <div style={{fontWeight: 'bold',paddingBottom: '10px',borderBottom: '2px solid #ccc',marginBottom: '20px'}}>SHIPPING ADDRESS</div>

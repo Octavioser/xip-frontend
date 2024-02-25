@@ -65,7 +65,7 @@ const ProductList = () => {
                 flexWrap: 'wrap',
                 justifyContent: 'flex-start',
                 margin: isMobile? '15vh 5vh 0 5vh':'15vh 20vh 0 20vh',  /* 위, 오른쪽, 아래, 왼쪽 순서대로 마진 값을 설정 */
-                height: '100%'
+                minHeight: '100vh'
             }}> 
             {productListItem.map((e, index) => 
                 <div 
@@ -80,7 +80,7 @@ const ProductList = () => {
                     >
                     <ImgBtn
                         id={index}
-                        src={e.imageSrc} 
+                        src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/' + e.imageSrc} 
                         className='imgBtnNoRed'
                         alt={e.name}
                         style={{ maxWidth: '100%',height: 'auto', opacity: productHover === e.prodCd && (e.status === '2' || e.status === '0')? 0.5 : 1}}

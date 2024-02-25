@@ -209,10 +209,10 @@ const OrderHistory = () => {
     }
 
     return (
-        <div style={{display:'flex', position:'relative', width: '100%', height: '100%', top: isMobile?'13vh':'',
+        <div style={{display:'flex', position:'relative', width: '100%', top: isMobile?'13vh':'',
                     flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}} 
          >
-            <div style={{ width:isMobile? '100%':'60%', height:'100%'}}>
+            <div style={{ width:isMobile? '100%':'60%', minHeight:'100vh'}}>
                 <div style={{marginTop:'10vh'}}>
                     <h2 style={{textAlign: 'center', letterSpacing: '1.5px'}}>ACCOUNT</h2>
                 </div>

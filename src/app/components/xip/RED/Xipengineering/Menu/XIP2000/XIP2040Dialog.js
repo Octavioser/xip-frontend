@@ -177,7 +177,7 @@ const XIP2040Dialog = (props) => {
                         <textarea 
                             cols="40" 
                             rows="5"
-                            maxlength="100"
+                            maxLength="100"
                             value={reason}
                             onChange={(e)=>(
                                 setReason(e.target.value)
