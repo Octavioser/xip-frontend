@@ -106,7 +106,7 @@ const OrderDetails = () => {
     }
 
     return (
-        <div style={{display:'flex', position:'relative', width: '100%', top: isMobile?'13vh':'',
+        <div style={{display:'flex', position:'relative', width: '100%', marginTop: isMobile?'13vh':'',
                     flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}} 
          >
             <div style={{ width:isMobile? '100%':'60%'}}>

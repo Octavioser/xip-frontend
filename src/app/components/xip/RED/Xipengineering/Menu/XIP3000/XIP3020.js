@@ -44,7 +44,7 @@ const XIP3020 = () => {
                 let item = {...base64File}
                 delete item[name]
                 setBase64File({...item})
-                
+
                 alert('gif 확장자로 변환 후 올려주세요.');
                 event.target.value = ''; 
                 return;
@@ -220,6 +220,12 @@ const XIP3020 = () => {
                 })
             })
 
+            let prodDesc1 = '';
+
+            if(!!(product.prodDesc1)) {
+                prodDesc1 = '|' + product.prodDesc1
+            }
+
             let param = {
                 prodCd: prodCd,
                 name: product.name,
@@ -229,7 +235,7 @@ const XIP3020 = () => {
                 status: product.status,
                 line: product.line,
                 season: seasonName,
-                prodDesc: product.prodDesc,
+                prodDesc: product.prodDesc + prodDesc1,
                 prodDescD: prodDescD,
 
                 prodCdD:prodCdD,
@@ -262,8 +268,7 @@ const XIP3020 = () => {
                 {/* 검색 창 */}
                 
                 <div style={{position:'relative', width:'94%' ,height:'100%', textAlign:'center', alignItems: 'center'}}>
-                    <p style={{padding:1, margin:1}}>영어로만 입력</p>
-                    <p >사진은 png 파일을 webp로 변환 후 올리기
+                    <p style={{padding:2, margin:2}}>사진은 png 파일을 webp로 변환 후 올리기
                         <a 
                             style={{textDecoration: 'underline', color:'red'}} 
                             href='https://convertio.co/kr/png-webp/'
@@ -273,6 +278,7 @@ const XIP3020 = () => {
                             사이트
                         </a>
                     </p>
+                    <p style={{padding:1, margin:1}}>영어로만 입력하시고  사진은 크기 800 x 1200</p>
                 </div>
 
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center',position:'relative', width:'6%' ,height:'100%', textAlign:'center'}}>

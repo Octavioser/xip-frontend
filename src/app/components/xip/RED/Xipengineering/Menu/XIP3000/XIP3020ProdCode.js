@@ -127,8 +127,9 @@ const XIP3020ProdCode = (props) => {
             ]
         },
         {name:'total', type:'number',description: '사이즈당 수량(사이드마다 다르면 재고관리에서 수정)', maxLength:4},
-        {name:'prodDesc', type:'text', description: '한줄설명 ex) ZIP-UP VEST IN BLACK', maxLength:30},
-        {name:'prodDescD0', type:'text', description: '상품 설명 1 ex) 100% NYLON', maxLength:30},
+        {name:'prodDesc', type:'text', description: '한줄설명 ex) ZIP-UP VEST IN BLACK', maxLength:50},
+        {name:'prodDesc1', type:'text', description: '한줄설명 ex) ZIP-UP VEST IN BLACK', maxLength:50},
+        {name:'prodDescD0', type:'text', description: '상품 설명 1 ex) 100% NYLON', maxLength:50},
     ]
 
     const itemSetting = () => {
@@ -256,7 +257,7 @@ const XIP3020ProdCode = (props) => {
                         type='text'
                         name={name}
                         value={props.prodItem?.[name] || ''}
-                        maxLength={30}
+                        maxLength={50}
                         onChange={(e2)=>{  
                             props.setProdItem({...props.prodItem, [name] : e2.target.value.replace(/[^A-Za-z0-9 !@#$%^&*()_+\-=[]{};':"|,.<>?]/g, '')})
                         }}

@@ -120,7 +120,7 @@ const ProductDescription = (props) => {
         if(commonRegion() === 'USA') {
             price = '$' + titleItem?.usPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }
-        let prodDesc = titleItem?.prodDesc
+        let prodDesc = titleItem?.prodDesc || ''
         let prodDescD = titleItem?.prodDescD || ''
 
         const getSizeDownlist = () => {
@@ -159,6 +159,17 @@ const ProductDescription = (props) => {
                 </>
             )
         }
+
+        const getProdDesc = () => {
+            let descList = prodDesc.split('|')
+            return (
+                <>
+                    {descList.map((e, index) =>
+                        <h2 key={index + 'prodDesc'} style={{ margin: '5px' }}>{e}</h2>
+                    )}
+                </>
+            )
+        }
         
         return (
             <>
@@ -167,7 +178,7 @@ const ProductDescription = (props) => {
                 <br/><br/>
 
                 <br/><br/>
-                <h2 style={{ margin: '5px' }}>{prodDesc}</h2>
+                {getProdDesc()}
                 <br/><br/>
                 
                 <div> {/* 사이즈 고르기 */}

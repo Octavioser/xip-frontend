@@ -50,7 +50,7 @@ const DetailProduct = () => {
             isMobile ?
                     {
                         width: '100%', 
-                        height: '100%'
+                        minHeight: '100vh'
                     }
                     :
                     {
@@ -65,7 +65,7 @@ const DetailProduct = () => {
     const productSliderStyle = () => {
         let item = 
             isMobile ? 
-                {display:'flex', justifyContent: 'center',  position: 'relative', top:'10vh', width:'100%'}
+                {display:'flex', justifyContent: 'center',  position: 'relative', marginTop:'20vh', width:'100%'}
                 :
                 {display:'flex', justifyContent: 'center',  position: 'relative', width:'50%', top:'7vh'}
         return(item)
@@ -74,7 +74,7 @@ const DetailProduct = () => {
     const productDescriptionStyle = () => {
         let item = 
             isMobile ? 
-                {display:'flex', justifyContent: 'center',  alignItems: 'center', position: 'relative', top:'15vh'}
+                {display:'flex', justifyContent: 'center',  alignItems: 'center', position: 'relative', marginTop:'10vh'}
                 :
                 {display:'flex', position:'relative', justifyContent: 'center',  alignItems: 'center', width:'50%', height:'40&', top:'10vh'}
         return(item)
