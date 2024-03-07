@@ -40,6 +40,7 @@ const DetailProduct = () => {
         }
         if(useEffectCheck === 0) { // 처음시작인지 아니면 파라미터가 바뀌었을 경우
             setUseEffectCheck(1);
+            window.scrollTo(0, 0);
             getItem();
         }
     },[commonShowLoading, commonHideLoading, commonApi, useEffectCheck, navigate, prodCd, commonGetS3Img]);

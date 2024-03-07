@@ -4,14 +4,12 @@ import LoginModal from 'app/components/xip/RED/Login/LoginModal';
 import {PBtn, ImgBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import { isMobile } from 'react-device-detect';
 import { useCommon } from '../../REDCommon/Common';
-import { useAppContext } from 'app/components/xip/REDCommon/CommonContext';
 import { useLocation } from 'react-router-dom';
+import RegionModal from './RegionModal';
 
 const AuthShopBtn = (props) => {
 
     const location = useLocation ();
-
-    const {setRegion} = useAppContext();
 
     const {navigate} = useCommon();
 
@@ -123,46 +121,11 @@ const AuthShopBtn = (props) => {
                         }}
                     >
                     </PBtn>
-                    {regionOpen && 
-                    <>
-                        {authBtn.regionItem()}
-                    </>
-                    }
                 </>
             )
         },
-        regionItem: () => {
-            return (
-                <div key={'div1'} style={{width:'10vw', textAlign:'right',paddingRight:'10px'}}>
-                    <p style={{fontSize: '5px'}}></p>             
-                    <PBtn //원화
-                        className='pBtnNoRed'
-                        labelText='KOR'
-                        alt='KOR'
-                        style={{fontSize: subfont}}
-                        onClick={() =>{
-                            setRegion('KOR')
-                            setRegionOpen(false)
-                            props.setMobileMenu(false)
-                        }}
-                    >
-                    </PBtn>
-                    <p style={{fontSize: '2px'}}></p>
-                    <PBtn //달러
-                        className='pBtnNoRed'
-                        labelText='USA'
-                        alt='USA'
-                        style={{fontSize: subfont}}
-                        onClick={() =>{
-                            setRegion('USA')
-                            setRegionOpen(false)
-                            props.setMobileMenu(false)
-                        }}
-                    >
-                    </PBtn>
-                    <p key='empty2' style={{fontSize: '5px'}}></p>
-                </div>
-            )
+        closeConfirm: () => {
+            setRegionOpen(false);
         }
     }
 
@@ -236,6 +199,7 @@ const AuthShopBtn = (props) => {
                 }
             </>     
             {loginModal && <LoginModal loginModalBtn={loginModalBtn}/> }  
+            {regionOpen && <RegionModal closeConfirm={authBtn.closeConfirm}/>}
         </div>
     )
 }

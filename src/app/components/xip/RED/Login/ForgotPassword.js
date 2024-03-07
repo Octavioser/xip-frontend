@@ -169,6 +169,7 @@ const ForgotPassword = (props) => {
                         style={{width: textWidth}} 
                         disabled={canChangePw}
                         value={email}
+                        maxLength="50"
                         onChange={(e)=>{
                             setEmail(e.target.value.trim())
                         }}
@@ -191,6 +192,7 @@ const ForgotPassword = (props) => {
                             autoComplete="off"
                             style={{width: textWidth}} 
                             value={pw}
+                            maxLength="50"
                             onChange={(e)=>{
                                 setPw(e.target.value.trim())
                             }}
@@ -204,6 +206,7 @@ const ForgotPassword = (props) => {
                             autoComplete="off"
                             style={{width: textWidth}} 
                             value={confirmPw}
+                            maxLength="50"
                             onChange={(e)=>{
                                 setConfirmPw(e.target.value.trim())
                             }}

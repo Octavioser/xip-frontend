@@ -181,7 +181,7 @@ const CreateAccount = (props) => {
                             style={{width: '100%'}} 
                             value={email}
                             disabled={!page1}
-                            maxLength="30"
+                            maxLength="50"
                             onChange={(e)=>{         
                                 setEmail(e.target.value.trim())
                             }}
@@ -206,6 +206,7 @@ const CreateAccount = (props) => {
                             autoComplete="off"
                             style={{width: '100%'}} 
                             value={pw}
+                            maxLength="50"
                             onChange={(e)=>{
                                 setPw(e.target.value.trim())
                             }}
@@ -224,6 +225,7 @@ const CreateAccount = (props) => {
                             autoComplete="off"
                             style={{width: '100%'}} 
                             value={confirmPw}
+                            maxLength="50"
                             onChange={(e)=>{
                                 setConfirmPw(e.target.value.trim())
                             }}
@@ -240,6 +242,7 @@ const CreateAccount = (props) => {
                         type='text' 
                         style={{width: '100%'}} 
                         value={firstNm}
+                        maxLength="20"
                         onChange={(e)=>{
                             setFirstNm(e.target.value)
                         }}
@@ -255,6 +258,7 @@ const CreateAccount = (props) => {
                         type='text' 
                         style={{width: '100%'}} 
                         value={lastNm}
+                        maxLength="20"
                         onChange={(e)=>{
                             setLastNm(e.target.value)
                         }}

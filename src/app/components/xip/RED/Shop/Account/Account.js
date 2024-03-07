@@ -17,28 +17,29 @@ const Account = () => {
 
     return (
         <>
-            <div style={{width:'100%', height:'100vh', textAlign:'center'}}>
-                <div style={{width:'100%', height: isMobile?'40%':'35%', textAlign:'center'}}/> 
-                <PBtn // 샵
-                    className='pBtnNoRed'
-                    id='Order History'
-                    labelText='Order History'
-                    alt='Order History'
-                    onClick={() => {
-                        showOrderHistory();
-                    }}
-                >
-                </PBtn>
-                <PBtn // 샵
-                    className='pBtnNoRed'
-                    id='Account Details'
-                    labelText='Account Details'
-                    alt='Account Details'
-                    onClick={() => {
-                        showAccountDetails();
-                    }}
-                >
-                </PBtn>
+            <div style={{display:'flex', alignItems:'center', justifyContent: 'center', width:'100%', height:'100vh'}}>
+                <div style={{width:isMobile? '100%' : '50%', height: isMobile?'20%':'30%', textAlign:'center'}}> 
+                    <PBtn // 샵
+                        className='pBtnNoRed'
+                        id='Order History'
+                        labelText='Order History'
+                        alt='Order History'
+                        onClick={() => {
+                            showOrderHistory();
+                        }}
+                    >
+                    </PBtn>
+                    <PBtn // 샵
+                        className='pBtnNoRed'
+                        id='Account Details'
+                        labelText='Account Details'
+                        alt='Account Details'
+                        onClick={() => {
+                            showAccountDetails();
+                        }}
+                    >
+                    </PBtn>
+                </div>
             </div>
         </>
         

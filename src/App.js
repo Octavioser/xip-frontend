@@ -7,6 +7,9 @@ import {
     Credit, Works, Video, StartPage, Home, NotFound,Masterinnovation,MasterinnovationBunka,Gallery, Shop, MainBtn, MusicBtn,
     ProductList, Account, AccountDetails, DetailProduct, Cart, OrderHistory, Purchase, OrderDetails, Xipengineering} from 'app/components/xip/RED'; //index.js
 
+import Success from 'app/components/xip/RED/Shop/Purchase/TossPayments/Success.js'
+import Fail from 'app/components/xip/RED/Shop/Purchase/TossPayments/Fail.js'    
+
 function preloadImage(url) { // 이미지 미리 불러오기
     const img = new Image();
     img.src = url;
@@ -21,23 +24,26 @@ const Root = () => {
 
     const { loading, confirm} = useAppContext();
 
-    const location = useLocation ();
+    const { pathname } = useLocation();
 
     const [startClickValue, setStartClickValue] = useState('0'); // 처음시작화면 클릭했는지 
 
     const [display, setDisPlay] = useState(false);  // 음악아이콘 상태
-
-    
+        
+      
+    useEffect(() => { // 스크롤 초기화
+        window.scrollTo(0, 0);
+    }, [pathname]);
 
     useEffect(() => {
         document.body.style.color = 'white'; //폰트
         // 배경화면 변경
-        if(location.pathname.substring(0,5).toLowerCase() === '/shop' ) {
+        if(pathname.substring(0,5).toLowerCase() === '/shop' ) {
             // shop 이용시 배경화면 변경
             document.body.style.backgroundImage = 'none';
             document.body.style.backgroundColor = 'red';
 
-            if((location.pathname.toLowerCase()).startsWith('/shop/detailproduct') ) {
+            if((pathname.toLowerCase()).startsWith('/shop/detailproduct') ) {
                 document.body.style.color = 'black';
                 document.body.style.backgroundColor = 'white';
             }
@@ -66,16 +72,18 @@ const Root = () => {
         
     }
 
+    const footerStyle = {color:'black', padding:'1px', margin:'1px'};
+
     return (
         <>
             {confirm && <ConfirmModal/>}  {/* 컨펌창 */} 
             {loading && <Loading/>}       {/* 로딩창 */}
             {/* shop 일경우 버튼 삭제 */}            
-            {location.pathname.substring(0,5).toLowerCase() === '/shop' ?
+            {pathname.substring(0,5).toLowerCase() === '/shop' ?
                 <Shop/>
             :
                 <>
-                {location.pathname.substring(0,15).toLowerCase() !== '/xipengineering' && <MainBtn setStartClick={setStartClick}/>}
+                {pathname.substring(0,15).toLowerCase() !== '/xipengineering' && <MainBtn setStartClick={setStartClick}/>}
                 </>
             }
 
@@ -86,7 +94,7 @@ const Root = () => {
             {/*  페이지이동 */}
                 {/* 맨처음화면 */}
                 <Route path='/' element={<StartPage musicSwitch={musicSwitch}></StartPage>}/>
-                {location.pathname.substring(0,5).toLowerCase() === '/home' && <Route path="/home" element={<Home startClickValue={startClickValue}/>}/>}
+                {pathname.substring(0,5).toLowerCase() === '/home' && <Route path="/home" element={<Home startClickValue={startClickValue}/>}/>}
                 <Route path="/video">
                     <Route path="" element={<Video/>}/>
                     <Route path="masterinnovation" element={<Masterinnovation/>}/>
@@ -108,13 +116,25 @@ const Root = () => {
                     <Route path="detailproduct/:prodCd" element={<DetailProduct/>}/>
                     <Route path="cart" element={<Cart/>}/>
                     <Route path="purchase" element={<Purchase/>}/>
+                    <Route path="success" element={<Success/>}/>
+                    <Route path="fail" element={<Fail/>}/>
                 </Route>
                 <Route path="/xipengineering" element={<Xipengineering/>}/>
                 {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
                 <Route path="*" element={<NotFound />}/>
             </Routes>
-            {location.pathname.substring(0,5).toLowerCase() === '/shop'  && 
-                <div style={{ position: 'relative', bottom:0, left:0, backgroundColor:'red', width:'100%', height:'10vh'}}></div>
+            {pathname.substring(0,5).toLowerCase() === '/shop'  && 
+                <div style={{position: 'relative', bottom:0, left:0, width:'100%', minHeight:'7vh', fontSize:'0.7rem', textAlign:'center'}}>
+                    <p style={footerStyle}><span style={{fontSize:'1rem'}}>ⓒ XIP</span> BUSINESS NUMBER 424-19-02088 | MAIL-ORDER-SALES REGISTRATION NUMBER 제2020-서울강남-01164호 |  CEO PARK JUNHEE</p>
+                    <p style={footerStyle}>804-52, 124, Unjung-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea</p>
+                    <a style={footerStyle} href="https://pages.tosspayments.com/terms/onboarding" rel="noreferrer noopener" target="_blank">AGREEMENT</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a style={footerStyle} href="https://pages.tosspayments.com/terms/homepage/privacy/policy" rel="noreferrer noopener" target="_blank">
+                        <strong>PRIVACY</strong>
+                    </a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a style={footerStyle} href="https://pages.tosspayments.com/terms/user" rel="noreferrer noopener" target="_blank">SHIPPING & RETURN POLICY</a>
+                </div>
             }
         </>
     );

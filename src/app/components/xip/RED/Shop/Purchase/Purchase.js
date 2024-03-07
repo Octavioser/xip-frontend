@@ -10,7 +10,7 @@ const Purchase = () => {
 
     const {state} = useLocation();   // 메인버튼에서 state 값 받아오기
 
-    const { commonShowLoading, commonHideLoading, commonApi, navigate} = useCommon();
+    const { commonShowLoading, commonHideLoading, commonApi, navigate, commonRegion} = useCommon();
 
     const [modal, seModal] = useState(false);
 
@@ -53,14 +53,6 @@ const Purchase = () => {
         }
     },[state,getCookie, navigate])
 
-    useEffect(()=>{
-        if(userItem.addCountry === 'KOR') {
-            setShippingPrice(3000)
-        }
-        else {
-            setShippingPrice(20)
-        } 
-    },[userItem.addCountry])
 
     useEffect(()=>{
         const getUserItem = async() => {
@@ -96,10 +88,10 @@ const Purchase = () => {
                         <span>{e.name}</span>
                         <span>{'SIZE ' + e.prodSize}</span>
                         <span >{e.prodQty}</span>
-                        {   userItem.addCountry === 'USA' ?
-                            <span>{'$' + e.usPrice}</span>
-                            :
+                        {   commonRegion()  === 'KOR' ?
                             <span>{'₩' + e.price}</span>
+                            :
+                            <span>{'$' + e.usPrice}</span>
                         }
                     </div>
                 )}
@@ -109,7 +101,7 @@ const Purchase = () => {
     }
 
     const clickCheckOut = () => {
-        if(!userItem.addCount) {
+        if(commonRegion() === 'KOR' && !userItem.addCount) {
             alert("Please add an address in the Acoount Details section." )
             return;
         }
@@ -118,8 +110,9 @@ const Purchase = () => {
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center', height:'100vh', width:'100%'}}>
-            <div style={{ display: isMobile?'' : 'flex', position:'relative', justifyContent: 'space-between', top: isMobile?'20vh':'15%', width:isMobile? '95vw':'80vw', height:'85%'}}>
-                <div style={{width: isMobile? '100%':'48%', height: isMobile? '30%':'48%'}}>
+            <div style={{ display: isMobile?'' : 'flex', position:'relative', justifyContent: commonRegion() === 'KOR' ? 'space-between' : 'center', top: isMobile?'20vh':'15%', width:isMobile? '95vw':'80vw', height:'85%'}}>
+                    { commonRegion() === 'KOR' && 
+                    <div style={{width: isMobile? '100%':'48%', height: isMobile? '30%':'48%'}}>
                     <div style={{fontWeight: 'bold',paddingBottom: '10px',borderBottom: '2px solid #ccc',marginBottom: '20px'}}>SHIPPING ADDRESS</div>
                     {!!userItem.addCount ?
                         <>
@@ -133,10 +126,11 @@ const Purchase = () => {
                         </>
                         :
                         <>
+                            <p>Please ensure that if your address is not in Korea, you change the region to USA.</p>
                             <p>Please add an address in the <a style={{textDecoration: 'underline'}} href="/shop/account/accountdetails">Acoount Details</a> section.</p>
                         </>
                     }
-                </div>
+                </div>}
                 <div style={{width: isMobile? '100%':'48%', height:'48%'}}>
                     <div style={{fontWeight: 'bold',paddingBottom: '10px',borderBottom: '2px solid #ccc',marginBottom: '20px',}}>{`ORDER SUMMARY - (${orderQty}) ITEMS`}</div>
                     <div style={{maxHeight: '100px',overflowY: 'scroll'}}>
@@ -145,17 +139,17 @@ const Purchase = () => {
                     <div style={{borderTop: '2px solid #ccc',paddingTop: '10px',display: 'flex',justifyContent: 'space-between',fontWeight: 'bold',marginTop: '20px',}}>
                         <span>Subtotal</span>
                         <span>
-                            {   userItem.addCountry === 'USA' ?
-                                '$' + orderSubTotalUsPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                :
+                            {   commonRegion()  === 'KOR' ?
                                 '₩' + orderSubTotalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                :
+                                '$' + orderSubTotalUsPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                             }
                         </span>
                     </div>
                     <div style={{borderTop: '2px solid #ccc',paddingTop: '10px',display: 'flex',justifyContent: 'space-between',fontWeight: 'bold',marginTop: '20px',}}>
                         <span>Shipping total</span>
                         <span>
-                            {   (userItem.addCountry === 'USA' ? '$' : '₩')
+                            {   (commonRegion()  === 'KOR' ? '₩' : '$')
                                  + shippingPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                             }
                         </span>
@@ -163,10 +157,10 @@ const Purchase = () => {
                     <div style={{borderTop: '2px solid #ccc',paddingTop: '10px',display: 'flex',justifyContent: 'space-between',fontWeight: 'bold',marginTop: '20px',}}>
                         <span>Order total (USD)</span>
                         <span>
-                            {   userItem.addCountry === 'USA' ?
-                                '$' + (orderSubTotalUsPrice + shippingPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                :
+                            {   commonRegion()  === 'KOR' ?
                                 '₩' + (orderSubTotalPrice + shippingPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                :
+                                '$' + (orderSubTotalUsPrice + shippingPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                             }
                         </span>
                     </div>
@@ -190,7 +184,7 @@ const Purchase = () => {
                 </div>
             </div>
             {  modal &&
-                <CheckoutModal seModal={seModal}/>
+                <CheckoutModal seModal={seModal} userItem={userItem}/>
             }
         </div>
       );

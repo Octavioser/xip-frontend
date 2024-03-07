@@ -145,6 +145,7 @@ const Login = (props) => {
                 name='email'
                 style={{width: textWidth}} 
                 value={email}
+                maxLength="50"
                 onChange={(e)=>{
                     setEmail(e.target.value.trim())
                 }}
@@ -160,10 +161,11 @@ const Login = (props) => {
                 <form onSubmit={handleSubmit}>
                     <input 
                         autoComplete="off"
-                        id='newpassword' 
+                        id='password' 
                         type='password'
                         style={{width: textWidth}} 
                         value={pw}
+                        maxLength="50"
                         onChange={(e)=>{
                             setPw(e.target.value.trim())
                         }}

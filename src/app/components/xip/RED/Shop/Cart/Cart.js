@@ -202,7 +202,7 @@ const Cart = () => {
                                     }}
                                     > 
                                 </ImgBtn>
-                                <img key={'img'+index} src={e.imageSrc} alt={e.name} style={{width: '15%'}}/>
+                                <img key={'img'+index} src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/' + e.imageSrc} alt={e.name} style={{width: '15%'}}/>
                                 <div key={'1div'+index} style={{width: '20%'}}>{e.name}</div>
                                 <div key={'2div'+index} style={{width: '5%'}}>{e.prodSize}</div>
                                 <div key={'3div'+index} style={{display: 'flex', alignItems: 'center',justifyContent: 'space-between', border: '2px solid white', width:'8%'}}>
@@ -229,10 +229,10 @@ const Cart = () => {
                                     </div>
                                 </div>
                                 <div key={'6div'+index} style={{textAlign:'right',width: '10%'}}>
-                                    {commonRegion() === 'USA' ? 
-                                        '$' + (e.usPrice * e.prodQty).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                        :
+                                    {commonRegion() === 'KOR' ? 
                                         '₩' + (e.price * e.prodQty).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                        :
+                                        '$' + (e.usPrice * e.prodQty).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                     }    
                                 </div>
                             </div>
@@ -245,27 +245,25 @@ const Cart = () => {
     }
 
     return (
-        <div style={{display:'flex', width: '100%', minHeight:'100vh',
-                    flexDirection: 'row',justifyContent: 'center'}} 
-         >
+        <>
+            <div style={{width:'100%', height:'10vh'}}></div>
+            <div style={{display:'flex', width: '100%', minHeight:'90vh',flexDirection: 'row',justifyContent: 'center'}}>
+                <div style={{ width:isMobile? '90%':'60%', height:'100%'}}>
+                    <div style={{ width:'100%', height:isMobile? '10%':'10%'}}/>
 
-            <div style={{ width:isMobile? '90%':'60%'}}>
-            <div style={{ width:'100%', height:isMobile? '10%':'10%'}}/>
-                <div>
-                    <p style={{fontSize:'1.5rem',textAlign:'center'}}>CART</p>
-                </div>
-                <div>
-                    {productColumn()}
-                    {productColumn()}
-
-                </div>
-                <br/>
-                <div style={{borderTop: '2px solid #ccc',textAlign:'right'}}>
-                    <p style={{margin: 0, padding: '2px', fontSize:'1.1rem', textAlign:'right', display: 'inline-block', marginRight: '10px'}}>SUBTOTAL</p>
-                    <p style={{margin: 0, padding: '2px', fontSize:'0.9rem', textAlign:'right', display: 'inline-block'}}>{commonRegion() === 'USA' ? totalUsPrice : totalPrice }</p>                  
-                </div>
-                <br/><br/>
-                <div style={{display: 'flex',justifyContent: 'flex-end',alignItems: 'center'}}>
+                    <div>
+                        <p style={{fontSize:'1.5rem',textAlign:'center'}}>CART</p>
+                    </div>
+                    <div>
+                        {productColumn()}
+                    </div>
+                    <br/>
+                    <div style={{borderTop: '2px solid #ccc',textAlign:'right'}}>
+                        <p style={{margin: 0, padding: '2px', fontSize:'1.1rem', textAlign:'right', display: 'inline-block', marginRight: '10px'}}>SUBTOTAL</p>
+                        <p style={{margin: 0, padding: '2px', fontSize:'0.9rem', textAlign:'right', display: 'inline-block'}}>{commonRegion() === 'USA' ? totalUsPrice : totalPrice }</p>                  
+                    </div>
+                    <br/><br/>
+                    <div style={{display: 'flex',justifyContent: 'flex-end',alignItems: 'center'}}>
                         <PBtn
                             className= 'pBtnNoRed'
                             style={{ 
@@ -297,9 +295,10 @@ const Cart = () => {
                             }}
                         >
                         </PBtn>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 export default Cart;

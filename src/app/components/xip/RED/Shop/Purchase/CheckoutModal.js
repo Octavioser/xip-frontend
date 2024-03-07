@@ -1,8 +1,12 @@
 import Modal from 'react-modal';
-import CheckoutPage from './Checkout';
+import CheckoutPage from './TossPayments/Checkout';
+import CheckoutPagePaypal from './TossPayments/CheckoutPaypal';
+import {useCommon} from 'app/components/xip/REDCommon/Common';
 
 const CheckoutModal = (props) => {
 
+    
+    const {commonRegion} = useCommon();
     return (
         <Modal 
             isOpen={true} 
@@ -30,7 +34,7 @@ const CheckoutModal = (props) => {
             contentLabel="Pop up Message"
             shouldCloseOnOverlayClick={true} // 팝업창이 아닌 바깥부분 클릭시 닫히게 할것인지
         >
-            <CheckoutPage/>
+        {commonRegion() === 'KOR' ? <CheckoutPage/> : <CheckoutPagePaypal/>}
         </Modal>
     )
 }

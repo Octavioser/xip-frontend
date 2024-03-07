@@ -77,6 +77,9 @@ const CheckoutPage = () => {
             <div id="agreement" />
             <div style={{ paddingLeft: "24px" }}>
             </div>
+            <script async crossorigin
+        src="https://applepay.cdn-apple.com/jsapi/v1.1.0/apple-pay-sdk.js"
+        ></script>
             <div className="result wrapper">
                 {/* 결제하기 버튼 */}
                 <button

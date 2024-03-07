@@ -116,9 +116,10 @@ const ProductDescription = (props) => {
         let titleItem = item[0]
 
         let name = titleItem?.name 
-        let price = '₩' + (titleItem?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")|| '')
-        if(commonRegion() === 'USA') {
-            price = '$' + titleItem?.usPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        let price = '$' + titleItem?.usPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        
+        if(commonRegion() === 'KOR') {
+            price = '₩' + (titleItem?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")|| '')    
         }
         let prodDesc = titleItem?.prodDesc || ''
         let prodDescD = titleItem?.prodDescD || ''

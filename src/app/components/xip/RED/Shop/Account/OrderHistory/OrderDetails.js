@@ -91,7 +91,7 @@ const OrderDetails = () => {
             <>
                 {list.map(e => 
                     <div key = {e.prodCdD + 'div0'} style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center'}}>
-                            <img key = {e.prodCdD + 'img'} src={e.imageSrc} alt={e.name} style={{width: isMobile? '20vw':'9vw'}}/>
+                            <img key = {e.prodCdD + 'img'} src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/' + e.imageSrc} alt={e.name} style={{width: isMobile? '20vw':'9vw'}}/>
                             <div key = {e.prodCdD + 'div1'}>{e.name}</div>
                             <div key = {e.prodCdD + 'div2'}>{'SIZE' + e.prodSize}</div>
                             <div key = {e.prodCdD + 'div3'} style={{display: 'flex', alignItems: 'center', border: '2px solid white'}}>

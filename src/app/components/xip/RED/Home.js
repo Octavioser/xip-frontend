@@ -12,18 +12,22 @@ const Home = () => {
     const [degree, setDegree] = useState('');
 
     useEffect(() => {
-        const handleMouseMove = (e) => {
-            let degree = calculateRotate(x, y, e.clientX, e.clientY)
-            setDegree(degree);
-            setX(e.clientX + 'px'); // 'px' 단위 명시
-            setY(e.clientY + 'px'); // 'px' 단위 명시
-        };
-        // Cleanup function
-        return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-        };
-    }, [x, y]); // 의존성 배열에 x, y, isMobile 추가
-
+            const handleMouseMove = (e) => {
+                let degree = calculateRotate(x, y, e.clientX, e.clientY);
+    
+                setDegree(degree); // 위치 설정
+                setX(e.clientX);
+                setY(e.clientY);
+            };
+    
+            window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    
+            // 컴포넌트 언마운트 시 이벤트 리스너 정리
+            return () => {
+                window.removeEventListener('mousemove', handleMouseMove);
+            };
+    }, [x, y]); // isMobile, x, y가 변경될 때마다 useEffect 실행
+    
     const calculateRotate = (oldX, oldY, x, y) => {   // 마우스 커서 꼬리 방향 구하기
         let radians = Math.atan2(x - oldX, y - oldY)
         let degree = ((radians * (180 / Math.PI) * -1) + 180) +'deg';
