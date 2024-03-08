@@ -1,9 +1,11 @@
 import { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+import {useCommon} from 'app/components/xip/REDCommon/Common'
 
 const Success = () => {
-    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
+
+    const { commonShowLoading, commonHideLoading, commonApi, navigate, commonRegion} = useCommon();
 
     useEffect(() => {
         // TODO: 쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.
@@ -15,25 +17,22 @@ const Success = () => {
         };
 
         const confirm = async() => {
-            const response = await fetch("/confirm", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestData),
-            });
-
-            const json = await response.json();
-
-            if (!response.ok) {
-            // TODO: 결제 실패 비즈니스 로직을 구현하세요.
-            console.log(json);
-            navigate(`/fail?message=${json.message}&code=${json.code}`);
-            return;
-            }
-
-            // TODO: 결제 성공 비즈니스 로직을 구현하세요.
-            console.log(json);
+            console.log(requestData)
+            // try{
+            //     await commonShowLoading();
+            //     let resultData = await commonApi('/shop/confirm', JSON.stringify(requestData));
+            //     console.log(resultData)
+            //     if (!resultData.ok) {
+            //         // TODO: 결제 실패 비즈니스 로직을 구현하세요.
+            //         console.log(resultData);
+            //         navigate(`/fail?message=${resultData.message}&code=${resultData.code}`);
+            //         return;
+            //     }
+            // } catch (error) {
+            //     console.log(error);
+            // } finally {
+            //     commonHideLoading();
+            // }
         }
         confirm();
         /* eslint-disable */

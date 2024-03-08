@@ -180,6 +180,7 @@ const Purchase = () => {
                             }}
                         >
                         </PBtn>
+                        <apple-pay-button buttonstyle="black" type="plain" locale="en-US"></apple-pay-button>
                     </div>
                 </div>
             </div>
