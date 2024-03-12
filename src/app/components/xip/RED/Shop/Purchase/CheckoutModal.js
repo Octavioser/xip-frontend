@@ -5,6 +5,7 @@ import {useCommon} from 'app/components/xip/REDCommon/Common';
 
 const CheckoutModal = (props) => {
 
+    console.log(props)
     
     const {commonRegion} = useCommon();
     return (
@@ -34,7 +35,10 @@ const CheckoutModal = (props) => {
             contentLabel="Pop up Message"
             shouldCloseOnOverlayClick={true} // 팝업창이 아닌 바깥부분 클릭시 닫히게 할것인지
         >
-        {commonRegion() === 'KOR' ? <CheckoutPage/> : <CheckoutPagePaypal/>}
+        {commonRegion() === 'KOR' ? 
+            <CheckoutPage item={props.prodItem} totalPrice={props.totalPrice} userItem={props.userItem} orderMethod={props.orderMethod}/> 
+            : 
+            <CheckoutPagePaypal item={props} totalPrice={props.totalPrice} userItem={props.userItem} orderMethod={props.orderMethod}/>}
         </Modal>
     )
 }

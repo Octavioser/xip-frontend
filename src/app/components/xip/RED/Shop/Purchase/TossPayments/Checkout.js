@@ -4,13 +4,13 @@ import { nanoid } from "nanoid";
 
 const selector = "#payment-widget";
 
-const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
+const clientKey = process.env.REACT_APP_API_TOSS_CLIENT_KEY;
 const customerKey = nanoid();
 
-const CheckoutPage = () => {
+const CheckoutPage = (props) => {
     const [paymentWidget, setPaymentWidget] = useState(null);
     const paymentMethodsWidgetRef = useRef(null);
-    const [price, setPrice] = useState(50_000);
+    const [price, setPrice] = useState(props.totalPrice); 
 
     useEffect(() => {
         const fetchPaymentWidget = async () => {
@@ -32,7 +32,7 @@ const CheckoutPage = () => {
 
         const paymentMethodsWidget = paymentWidget.renderPaymentMethods(
             selector,
-            { value: price },
+            { value: props.totalPrice },
             { variantKey: "DEFAULT" }
         );
 
@@ -54,15 +54,22 @@ const CheckoutPage = () => {
     const handlePaymentRequest = async () => {
         // TODO: 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
         // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
+        let orderName = '';
+        if(props.item.length > 1) {
+            orderName = (props?.item[0]?.name || '')  + ' 외' + (props?.item.length -1) + '건'
+        }
+        else {
+            orderName = props?.item[0]?.name || ''
+        }
         try {
             await paymentWidget?.requestPayment({
                 orderId: nanoid(),
-                orderName: "토스 티셔츠 외 2건",
-                customerName: "김토스",
-                customerEmail: "customer123@gmail.com",
-                customerMobilePhone: "01012341234",
-                successUrl: `${window.location.origin}/success`,
-                failUrl: `${window.location.origin}/fail`,
+                orderName: orderName,
+                customerName: props.userItem.firstNm + props.userItem.lastNm,
+                customerEmail: props.userItem.email,
+                customerMobilePhone: props.userItem.phone.replace('+82', '0'),
+                successUrl: `${window.location.origin}/shop/success/${props.orderMethod}`,
+                failUrl: `${window.location.origin}/shop/fail`,
             });
         } catch (error) {
             console.error("Error requesting payment:", error);

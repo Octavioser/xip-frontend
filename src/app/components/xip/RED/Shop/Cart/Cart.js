@@ -179,7 +179,7 @@ const Cart = () => {
         }
 
         // 장바구니 담기
-        navigate('/shop/purchase', {state: cartList})  // putchase에 state 값 넘겨주기
+        navigate('/shop/purchase', {state: {item:cartList, orderMethod:'cart'}})  // putchase에 state 값 넘겨주기
     }
 
     const productColumn = () => {

@@ -185,11 +185,3 @@ nav {
 ::-webkit-scrollbar-track {
   background-color: transparent; /* 트랙의 배경색을 투명하게 설정 */
 }
-
-apple-pay-button {
-  --apple-pay-button-width: 150px;
-  --apple-pay-button-height: 30px;
-  --apple-pay-button-border-radius: 3px;
-  --apple-pay-button-padding: 0px 0px;
-  --apple-pay-button-box-sizing: border-box;
-}

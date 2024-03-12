@@ -61,19 +61,18 @@ const ProductDescription = (props) => {
     }
 
     const clickPurchase = async() => {  // add to cart 클릭시
+
         if(!getCookie('xipToken')) {
             setLoginModal(true);
         }
         else {
             if(!prodCdD) {
-                alert('Please select a product before adding to cart.')
+                alert('Please select a product.')
                 return;
             }
             let item = [{...props.productListItem.find(e => e.prodCdD === prodCdD), prodQty: 1}]
-            
-
             // 장바구니 담기
-            navigate('/shop/purchase', {state: item})  // putchase에 state 값 넘겨주기
+            navigate('/shop/purchase', {state:{item:item, orderMethod:prodCdD}})  // putchase에 state 값 넘겨주기
         }
     }
 

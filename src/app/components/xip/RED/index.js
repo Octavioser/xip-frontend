@@ -23,6 +23,10 @@ export { default as Purchase } from './Shop/Purchase/Purchase';
 export { default as OrderDetails } from './Shop/Account/OrderHistory/OrderDetails';
 export { default as OrderHistory } from './Shop/Account/OrderHistory/OrderHistory';
 export { default as Xipengineering } from './Xipengineering/Xipengineering';
+export { default as Service } from './Shop/Service/Service';
+export { default as TermsOfUse } from './Shop/Service/TermsOfUse';
+export { default as Privacy } from './Shop/Service/Privacy';
+export { default as ShipReturn } from './Shop/Service/ShipReturn';
 
 
 

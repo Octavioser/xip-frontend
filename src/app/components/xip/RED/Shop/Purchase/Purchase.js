@@ -34,14 +34,15 @@ const Purchase = () => {
         if(!getCookie('xipToken')) {
             navigate('/shop')
         }
-        if(!state || state.length < 1) {
+        console.log(state)
+        if(!state || state['item'].length < 1 || !state['orderMethod'] ) {
             navigate('/shop')
         } 
         else{
             let qty = 0;
             let subTotalPrice = 0;   // 제품가격
             let subTotalUSPrice = 0;   // 달러 제품가격       
-            state.forEach(e => {
+            state['item'].forEach(e => {
                 qty = qty + e.prodQty
                 subTotalPrice = subTotalPrice + e.price * e.prodQty
                 subTotalUSPrice = subTotalUSPrice + e.usPrice * e.prodQty
@@ -49,7 +50,7 @@ const Purchase = () => {
             setOrderQty(qty)
             setSubOrderTotalPrice(subTotalPrice)
             setSubOrderTotalUsPrice(subTotalUSPrice)
-            setItemList(state)
+            setItemList(state['item'])
         }
     },[state,getCookie, navigate])
 
@@ -176,16 +177,27 @@ const Purchase = () => {
                             }}
                             labelText= 'CHECKOUT'
                             onClick={() => {
+                                if(commonRegion()  === 'KOR')
                                 clickCheckOut();
                             }}
                         >
                         </PBtn>
-                        <apple-pay-button buttonstyle="black" type="plain" locale="en-US"></apple-pay-button>
                     </div>
                 </div>
             </div>
             {  modal &&
-                <CheckoutModal seModal={seModal} userItem={userItem}/>
+                <CheckoutModal 
+                    seModal={seModal} 
+                    userItem={userItem} 
+                    prodItem={itemList} 
+                    orderMethod={state['orderMethod']}
+                    totalPrice={   
+                        commonRegion()  === 'KOR' ?
+                        orderSubTotalPrice + shippingPrice
+                        :
+                        orderSubTotalUsPrice + shippingPrice
+                    }
+                    />
             }
         </div>
       );

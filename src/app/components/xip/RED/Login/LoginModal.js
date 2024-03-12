@@ -129,10 +129,18 @@ const LoginModal = (props) => {
        
     };
 
+    const afterOpenModal = () => {
+        let modalContent = document.querySelector('.ReactModal__Content--after-open');
+        if (modalContent) {
+            modalContent.scrollTop = 0;
+        }
+    };
+
     return (
         <Modal 
             isOpen={true} 
             onRequestClose={() => props.loginModalBtn()}
+            onAfterOpen={afterOpenModal}
             style={{
                 overlay: {
                     position: 'fixed',
@@ -175,7 +183,7 @@ const LoginModal = (props) => {
         {(showCreateAccount ||  showWebAuthn || showForgotPassword)?
         <>
             { showCreateAccount &&
-                <CreateAccount loginModalBtn={props.loginModalBtn} email={email} setMsg={setMsg}/>
+                <CreateAccount loginModalBtn={props.loginModalBtn} email={email} setMsg={setMsg} afterOpenModal={afterOpenModal}/>
             }
             { showWebAuthn &&
                 <WebAuthn loginModalBtn={props.loginModalBtn} email={email} setMsg={setMsg} webAuthLogin={webAuthLogin}/>

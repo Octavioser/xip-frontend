@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { PBtn } from '../../REDCommon/CommonStyle';
 import {useCommon} from '../../REDCommon/Common';
 import EmailAuthCode from 'app/components/xip/RED/Login/EmailAuthCode';
+import TermsOfUse from 'app/components/xip/RED/Shop/Service/TermsOfUse'
+import Privacy from 'app/components/xip/RED/Shop/Service/Privacy';
 
 const CreateAccount = (props) => {
 
@@ -12,6 +14,8 @@ const CreateAccount = (props) => {
     const [confirmPw, setConfirmPw] = useState('');                       // 확인 비밀번호
     const [firstNm, setFirstNm] = useState('');            // 이름(성) 
     const [lastNm, setLastNm] = useState('');            // 이름
+    const [termsofuse, setTermsofuse] = useState(false);            // 이용약관 동의
+    const [privacy, setPrivacy] = useState(false);            // 개인정보 동의
 
 
     const [authCd, setAuthCd] = useState('');            // 이메일 코드
@@ -40,7 +44,7 @@ const CreateAccount = (props) => {
             param: async () => {
                 const encodePw = await commonEncode(pw);
                 return (
-                    {email: email, pw: encodePw, firstNm:firstNm, lastNm:lastNm, authCd: authCd}
+                    {email: email, pw: encodePw, firstNm:firstNm, lastNm:lastNm, authCd: authCd ,termsofuse: termsofuse ? 1:0, privacy: privacy ? 1:0}
                 )
             }
         }
@@ -107,6 +111,7 @@ const CreateAccount = (props) => {
 
     // 회원가입 버튼
     const creatBtn = async() => {
+        props.afterOpenModal();
         let msg = ''
         const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
         if (!emailRegex.test(email)) { // 이메일 유효성 검사
@@ -141,6 +146,14 @@ const CreateAccount = (props) => {
             return
         }
 
+        //동의
+
+        if(!termsofuse || !privacy) {
+            msg = 'Please check to agree.'
+            props.setMsg(msg)
+            return
+        }
+
         // 회원가입
         try{
             await commonShowLoading();
@@ -167,107 +180,143 @@ const CreateAccount = (props) => {
 
 
     return (
-        <div style={{display: 'grid', justifyContent: 'center', width:'100%', height:'80%'}}>
+        <div style={{display: 'flex', justifyContent: 'center', width:'100%', minHeight:'80%'}}>
             <div style={{ width: '100%', textAlign: 'center'}}>
                 <p style={{color:'black'}}>Create a XIP Account</p>
-                
                 { (page1 || page3) &&  // 이메일 input
-                    <>
-                        <p style={{textAlign: 'left'}}>EMAIL</p>
-                        <input 
-                            id='email'
-                            type='email'
-                            name='email'
-                            style={{width: '100%'}} 
-                            value={email}
-                            disabled={!page1}
-                            maxLength="50"
-                            onChange={(e)=>{         
-                                setEmail(e.target.value.trim())
-                            }}
-                            onKeyUp={(e)=> {  
-                                if(e.code === "Enter" && email) {
-                                    continueBtn(); // 엔터 클릭
-                                }
-                            }}
-                        />
-                    </>
+                    <div style={{display: 'flex', justifyContent: 'center', width:'100%'}}>
+                        <div style={{width:'60%'}}>
+                            <p style={{textAlign: 'left'}}>EMAIL</p>
+                            <input 
+                                id='email'
+                                type='email'
+                                name='email'
+                                style={{width: '100%'}} 
+                                value={email}
+                                disabled={!page1}
+                                maxLength="50"
+                                onChange={(e)=>{         
+                                    setEmail(e.target.value.trim())
+                                }}
+                                onKeyUp={(e)=> {  
+                                    if(e.code === "Enter" && email) {
+                                        continueBtn(); // 엔터 클릭
+                                    }
+                                }}
+                            />
+                        </div>
+                    </div>
                 }
                 { page2 && // 새로운 이메일한테 인증번호 보낸 상태
-                        <EmailAuthCode checkAuthCodeBtn={continueBtn}/>
+                    <EmailAuthCode checkAuthCodeBtn={continueBtn}/>
                 }
                 { page3 && // 회원가입이 가능한 이메일이면
                 <>
-                    <p style={{textAlign: 'left'}}>PASSWORD</p>  
-                    <form onSubmit={handleSubmit}>
+                    <div style={{display: 'flex', justifyContent: 'center', width:'100%'}}>
+                        <div style={{width:'60%'}}>
+                            <p style={{textAlign: 'left'}}>PASSWORD</p>  
+                            <form onSubmit={handleSubmit}>
+                                <input 
+                                    id='password' 
+                                    type='password'
+                                    autoComplete="off"
+                                    style={{width: '100%'}} 
+                                    value={pw}
+                                    maxLength="50"
+                                    onChange={(e)=>{
+                                        setPw(e.target.value.trim())
+                                    }}
+                                    onKeyUp={(e)=> {  
+                                        if(e.code === "Enter") {
+                                            creatBtn(); // 엔터 클릭
+                                        }
+                                    }}
+                                />
+                            </form>
+                            <p style={{textAlign: 'left'}}>CONFIRM PASSWORD</p>  
+                            <form onSubmit={handleSubmit}>
+                                <input 
+                                    id='confirm password' 
+                                    type='password'
+                                    autoComplete="off"
+                                    style={{width: '100%'}} 
+                                    value={confirmPw}
+                                    maxLength="50"
+                                    onChange={(e)=>{
+                                        setConfirmPw(e.target.value.trim())
+                                    }}
+                                    onKeyUp={(e)=> {  
+                                        if(e.code === "Enter") {
+                                            creatBtn(); // 엔터 클릭
+                                        }
+                                    }}
+                                />
+                            </form>
+                            <p style={{textAlign: 'left'}}>FIRST NAME</p>  
+                            <input 
+                                id='firstNm' 
+                                type='text' 
+                                style={{width: '100%'}} 
+                                value={firstNm}
+                                maxLength="20"
+                                onChange={(e)=>{
+                                    setFirstNm(e.target.value)
+                                }}
+                                onKeyUp={(e)=> {  
+                                    if(e.code === "Enter") {
+                                        creatBtn(); // 엔터 클릭
+                                    }
+                                }}
+                            />
+                            <p style={{textAlign: 'left'}}>LAST NAME</p>  
+                            <input 
+                                id='lastNm' 
+                                type='text' 
+                                style={{width: '100%'}} 
+                                value={lastNm}
+                                maxLength="20"
+                                onChange={(e)=>{
+                                    setLastNm(e.target.value)
+                                }}
+                                onKeyUp={(e)=> {  
+                                    if(e.code === "Enter") {
+                                        creatBtn(); // 엔터 클릭
+                                    }
+                                }}
+                            />
+                        </div>
+                    </div>
+                    <p>AGREEMENT</p>
+                    <div style={{border: '1px solid #FFFFFF', height:'20vh', overflowY:'scroll'}}>
+                        <TermsOfUse type={'menu'}></TermsOfUse>
+                    </div>
+                    <div style={{display:'flex', fontSize:'0.7rem'}}>
+                        <p>I have read and agree to the user agreement.</p> 
                         <input 
-                            id='password' 
-                            type='password'
-                            autoComplete="off"
-                            style={{width: '100%'}} 
-                            value={pw}
-                            maxLength="50"
-                            onChange={(e)=>{
-                                setPw(e.target.value.trim())
-                            }}
-                            onKeyUp={(e)=> {  
-                                if(e.code === "Enter") {
-                                    creatBtn(); // 엔터 클릭
-                                }
-                            }}
-                        />
-                    </form>
-                    <p style={{textAlign: 'left'}}>CONFIRM PASSWORD</p>  
-                    <form onSubmit={handleSubmit}>
+                        type="checkbox"
+                        value={termsofuse}
+                        checked={termsofuse}
+                        onChange={() => {
+                            setTermsofuse(!termsofuse)
+                        }}>
+                        </input>
+                    </div>
+                    <p>PRIVACY POLICY</p>
+                    <div style={{border: '1px solid #FFFFFF', height:'20vh', overflowY:'scroll'}}>
+                        <Privacy type={'menu'}></Privacy>
+                    </div>
+                    <div style={{display:'flex', fontSize:'0.7rem'}}>
+                        <p>I have read and agree to the user agreement.</p> 
                         <input 
-                            id='confirm password' 
-                            type='password'
-                            autoComplete="off"
-                            style={{width: '100%'}} 
-                            value={confirmPw}
-                            maxLength="50"
-                            onChange={(e)=>{
-                                setConfirmPw(e.target.value.trim())
-                            }}
-                            onKeyUp={(e)=> {  
-                                if(e.code === "Enter") {
-                                    creatBtn(); // 엔터 클릭
-                                }
-                            }}
-                        />
-                    </form>
-                    <p style={{textAlign: 'left'}}>FIRST NAME</p>  
-                    <input 
-                        id='firstNm' 
-                        type='text' 
-                        style={{width: '100%'}} 
-                        value={firstNm}
-                        maxLength="20"
-                        onChange={(e)=>{
-                            setFirstNm(e.target.value)
-                        }}
-                        onKeyUp={(e)=> {  
-                            if(e.code === "Enter") {
-                                creatBtn(); // 엔터 클릭
-                            }
-                        }}
-                    />
-                    <p style={{textAlign: 'left'}}>LAST NAME</p>  
-                    <input 
-                        id='lastNm' 
-                        type='text' 
-                        style={{width: '100%'}} 
-                        value={lastNm}
-                        maxLength="20"
-                        onChange={(e)=>{
-                            setLastNm(e.target.value)
-                        }}
-                        onKeyUp={(e)=> {  
-                            if(e.code === "Enter") {
-                                creatBtn(); // 엔터 클릭
-                            }
-                        }}
-                    />
+                        type="checkbox"
+                        value={privacy}
+                        checked={privacy}
+                        onChange={() => {
+                            setPrivacy(!privacy)
+                        }}>
+                        </input>
+                        <p>YES</p>
+                    </div>
                 </>
                 }
                 <p></p>
@@ -287,6 +336,7 @@ const CreateAccount = (props) => {
                     >
                     </PBtn>
                 }       
+            <div style={{width:'100%', height:'10%'}}></div>    
             </div>
         </div>
     )

@@ -5,10 +5,12 @@ import { AppProvider, useAppContext } from 'app/components/xip/REDCommon/CommonC
 import {
     Loading, ConfirmModal,
     Credit, Works, Video, StartPage, Home, NotFound,Masterinnovation,MasterinnovationBunka,Gallery, Shop, MainBtn, MusicBtn,
-    ProductList, Account, AccountDetails, DetailProduct, Cart, OrderHistory, Purchase, OrderDetails, Xipengineering} from 'app/components/xip/RED'; //index.js
+    ProductList, Account, AccountDetails, DetailProduct, Cart, OrderHistory, Purchase, OrderDetails, Xipengineering, Service, 
+    TermsOfUse, Privacy, ShipReturn} from 'app/components/xip/RED'; //index.js
 
 import Success from 'app/components/xip/RED/Shop/Purchase/TossPayments/Success.js'
-import Fail from 'app/components/xip/RED/Shop/Purchase/TossPayments/Fail.js'    
+import { PBtn } from 'app/components/xip/REDCommon/CommonStyle';
+import { useCommon }  from 'app/components/xip/REDCommon/Common';
 
 function preloadImage(url) { // 이미지 미리 불러오기
     const img = new Image();
@@ -29,6 +31,8 @@ const Root = () => {
     const [startClickValue, setStartClickValue] = useState('0'); // 처음시작화면 클릭했는지 
 
     const [display, setDisPlay] = useState(false);  // 음악아이콘 상태
+
+    const { navigate } = useCommon();
         
       
     useEffect(() => { // 스크롤 초기화
@@ -116,8 +120,11 @@ const Root = () => {
                     <Route path="detailproduct/:prodCd" element={<DetailProduct/>}/>
                     <Route path="cart" element={<Cart/>}/>
                     <Route path="purchase" element={<Purchase/>}/>
-                    <Route path="success" element={<Success/>}/>
-                    <Route path="fail" element={<Fail/>}/>
+                    <Route path="success/:orderMethod" element={<Success/>}/>
+                    <Route path="service" element={<Service/>}/>
+                    <Route path="termsofuse" element={<TermsOfUse/>}/>
+                    <Route path="privacy" element={<Privacy/>}/>
+                    <Route path="ShipReturn" element={<ShipReturn/>}/>
                 </Route>
                 <Route path="/xipengineering" element={<Xipengineering/>}/>
                 {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
@@ -125,15 +132,14 @@ const Root = () => {
             </Routes>
             {pathname.substring(0,5).toLowerCase() === '/shop'  && 
                 <div style={{position: 'relative', bottom:0, left:0, width:'100%', minHeight:'7vh', fontSize:'0.7rem', textAlign:'center'}}>
-                    <p style={footerStyle}><span style={{fontSize:'1rem'}}>ⓒ XIP</span> BUSINESS NUMBER 424-19-02088 | MAIL-ORDER-SALES REGISTRATION NUMBER 제2020-서울강남-01164호 |  CEO PARK JUNHEE</p>
+                    <p style={footerStyle}><span style={{fontSize:'1rem'}}>ⓒ XIP</span> BUSINESS NUMBER 424-19-02088 | MAIL-ORDER-SALES REGISTRATION NUMBER 2024-성남분당A-0198 |  CEO PARK JUNHEE</p>
                     <p style={footerStyle}>804-52, 124, Unjung-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea</p>
-                    <a style={footerStyle} href="https://pages.tosspayments.com/terms/onboarding" rel="noreferrer noopener" target="_blank">AGREEMENT</a>
+                    <div style={{display:'flex', justifyContent:'center'}}>
+                        <PBtn  style={footerStyle} labelText='AGREEMENT' onClick={()=>navigate('/shop/termsofuse')}></PBtn>
+                        <PBtn  style={footerStyle} labelText='PRIVACY' onClick={()=>navigate('/shop/privacy')}></PBtn>
+                        <PBtn  style={footerStyle} labelText='SHIPPING & RETURN POLICY' onClick={()=>navigate('/shop/shipReturn')}></PBtn>
+                    </div>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <a style={footerStyle} href="https://pages.tosspayments.com/terms/homepage/privacy/policy" rel="noreferrer noopener" target="_blank">
-                        <strong>PRIVACY</strong>
-                    </a>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <a style={footerStyle} href="https://pages.tosspayments.com/terms/user" rel="noreferrer noopener" target="_blank">SHIPPING & RETURN POLICY</a>
                 </div>
             }
         </>

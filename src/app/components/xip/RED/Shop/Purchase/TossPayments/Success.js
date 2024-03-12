@@ -1,11 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import {useCommon} from 'app/components/xip/REDCommon/Common'
+import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
+import { useParams } from 'react-router-dom';
 
 const Success = () => {
     const [searchParams] = useSearchParams();
+    const {orderMethod} = useParams();
 
-    const { commonShowLoading, commonHideLoading, commonApi, navigate, commonRegion} = useCommon();
+    const { commonShowLoading, commonHideLoading, commonApi, navigate} = useCommon();
+
+    const [orderCd, setOrderCd] = useState();
+    const [price, setPrice] = useState();
 
     useEffect(() => {
         // TODO: 쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.
@@ -17,44 +23,72 @@ const Success = () => {
         };
 
         const confirm = async() => {
-            console.log(requestData)
-            // try{
-            //     await commonShowLoading();
-            //     let resultData = await commonApi('/shop/confirm', JSON.stringify(requestData));
-            //     console.log(resultData)
-            //     if (!resultData.ok) {
-            //         // TODO: 결제 실패 비즈니스 로직을 구현하세요.
-            //         console.log(resultData);
-            //         navigate(`/fail?message=${resultData.message}&code=${resultData.code}`);
-            //         return;
-            //     }
-            // } catch (error) {
-            //     console.log(error);
-            // } finally {
-            //     commonHideLoading();
-            // }
+            try{
+                await commonShowLoading();
+                let resultData = await commonApi('/payment/payC101', {...requestData, orderMethod:orderMethod, pgName:'TOSS'});
+                if (resultData === -2) {
+                    // TODO: 결제 실패 비즈니스 로직을 구현하세요.
+                    if(orderMethod === 'cart') {
+                        navigate('/shop/cart')
+                    }
+                    else {
+                        navigate(`/shop/detailproduct/${orderMethod}`)
+                    }
+                    setTimeout(() => alert("Payment failed. Please try again."), 100); // 100ms 후에 실행
+                    return;
+                }
+                setOrderCd(resultData.orderCd)
+                let price = '₩' + (Number(requestData.amount)).toLocaleString()
+                setPrice(price)
+            } catch (error) {
+                console.log(error);
+            } finally {
+                commonHideLoading();
+            }
         }
         confirm();
         /* eslint-disable */
     }, []);
 
     return (
-        <div className="result wrapper">
-            <div className="box_section">
-                <h2 style={{ padding: "20px 0px 10px 0px" }}>
-                <img
-                    width="35px"
-                    src="https://static.toss.im/3d-emojis/u1F389_apng.png"
-                />
-                    결제 성공
-                </h2>
-                <p>{`주문번호: ${searchParams.get("orderId")}`}</p>
-                <p>{`결제 금액: ${Number(
-                searchParams.get("amount")
-                ).toLocaleString()}원`}</p>
-                <p>{`paymentKey: ${searchParams.get("paymentKey")}`}</p>
+        <>
+            <div style={{width:'100%', height:'20vh'}}></div>
+            <div style={{display:'flex', width:'100%', minHeight:'80vh', justifyContent:'center', textAlign:'center'}}>
+                <div  style={{width:'50%'}}>
+                    <img 
+                        style={{width: '50%'}}
+                        src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/order/xiplogo.webp'} 
+                        alt="logo"
+                    />
+                    <h2 style={{ padding: "20px 0px 10px 0px" }}>
+                        Order Complete
+                    </h2>
+                    <div style={{display:'flex', width:'100%', justifyContent:'center', textAlign:'center'}}>
+                        <div style={{width:'50%',color:'black', textAlign:'left'}}>
+                            <p>{`Order Number: #XIP-${orderCd}`}</p>
+                            <p>{`Price: ${price}`}</p>
+                        </div>
+                    </div>
+                    <div style={{display:'flex', width:'100%', justifyContent:'center', textAlign:'center'}}>
+                        <div style={{width:'50%'}}>
+                        <PBtn 
+                            className= 'pBtnNoRed'
+                            style={{ 
+                                padding: '3px 6px',
+                                border: '2px solid white',  
+                                fontSize: '2rem'
+                            }}
+                            labelText= 'CHECK STATUS'
+                            onClick={() => {
+                                navigate(`/shop/account/orderdetails/${orderCd}`)
+                            }}
+                        >
+                        </PBtn>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 export default Success

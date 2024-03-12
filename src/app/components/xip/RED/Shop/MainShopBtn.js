@@ -30,7 +30,7 @@ const MainShopBtn = () => {
             {id: 3, key:'25SS', name: 'S/S 2025'}
         ]
         return(
-            <div key={'div1'} style={{width:'30vw', textAlign:'left',paddingLeft:'30px'}}>
+            <div key={'div1'} style={{textAlign:'left',paddingLeft:'30px'}}>
                 <p key='empty' style={{fontSize: '5px'}}></p>
                 <PBtn //상품 나열 버튼
                     id='all'
@@ -70,7 +70,7 @@ const MainShopBtn = () => {
         <>
             {/* x 메뉴버튼 */}
             <nav>
-                <div style={{position: 'fixed', left:isMobile? '5vw':'1vw', top:isMobile? '4vw': '1vw', width:'30vw'}}>
+                <div style={{position: 'fixed', left:isMobile? '5vw':'1vw', top:isMobile? '4vw': '1vw', width:'10%'}}>
                     {/* 홈화면이면 리스트를 보여주고 아니면 뒤로가기 */}
                     <ImgBtn  //맨 왼쪽 위 메뉴 버튼
                         src={menuMainBtn} 
@@ -123,6 +123,7 @@ const MainShopBtn = () => {
                                     style={{fontSize: mainfont}}
                                     onClick={() =>{
                                         let menuValue = menuOpen === '1' ? '0' : '1'
+                                        navigate('/shop/service')
                                         setMenuOpen(menuValue)
                                     }}
                                     >
