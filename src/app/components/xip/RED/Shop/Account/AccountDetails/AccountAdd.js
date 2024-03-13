@@ -3,8 +3,6 @@ import {useCommon} from 'app/components/xip/REDCommon/Common';
 import { useCookie } from 'app/components/xip/RED/Login/Cookie';
 import { PBtn, ImgBtn } from 'app/components/xip/REDCommon/CommonStyle'
 import { isMobile } from 'react-device-detect';
-import { PhoneInput } from 'react-international-phone';
-import 'react-international-phone/style.css';
 
 const AccountAdd = (props) => {
     const [userItem, setUserItem] = useState(props.userItem);
@@ -70,6 +68,14 @@ const AccountAdd = (props) => {
         //  전화번호 검사
         if(phone.trim() === '') {
             message = 'Enter your phone number.'
+            setMsg(message)
+            return
+        }
+
+        const phoneRegex = /^01(?:0|1|[6-9])(?:\d{3}|\d{4})\d{4}$/
+
+        if(!phoneRegex.test(phone)) {
+            message = 'Please enter the number in the format: XXX-XXX-XXXX.'
             setMsg(message)
             return
         }
@@ -165,13 +171,6 @@ const AccountAdd = (props) => {
             }
             return (
                 <div style={{ display:'flex', width: 'auto', flexGrow: 1, marginLeft: isMobile? '' :'10%', height: heigthLength, justifyContent: isMobile? 'center' :'left', alignItems: 'center'}}>
-                {id === 'phone' ? 
-                    <PhoneInput
-                        defaultCountry="kr"
-                        value={value}
-                        onChange={(e) => setUserEditItem({...userEditItem, [id]:e})}
-                    />
-                    :
                     <input 
                         type={"text"}
                         style={{ width: inputWidth}} 
@@ -191,7 +190,6 @@ const AccountAdd = (props) => {
                         }}
                         >
                     </input>
-                }
                 </div>
             )
         },
@@ -205,16 +203,16 @@ const AccountAdd = (props) => {
         setCountryDropDown: () => {
             const countries = [
                 { name: "South Korea", iso2: "KR", iso3: "KOR" }, // 대한민국을 첫 번째로 배치
-                { name: "Australia", iso2: "AU", iso3: "AUS" },
-                { name: "Canada", iso2: "CA", iso3: "CAN" },
-                { name: "China", iso2: "CN", iso3: "CHN" },
-                { name: "France", iso2: "FR", iso3: "FRA" },
-                { name: "Germany", iso2: "DE", iso3: "DEU" },
-                { name: "Hong Kong", iso2: "HK", iso3: "HKG" },
-                { name: "Japan", iso2: "JP", iso3: "JPN" },
-                { name: "Spain", iso2: "ES", iso3: "ESP" },
-                { name: "United Kingdom", iso2: "GB", iso3: "GBR" },
-                { name: "United States", iso2: "US", iso3: "USA" }
+                // { name: "Australia", iso2: "AU", iso3: "AUS" },
+                // { name: "Canada", iso2: "CA", iso3: "CAN" },
+                // { name: "China", iso2: "CN", iso3: "CHN" },
+                // { name: "France", iso2: "FR", iso3: "FRA" },
+                // { name: "Germany", iso2: "DE", iso3: "DEU" },
+                // { name: "Hong Kong", iso2: "HK", iso3: "HKG" },
+                // { name: "Japan", iso2: "JP", iso3: "JPN" },
+                // { name: "Spain", iso2: "ES", iso3: "ESP" },
+                // { name: "United Kingdom", iso2: "GB", iso3: "GBR" },
+                // { name: "United States", iso2: "US", iso3: "USA" }
             ];
 
             const handleChange = (e) => {
@@ -229,6 +227,7 @@ const AccountAdd = (props) => {
                 <div style={{ display:'flex', width: 'auto', flexGrow: 1, marginLeft: isMobile? '' :'10%', height: heigthLength, justifyContent: isMobile? 'center' :'left', alignItems: 'center'}}>
                     <select  
                         style={{ width: '67%'}}
+                        disabled={true}
                         onChange={(e)=>{
                             handleChange(e)
                         }}

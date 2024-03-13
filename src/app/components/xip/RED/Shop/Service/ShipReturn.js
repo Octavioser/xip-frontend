@@ -1,9 +1,11 @@
 const ShipReturn = (props) => {
     return (
         <>
-        <div style={{width:'100%', height:'10vh'}}></div>
+        {props.type!=='menu' && <div style={{width:'100%', height:'10vh'}}></div>}
         <div style={{display:'flex', width:'100%', minHeight:'90vh', justifyContent:'center', fontSize:'0.7rem'}}>
             <div style={{width: props.type==='menu' ? '100%' : '50%'}}>
+                <h1>배송안내</h1>
+                <p>주문하신 제품의 국내 배송 예상 소요 시간은 평일 기준으로 약 3~5일입니다.</p>
                 <h1>교환 / 반품 안내</h1>
                 <p>단순 변심으로 인한 교환 반품은 제품 수령일로부터 7일 이내 가능합니다. 제품의 하자 및 오배송에 대해서 교환 및 반품이 가능하지만 사이즈 교환, 단순변심으로 인한 교환 및 환불은 배송비를 부담해 주셔야 합니다. 배송 중 상품이 훼손되지 않도록 포장해 주십시오.</p>
                 <p></p>

@@ -4,6 +4,7 @@ import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 import LoginModal from 'app/components/xip/RED/Login/LoginModal';
 import { isMobile } from 'react-device-detect';
 import {useCommon} from 'app/components/xip/REDCommon/Common';
+import ShipReturn from '../Service/ShipReturn';
 
 
 const ProductDescription = (props) => {
@@ -13,6 +14,7 @@ const ProductDescription = (props) => {
     const {getCookie, removeCookie} = useCookie();
 
     const [loginModal, setLoginModal] = useState(false);
+    const [showShipReturn, setShowShipReturn] = useState(false);
 
     const { commonShowLoading, commonHideLoading, commonApi, navigate , commonRegion} = useCommon();
 
@@ -204,6 +206,17 @@ const ProductDescription = (props) => {
 
                 <ul style={{ listStyle: 'none', padding: '0', textAlign: isMobile?'center':'left' }}>
                     {getProdDescD()}
+                    <PBtn 
+                        className='pBtnNoHover' 
+                        style={{fontSize:'1rem', fontWeight:'600', border: '1.5px solid black',display: 'inline-block', padding: '2px 4px',}} 
+                        labelText='NOTICE'
+                        onClick={()=>{
+                            setShowShipReturn(!showShipReturn);
+                        }}
+                        >
+                        
+                    </PBtn>
+                    {showShipReturn && <ShipReturn type='menu'/>}
                     <br/><br/><br/><br/><br/>
                 </ul>
             </>

@@ -211,7 +211,6 @@ export const XBTDataGrid = (props) => {
                                 )
                             }
                             if(j.type === 'link') {
-                                console.log(j.labelText)
                                 return (
                                     <td key={'link' + [j.name] + index} style={{ border: '2px solid #E8E8E8'}}>
                                         <PBtn

@@ -240,8 +240,6 @@ const XIP3020 = () => {
 
                 prodCdD:prodCdD,
             };
-            
-            console.log({...param, ...imgItem})
 
             commonConfirm(<><p>제품코드: {param.prodCd}</p>  <p>저장하시겠습니까?</p></>, () => {insertProdApi(param, imgItem)});
         } catch (error) {

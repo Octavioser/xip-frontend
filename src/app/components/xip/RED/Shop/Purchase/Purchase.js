@@ -22,7 +22,7 @@ const Purchase = () => {
 
     const [orderSubTotalUsPrice, setSubOrderTotalUsPrice] = useState(0);
 
-    const [shippingPrice, setShippingPrice] = useState(3000);
+    const [shippingPrice, setShippingPrice] = useState(0);
 
     const {getCookie, removeCookie} = useCookie();
 
@@ -34,7 +34,6 @@ const Purchase = () => {
         if(!getCookie('xipToken')) {
             navigate('/shop')
         }
-        console.log(state)
         if(!state || state['item'].length < 1 || !state['orderMethod'] ) {
             navigate('/shop')
         } 
@@ -86,13 +85,13 @@ const Purchase = () => {
             <> 
                 {list.map((e, index)=>
                     <div key={index} style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center',margin: '7px',}}>
-                        <span>{e.name}</span>
-                        <span>{'SIZE ' + e.prodSize}</span>
-                        <span >{e.prodQty}</span>
+                        <span style={{width:'30%'}}>{e.name}</span>
+                        <span style={{width:'30%'}}>{'SIZE ' + e.prodSize}</span>
+                        <span style={{width:'10%' , textAlign:'center'}}>{e.prodQty}</span>
                         {   commonRegion()  === 'KOR' ?
-                            <span>{'₩' + e.price}</span>
+                            <span style={{width:'30%', textAlign:'right'}}>{'₩' + e.price}</span>
                             :
-                            <span>{'$' + e.usPrice}</span>
+                            <span style={{width:'30%'}}>{'$' + e.usPrice}</span>
                         }
                     </div>
                 )}
@@ -167,7 +166,7 @@ const Purchase = () => {
                     </div>
                     <div style={{display:'flex', height:'50%',justifyContent: 'center',alignItems: 'center'}}>
                         <PBtn 
-                            className= 'pBtnNoRed'
+                            className= {commonRegion() === 'KOR' ?'pBtnNoRed' : 'pBtnNoHover'}
                             style={{
                                 textAlign: 'center', 
                                 display: 'inline-block', 
@@ -175,7 +174,7 @@ const Purchase = () => {
                                 border: '2px solid white',  
                                 fontSize: '2rem'
                             }}
-                            labelText= 'CHECKOUT'
+                            labelText= {commonRegion() === 'KOR' ?'CHECKOUT' :'Preparing'}
                             onClick={() => {
                                 if(commonRegion()  === 'KOR')
                                 clickCheckOut();

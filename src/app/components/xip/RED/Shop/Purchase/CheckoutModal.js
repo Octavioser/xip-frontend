@@ -4,8 +4,6 @@ import CheckoutPagePaypal from './TossPayments/CheckoutPaypal';
 import {useCommon} from 'app/components/xip/REDCommon/Common';
 
 const CheckoutModal = (props) => {
-
-    console.log(props)
     
     const {commonRegion} = useCommon();
     return (

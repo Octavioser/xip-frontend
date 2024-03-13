@@ -156,8 +156,8 @@ const LoginModal = (props) => {
                     top: '50%',    /* 위에서 중앙*/
                     width: isMobile? '90vw':'25vw',
                     height: isMobile? '80vh':'80vh',
-                    backgroundColor: 'rgba(255, 0, 0, 0.66)',
-                    transform: 'translate(-50%, -50%)'
+                    backgroundColor: 'rgba(255, 0, 0, 0.7)',
+                    transform: 'translate(-50%, -50%)',
                 }
             }}
             ariaHideApp={false}

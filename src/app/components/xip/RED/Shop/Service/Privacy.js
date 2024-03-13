@@ -1,7 +1,7 @@
 const Privacy = (props) => {
     return (
         <>
-        <div style={{width:'100%', height:'10vh'}}></div>
+        {props.type!=='menu' &&<div style={{width:'100%', height:'10vh'}}></div>}
         <div style={{display:'flex', width:'100%', minHeight:'90vh', justifyContent:'center', fontSize:'0.7rem'}}>
             <div style={{width: props.type==='menu' ? '100%' : '50%'}}>
             <h1>개인정보취급정책</h1>

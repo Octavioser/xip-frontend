@@ -55,8 +55,12 @@ const CheckoutPage = (props) => {
         // TODO: 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
         // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
         let orderName = '';
-        if(props.item.length > 1) {
-            orderName = (props?.item[0]?.name || '')  + ' 외' + (props?.item.length -1) + '건'
+        let prodQty = 0
+        props.item.forEach(e => {
+            prodQty = prodQty + e.prodQty
+        });
+        if(prodQty > 1) {
+            orderName = (props?.item[0]?.name || '')  + ' 외' + (prodQty -1) + '건'
         }
         else {
             orderName = props?.item[0]?.name || ''
@@ -67,7 +71,7 @@ const CheckoutPage = (props) => {
                 orderName: orderName,
                 customerName: props.userItem.firstNm + props.userItem.lastNm,
                 customerEmail: props.userItem.email,
-                customerMobilePhone: props.userItem.phone.replace('+82', '0'),
+                customerMobilePhone: props.userItem.phone,
                 successUrl: `${window.location.origin}/shop/success/${props.orderMethod}`,
                 failUrl: `${window.location.origin}/shop/fail`,
             });

@@ -25,7 +25,6 @@ const XIP2020Dialog = (props) => {
                     navigate('/shop')
                 }
                 else if(resultData.length > 0) {
-                    console.log(resultData[0]?.trackingNum || '')
                     setTrackingNum(resultData[0]?.trackingNum || '')
                     setTrackItem(resultData[0])
                 }
