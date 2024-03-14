@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import {useCommon} from 'app/components/xip/REDCommon/Common'
 import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import { useParams } from 'react-router-dom';
+import { isMobile } from 'react-device-detect';
 
 const Success = () => {
     const [searchParams] = useSearchParams();
@@ -54,10 +55,10 @@ const Success = () => {
         <>
             <div style={{width:'100%', height:'20vh'}}></div>
             <div style={{display:'flex', width:'100%', minHeight:'80vh', justifyContent:'center', textAlign:'center'}}>
-                <div  style={{width:'50%'}}>
+                <div style={{width: isMobile ? '90%':'50%'}}>
                     <img 
-                        style={{width: '50%'}}
-                        src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/order/xiplogo.webp'} 
+                        style={{width: '30%'}}
+                        src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/shop/order/xipPngLogo.webp'} 
                         alt="logo"
                     />
                     <h2 style={{ padding: "20px 0px 10px 0px" }}>
@@ -76,7 +77,7 @@ const Success = () => {
                             style={{ 
                                 padding: '3px 6px',
                                 border: '2px solid white',  
-                                fontSize: '2rem'
+                                fontSize: isMobile ? '1rem':'2rem'
                             }}
                             labelText= 'CHECK STATUS'
                             onClick={() => {

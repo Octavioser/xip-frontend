@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { loadPaymentWidget, ANONYMOUS } from "@tosspayments/payment-widget-sdk";
 import { nanoid } from "nanoid";
+import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 
 const selector = "#payment-widget";
 
@@ -89,15 +90,22 @@ const CheckoutPage = (props) => {
             <div style={{ paddingLeft: "24px" }}>
             </div>
             
-            <div className="result wrapper">
+            <div className="result wrapper" style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
                 {/* 결제하기 버튼 */}
-                <button
-                    className="button"
-                    style={{ marginTop: "30px" }}
+                <PBtn
+                    style={{ 
+                        marginTop: "30px", 
+                        color:'black',
+                        textAlign: 'center', 
+                        display: 'inline-block', 
+                        padding: '3px 6px',
+                        border: '2px solid black',  
+                        fontSize: '1.3rem'}}
                     onClick={handlePaymentRequest}
+                    labelText='CHECK OUT'
                     >
-                    결제하기
-                </button>
+                    
+                </PBtn>
             </div>
             </div>
         </div>

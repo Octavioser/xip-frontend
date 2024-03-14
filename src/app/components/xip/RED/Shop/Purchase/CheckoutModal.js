@@ -2,6 +2,7 @@ import Modal from 'react-modal';
 import CheckoutPage from './TossPayments/Checkout';
 import CheckoutPagePaypal from './TossPayments/CheckoutPaypal';
 import {useCommon} from 'app/components/xip/REDCommon/Common';
+import { isMobile } from 'react-device-detect';
 
 const CheckoutModal = (props) => {
     
@@ -23,8 +24,8 @@ const CheckoutModal = (props) => {
                 content: {
                     left: '50%',  /* 왼쪽에서 중앙 */
                     top: '50%',    /* 위에서 중앙*/
-                    width: '80vw',
-                    height: '80vh',
+                    width: isMobile?'80vw' :'25vw',
+                    height:'80vh',
                     backgroundColor: 'rgba(255, 255, 255)',
                     transform: 'translate(-50%, -50%)'
                 }
