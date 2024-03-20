@@ -9,9 +9,7 @@ const OrderHistory = () => {
 
     const { commonShowLoading, commonHideLoading, commonApi, navigate, commonConfirm} = useCommon();
 
-    const {getCookie, removeCookie} = useCookie();
-
-    const [useEffectCheck, setUseEffectCheck] = useState(0);      // 처음에만 api 호출하도록
+    const {getCookie} = useCookie();
 
     const [orderList, setOrderList] = useState([]);      // 주문내역
 
@@ -23,25 +21,16 @@ const OrderHistory = () => {
             try{
                 await commonShowLoading();
                 let resultData = await commonApi('/shop/shopR005', {});
-                if (resultData === -2){
-                    removeCookie('xipToken') // 토큰 오류시 로그아웃
-                    navigate('/shop')
-                }
-                else {
-                    setOrderList(resultData)
-                }
+                setOrderList(resultData || [])
             } catch (error) {
-                console.log(error);
+                navigate('/shop')
             } finally {
                 commonHideLoading();
             }
         }
-        if(useEffectCheck === 0) {
-            setUseEffectCheck(1);
-            getUserItem();
-        }
-        
-    },[navigate, getCookie, commonApi, commonHideLoading, commonShowLoading, removeCookie, useEffectCheck])
+        getUserItem();
+        /* eslint-disable */
+    },[])
 
     const apiList = {
         updateCancleOrder: {
@@ -69,22 +58,14 @@ const OrderHistory = () => {
     const cancelOrder = async(orderCd, index) => {
         try{
             await commonShowLoading();
-            let resultData = await commonApi(apiList.updateCancleOrder.api, apiList.updateCancleOrder.param(orderCd));
-            if (resultData === -2){
-                removeCookie('xipToken') // 토큰 오류시 로그아웃
-                navigate('/shop')
-            }
-            else if (resultData === 1) {
-                let list = [...orderList]
-                list[index].orderStatus = 'CANCELLING'
-                setOrderList(list)
-                alert('Request submitted successfully.')
-            }
-            else {
-                alert('Registration failed. Please try again.')
-            }
+            await commonApi(apiList.updateCancleOrder.api, apiList.updateCancleOrder.param(orderCd));
+            let list = [...orderList]
+            list[index].orderStatus = 'CANCELLING'
+            setOrderList(list)
+            alert('Request submitted successfully.');
+            
         } catch (error) {
-            console.log(error);
+            alert('Please try again.');
         } finally {
             commonHideLoading();
         }
@@ -93,22 +74,13 @@ const OrderHistory = () => {
     const Cancellingcancel = async(orderCd, index) => {
         try{
             await commonShowLoading();
-            let resultData = await commonApi(apiList.updateCancellingCancel.api, apiList.updateCancellingCancel.param(orderCd));
-            if (resultData === -2){
-                removeCookie('xipToken') // 토큰 오류시 로그아웃
-                navigate('/shop')
-            }
-            else if (resultData === 1) {
-                let list = [...orderList]
-                list[index].orderStatus = 'PURCHASED'
-                setOrderList(list)
-                alert('Order cancellation reversed.')
-            }
-            else {
-                alert('Registration failed. Please try again.')
-            }
+            await commonApi(apiList.updateCancellingCancel.api, apiList.updateCancellingCancel.param(orderCd));
+            let list = [...orderList]
+            list[index].orderStatus = 'PURCHASED'
+            setOrderList(list)
+            alert('Order cancellation reversed.')
         } catch (error) {
-            console.log(error);
+            alert('Please try again.');
         } finally {
             commonHideLoading();
         }
@@ -184,7 +156,7 @@ const OrderHistory = () => {
                                         }} 
                                         labelText='Cancelling' 
                                         onClick={() => {
-                                            commonConfirm('Are you sure?', () => {Cancellingcancel(e.orderCd, index)});
+                                            commonConfirm('Cancel the cancellation request?', () => {Cancellingcancel(e.orderCd, index)});
                                         }}
                                     />
                                 }

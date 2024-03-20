@@ -118,7 +118,7 @@ const LoginModal = (props) => {
                     return false;
                 }
             } catch (error) {
-                console.error(error);
+                setMessage('Please try again.')
                 return false;
             }
         }

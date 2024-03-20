@@ -14,37 +14,33 @@ const ProductList = () => {
 
     const [season, setSeason] = useState('ALL');                     // 시즌
 
-    const [useEffectCheck, setUseEffectCheck] = useState(0);      // 처음에만 api 호출하도록
-
     const {state} = useLocation();   // 메인버튼에서 state 값 받아오기
 
     // 판매전-0 판매중-1 판매중단-2 프리오더-3
     useEffect(() => {
-        if(useEffectCheck === 0){
-            setSeason(state || 'ALL')
-        }
-
-        
         const getItem = async() => {
             await commonShowLoading();
             try {
                 let resultData = await commonApi('/shop/shopR002', {season: state});
-                if(!!resultData && resultData !== -1) {
+                if(!!resultData || resultData.length > 0) {
                     setProductListItem(resultData);
                 }
+                else {
+                    setProductListItem([]);
+                }
             } catch (error) {
-                
+                setProductListItem([]);
             } finally {
                 commonHideLoading();
             }
             
         }
-        if(useEffectCheck === 0 || season !== state) { // 처음시작인지 아니면 파라미터가 바뀌었을 경우
-            setUseEffectCheck(1);
+        if(season !== state) { // 파라미터가 바뀌었을 경우
             setSeason(state);
             getItem();
         }
-    },[state, commonShowLoading, commonHideLoading, commonApi, season, useEffectCheck]);
+        /* eslint-disable */
+    },[state]); // state 값이 바뀌었을경우
 
     
     

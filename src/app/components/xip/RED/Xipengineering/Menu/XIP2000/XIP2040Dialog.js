@@ -2,14 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
-import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 const XIP2040Dialog = (props) => {
 
-    const { commonShowLoading, commonHideLoading, commonApi, navigate} = useCommon();
-
-    const {removeCookie} = useCookie();
-
-    const [useEffectCheck, setUseEffectCheck] = useState(0);
+    const { commonShowLoading, commonHideLoading, commonApi} = useCommon();
 
     const [dataItem, setDataItem] = useState([]);
 
@@ -22,11 +17,7 @@ const XIP2040Dialog = (props) => {
             await commonShowLoading();
             try {
                 let resultData = await commonApi('/xipengineering/incuR008', {orderCd: props.orderCd});
-                if(resultData === -2){
-                    removeCookie('xipToken') // 토큰 오류시 로그아웃
-                    navigate('/shop')
-                }
-                else if(resultData.length > 0) {
+                if(resultData.length > 0) {
                     let totalPrice = 0
                     resultData.forEach((e) => {
                         totalPrice = e.price + totalPrice
@@ -43,11 +34,9 @@ const XIP2040Dialog = (props) => {
                 commonHideLoading();
             }
         }
-        if(useEffectCheck === 0) { // 처음시작인지 
-            setUseEffectCheck(1);
-            getItem();
-        }
-    },[commonShowLoading, commonHideLoading, commonApi, useEffectCheck, navigate,removeCookie,props.orderCd])
+        getItem();
+        /* eslint-disable */
+    },[])
 
     const apiList = {
         updateCanceled: {
@@ -89,19 +78,12 @@ const XIP2040Dialog = (props) => {
     const cancelOrder = async(e) => {
         try{
             await commonShowLoading();
-            let resultData = await commonApi(apiList.updateCanceled.api, apiList.updateCanceled.param());
-            if(resultData === -2) {
-                removeCookie('xipToken') // 토큰 오류시 로그아웃
-                navigate('/shop')
-            }
-            else if(resultData === 1){
-                alert('취소 완료')
-            }
-            else {
-                alert('오류입니다.')
-            }
+            await commonApi(apiList.updateCanceled.api, apiList.updateCanceled.param());
+            alert('취소 완료')
+            props.modalBtn();
+            props.getCancelItem();
         } catch (error) {
-                
+            alert('Please try again.')   
         } finally {
             commonHideLoading();
         }

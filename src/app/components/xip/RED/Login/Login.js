@@ -71,12 +71,10 @@ const Login = (props) => {
             }
             else {
                 // 신규 고객
-                if(!(resultData === -1) ) {
-                    props.showCreateAccountBtn(email);
-                }
+                props.showCreateAccountBtn(email);
             }
         } catch (error) {
-            console.log(error);
+            props.setMsg('Please try again.')
         } finally {
             commonHideLoading(false)
         }
@@ -107,7 +105,7 @@ const Login = (props) => {
             // setLoading(true)
             // 로그인(비밀번호까지)
             resultData = await commonApi(apiList.login.api, await apiList.login.param())
-            if(resultData && resultData.length > 0) {
+            if(!!resultData && resultData.length > 0) {
                 const expiresTime =  new Date();
                 expiresTime.setTime(expiresTime.getTime() + (12 * 60 * 60 * 1000)) // 12시간 후
                 props.setMsg('')
@@ -117,10 +115,10 @@ const Login = (props) => {
             else {
                 // 로그인 실패 
                 props.setMsg('Incorrect email or password')
-                console.log('resultData==>', resultData)
             }
         } catch (error) {
-
+            // 로그인 실패 
+                props.setMsg('Incorrect email or password')
         } finally {
             commonHideLoading(false)
         }

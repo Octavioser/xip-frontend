@@ -1,13 +1,10 @@
 import React, {useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
-import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 import {XBTDataGrid, XBTSearchFrame, XBTDatePicker, XBTTextField} from '../../XipengineeringXBT'
 
 const XIP2050 = (props) => {
 
-    const { commonShowLoading, commonHideLoading, commonApi, navigate} = useCommon();
-
-    const {removeCookie} = useCookie();
+    const { commonShowLoading, commonHideLoading, commonApi} = useCommon();
 
     const [dataList, setDataList] = useState([])
 
@@ -42,13 +39,8 @@ const XIP2050 = (props) => {
         try{
             await commonShowLoading();
             let resultData = await commonApi(apiList.selectCanceled.api, apiList.selectCanceled.param());
-            if(resultData === -2) {
-                removeCookie('xipToken') // 토큰 오류시 로그아웃
-                navigate('/shop')
-            }
-            else {
-                setDataList(resultData)
-            }
+            
+            setDataList(resultData)
         } catch (error) {
                 
         } finally {

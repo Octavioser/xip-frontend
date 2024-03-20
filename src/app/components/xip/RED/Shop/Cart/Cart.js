@@ -2,13 +2,10 @@ import React, { useEffect, useState, useCallback } from 'react';
 import {PBtn, ImgBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import { isMobile } from 'react-device-detect';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
-import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 
 const Cart = (props) => {
 
     const { commonShowLoading, commonHideLoading, commonApi, navigate, commonRegion } = useCommon();
-
-    const {removeCookie} = useCookie();
 
     const [totalPrice, setTotalPrice] = useState(0); // 전체 가격
 
@@ -31,20 +28,16 @@ const Cart = (props) => {
         const getItem = async() => {
             await commonShowLoading();
             try {
-                let resultData = await commonApi('/shop/shopR004', {});
-                if(resultData === -1) {
-                    alert('Registration failed. Please try again.')
-                }
-                else if(resultData === -2){
-                    removeCookie('xipToken') // 토큰 오류시 로그아웃
-                    navigate('/shop')
+                let resultData = await commonApi('/shop/shopR004', {}); 
+                if(!resultData && resultData.length < 0) { 
+                    props.setCartList([]) // app.js에서 관리
                 }
                 else {
                     getTotalPrice(resultData)
                     props.setCartList(resultData)
                 }
             } catch (error) {
-                
+                navigate('/shop')
             } finally {
                 commonHideLoading();
             }

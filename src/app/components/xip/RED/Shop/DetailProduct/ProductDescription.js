@@ -11,7 +11,7 @@ const ProductDescription = (props) => {
 
     const [prodCdD, setProdCdD] = useState(''); // 제품코드안에 사이즈가 있음
 
-    const {getCookie, removeCookie} = useCookie();
+    const {getCookie} = useCookie();
 
     const [loginModal, setLoginModal] = useState(false);
 
@@ -44,17 +44,8 @@ const ProductDescription = (props) => {
             // 장바구니 담기
             try{
                 await commonShowLoading();
-                let resultData = await commonApi(apiList.insertCart.api, apiList.insertCart.param());
-                if(resultData === -1) {
-                    alert('Registration failed. Please try again.')
-                }
-                else if(resultData === -2 || !resultData || resultData.length < 1){
-                    removeCookie('xipToken') // 토큰 오류시 로그아웃
-                    navigate('/shop')
-                }
-                else {
-                    alert('Added the product to the cart.');
-                }
+                await commonApi(apiList.insertCart.api, apiList.insertCart.param());
+                alert('Added the product to the cart.');
             } catch (error) {
                 alert('Please try again.');
             } finally {

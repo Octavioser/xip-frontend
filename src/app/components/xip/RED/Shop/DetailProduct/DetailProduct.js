@@ -9,8 +9,6 @@ const DetailProduct = () => {
 
     const {prodCd} = useParams();
 
-    const [useEffectCheck, setUseEffectCheck] = useState(0);      // 처음에만 api 호출하도록
-
     const [productListItem, setProductListItem] = useState([]);   //  상품 정보 state 에 저장
 
     const [imgList, setImgList] = useState([]); // s3 이미지
@@ -23,7 +21,7 @@ const DetailProduct = () => {
             try {
                 let list = [];
                 let resultData = await commonApi('/shop/shopR003', {prodCd: prodCd});
-                if(!!resultData && resultData !== -1 && resultData.length > 0) {
+                if(!!resultData && resultData.length > 0) {
                     setProductListItem(resultData)
                     list = (resultData[0].imgSrc).split('|')
                     setImgList(list);
@@ -32,18 +30,15 @@ const DetailProduct = () => {
                     navigate('/shop')
                 }
             } catch (error) {
-                
+                navigate('/shop')
             } finally {
                 commonHideLoading();
             }
             
         }
-        if(useEffectCheck === 0) { // 처음시작인지 아니면 파라미터가 바뀌었을 경우
-            setUseEffectCheck(1);
-            window.scrollTo(0, 0);
-            getItem();
-        }
-    },[commonShowLoading, commonHideLoading, commonApi, useEffectCheck, navigate, prodCd]);
+        getItem();
+        /* eslint-disable */
+    },[]);
 
     const parentDivStyle = () => {
 

@@ -70,7 +70,7 @@ const ForgotPassword = (props) => {
                 props.setMsg('Please register first.')
             }
         } catch (error) {
-            
+            props.setMsg('Please try again.')
         } finally {
             commonHideLoading();
         }
@@ -95,7 +95,7 @@ const ForgotPassword = (props) => {
                 }
                 props.setMsg(msg)
             } catch (error) {
-                console.log(error);    
+                props.setMsg('Please try again.')
             } finally {
                 commonHideLoading();
             }
@@ -142,7 +142,7 @@ const ForgotPassword = (props) => {
                 props.loginModalBtn()
             }
         } catch (error) {
-                
+            props.setMsg('Please try again.')     
         } finally {
             commonHideLoading();
         }

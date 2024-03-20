@@ -2,14 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
-import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 const XIP2020Dialog = (props) => {
 
-    const { commonShowLoading, commonHideLoading, commonApi, navigate} = useCommon();
-
-    const {removeCookie} = useCookie();
-
-    const [useEffectCheck, setUseEffectCheck] = useState(0);
+    const { commonShowLoading, commonHideLoading, commonApi} = useCommon();
 
     const [trackItem, setTrackItem] = useState({});
 
@@ -20,11 +15,7 @@ const XIP2020Dialog = (props) => {
             await commonShowLoading();
             try {
                 let resultData = await commonApi('/xipengineering/incuR005', {orderCd: props.orderCd});
-                if(resultData === -2){
-                    removeCookie('xipToken') // 토큰 오류시 로그아웃
-                    navigate('/shop')
-                }
-                else if(resultData.length > 0) {
+                if(resultData.length > 0) {
                     setTrackingNum(resultData[0]?.trackingNum || '')
                     setTrackItem(resultData[0])
                 }
@@ -38,11 +29,9 @@ const XIP2020Dialog = (props) => {
             }
             
         }
-        if(useEffectCheck === 0) { // 처음시작인지 
-            setUseEffectCheck(1);
-            getItem();
-        }
-    },[commonShowLoading, commonHideLoading, commonApi, useEffectCheck, navigate,removeCookie,props.orderCd])
+        getItem();
+        /* eslint-disable */
+    },[])
 
     const setAddPtag = (text) => {
         return (
@@ -73,24 +62,12 @@ const XIP2020Dialog = (props) => {
     const saveTracking = async() => {
         await commonShowLoading();
         try {
-            let resultData = await commonApi('/xipengineering/incuU201', {orderCd: props.orderCd, trackingNum: trackingNum});
-            if(resultData === -2){
-                removeCookie('xipToken') // 토큰 오류시 로그아웃
-                navigate('/shop')
-            }
-            else if(resultData === 1) {
-                alert('저장완료')
-                props.modalBtn()
-                props.getPurchaseOrder()
-            }
-            else if(resultData === 0) {
-                alert('운송장등록된 상품입니다.')
-            }
-            else {
-                alert('오류입니다. 다시 시도해주세요.')
-            }
+            await commonApi('/xipengineering/incuU201', {orderCd: props.orderCd, trackingNum: trackingNum});
+            alert('저장완료')
+            props.modalBtn();
+            props.getPurchaseOrder();
         } catch (error) {
-            
+            alert('오류입니다. 다시 시도해주세요.')
         } finally {
             commonHideLoading();
         }

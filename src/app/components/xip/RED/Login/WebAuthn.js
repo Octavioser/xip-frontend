@@ -43,14 +43,6 @@ const WebAuthn = (props) => {
                     publicKeyCredentialJSON
                 )
             }
-        },
-        webAuthLoginCheck: {
-            api: '/login/loginR006',
-            param: (publicKeyCredential) => {
-                return (
-                    publicKeyCredential
-                )
-            }
         }
     }
 
@@ -146,7 +138,7 @@ const WebAuthn = (props) => {
                     }
                 }
             } catch (error) {
-                console.error(error);
+                props.setMsg('Please try again.')
             } finally {
                 commonHideLoading();
             }
@@ -178,30 +170,30 @@ const WebAuthn = (props) => {
 
             if(!resultData || resultData.length < 1) { // 없는 이메일
                 props.setMsg('Please proceed with registration first.')
-                return
+                return;
             }
 
             if(!!(resultData[0]?.email)) {   // 회원가입이 된 사용자
                 if(!(resultData[0]?.webAuthId)){ // 등록이 되지 않은 사용자
                     setShowCreateBtn(true);
                     setEmailDisabled(true);
-                    props.setMsg('Face ID registration is required.')
-                    return
+                    props.setMsg('Face ID registration is required.');
+                    return;
                 }
                 else {  // faceId 로그인 진행
                    await props.webAuthLogin(email, resultData[0].challenge, resultData[0].webAuthId).then((e)=>{
                         if(!e) { // 실패시 패스워드 창 보이게
-                            props.setMsg('Please try again.')
+                            props.setMsg('Please try again.');
                         }
                     })
                 }   
             }
             else {
-                return
+                return;
             }
 
         } catch (error) {
-            console.log(error);
+            props.setMsg('Please try again.')
         } finally {
             commonHideLoading();
         }

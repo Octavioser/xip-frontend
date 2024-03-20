@@ -1,15 +1,12 @@
 import React, {useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
-import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 import {XBTDataGrid, XBTSearchFrame, XBTDatePicker, XBTTextField, XBTDropDown} from '../../XipengineeringXBT'
 import XIP2040Dialog from './XIP2040Dialog';
 
 
 const XIP2040 = (props) => {
 
-    const { commonShowLoading, commonHideLoading, commonApi, navigate} = useCommon();
-
-    const {removeCookie} = useCookie();
+    const { commonShowLoading, commonHideLoading, commonApi} = useCommon();
 
     const [dataList, setDataList] = useState([]);
 
@@ -38,18 +35,6 @@ const XIP2040 = (props) => {
                     }
                 )
             }
-        },
-        updateCanceled: {
-            api: '/xipengineering/incuU202',
-            param: (orderCd) => {
-                return (
-                    {
-                        cancelAmount:email,
-                        reason: fromDt,
-                        orderCd: orderCd
-                    }
-                )
-            }
         }
     }
 
@@ -63,13 +48,7 @@ const XIP2040 = (props) => {
         try{
             await commonShowLoading();
             let resultData = await commonApi(apiList.selectCancelling.api, apiList.selectCancelling.param());
-            if(resultData === -2) {
-                removeCookie('xipToken') // 토큰 오류시 로그아웃
-                navigate('/shop')
-            }
-            else {
-                setDataList(resultData)
-            }
+            setDataList(resultData)
         } catch (error) {
                 
         } finally {

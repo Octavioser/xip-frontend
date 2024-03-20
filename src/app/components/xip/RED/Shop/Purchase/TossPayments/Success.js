@@ -27,22 +27,18 @@ const Success = () => {
             try{
                 await commonShowLoading();
                 let resultData = await commonApi('/payment/payC101', {...requestData, orderMethod:orderMethod, pgName:'TOSS'});
-                if (resultData === -2) {
-                    // TODO: 결제 실패 비즈니스 로직을 구현하세요.
-                    if(orderMethod === 'cart') {
-                        navigate('/shop/cart')
-                    }
-                    else {
-                        navigate(`/shop/detailproduct/${orderMethod}`)
-                    }
-                    setTimeout(() => alert("Payment failed. Please try again."), 100); // 100ms 후에 실행
-                    return;
-                }
                 setOrderCd(resultData.orderCd)
                 let price = '₩' + (Number(requestData.amount)).toLocaleString()
                 setPrice(price)
             } catch (error) {
-                console.log(error);
+                if(orderMethod === 'cart') {
+                    navigate('/shop/cart')
+                }
+                else {
+                    navigate(`/shop/detailproduct/${orderMethod}`)
+                }
+                setTimeout(() => alert("Payment failed. Please try again."), 100); // 100ms 후에 실행
+                return;
             } finally {
                 commonHideLoading();
             }

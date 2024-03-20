@@ -1,13 +1,10 @@
 import React, {useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
-import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 import {XBTDataGrid, XBTSearchFrame, XBTDatePicker} from '../../XipengineeringXBT'
 
 const XIP3010 = (props) => {
 
-    const { commonShowLoading, commonHideLoading, commonApi, navigate} = useCommon();
-
-    const {removeCookie} = useCookie();
+    const { commonShowLoading, commonHideLoading, commonApi} = useCommon();
 
     const [dataList, setDataList] = useState([])
 
@@ -52,13 +49,8 @@ const XIP3010 = (props) => {
         try{
             await commonShowLoading();
             let resultData = await commonApi(apiList.selectProdOrder.api, apiList.selectProdOrder.param());
-            if(resultData === -2) {
-                removeCookie('xipToken') // 토큰 오류시 로그아웃
-                navigate('/shop')
-            }
-            else {
-                setDataList(resultData)
-            }
+            
+            setDataList(resultData)
         } catch (error) {
                 
         } finally {
@@ -83,19 +75,10 @@ const XIP3010 = (props) => {
                                 }
                                 try{
                                     await commonShowLoading();
-                                    let resultData = await commonApi(apiList.updateProdOrder.api, apiList.updateProdOrder.param(Number(e.soldQty), Number(e.totalQty), e.prodCdD));
-                                    if(resultData === -2) {
-                                        removeCookie('xipToken') // 토큰 오류시 로그아웃
-                                        navigate('/shop')
-                                    }
-                                    else if(resultData === 1){
-                                        
-                                    }
-                                    else {
-                                        alert('오류입니다. 다시시도해주세요')
-                                    }
+                                    await commonApi(apiList.updateProdOrder.api, apiList.updateProdOrder.param(Number(e.soldQty), Number(e.totalQty), e.prodCdD));
+                                    alert('수정되었습니다.')
                                 } catch (error) {
-                                        
+                                    alert('오류입니다. 다시시도해주세요')
                                 } finally {
                                     commonHideLoading();
                                 }

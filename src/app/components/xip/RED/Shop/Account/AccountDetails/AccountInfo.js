@@ -1,6 +1,5 @@
 import React, { useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common';
-import { useCookie } from 'app/components/xip/RED/Login/Cookie';
 import { PBtn, ImgBtn } from 'app/components/xip/REDCommon/CommonStyle'
 import { isMobile } from 'react-device-detect';
 
@@ -8,13 +7,11 @@ const AccountInfo = (props) => {
 
     const [userItem, setUserItem] = useState(props.userItem);
 
-    const {removeCookie} = useCookie();
-
     const [edit, setEdit] = useState(false);
 
     const [changePw, setChangePw] = useState(false);
 
-    const { commonShowLoading, commonHideLoading, commonApi, commonEncode, navigate, commonConfirm} = useCommon();
+    const { commonShowLoading, commonHideLoading, commonApi, commonEncode, commonConfirm} = useCommon();
 
     const [userEditItem, setUserEditItem] = useState({});
 
@@ -31,8 +28,7 @@ const AccountInfo = (props) => {
                 return (
                     { 
                         firstNm: userEditItem?.firstNm, 
-                        lastNm: userEditItem?.lastNm, 
-                        email: userEditItem?.email
+                        lastNm: userEditItem?.lastNm
                     }
                 )
             }
@@ -44,7 +40,6 @@ const AccountInfo = (props) => {
                 const endcodeNewPw = await commonEncode(newPw);
                 return (
                     { 
-                        email: userEditItem?.email,
                         pw: encodePw, 
                         newPw: endcodeNewPw
                     }
@@ -86,22 +81,12 @@ const AccountInfo = (props) => {
         // 이름 바꾸기
         try{
             await commonShowLoading();
-            let resultData = await commonApi(apiList.updateInfoNm.api, apiList.updateInfoNm.param());
-            if(resultData === -1) {
-                message = 'Please try again.'
-                setMsg(message)
-            }
-            else if(resultData === -2 || !resultData || resultData.length < 1){
-                removeCookie('xipToken') // 토큰 오류시 로그아웃
-                navigate('/shop')
-            }
-            else {
-                setEdit(false);
-                setUserItem({...userItem, firstNm: firstNm, lastNm:lastNm})
-                setMsg('')
-            }
+            await commonApi(apiList.updateInfoNm.api, apiList.updateInfoNm.param());
+            setEdit(false);
+            setUserItem({...userItem, firstNm: firstNm, lastNm:lastNm})
+            setMsg('')
         } catch (error) {
-                
+            setMsg('Please try again.')
         } finally {
             commonHideLoading();
         }
@@ -147,19 +132,15 @@ const AccountInfo = (props) => {
             await commonShowLoading();
             let resultData = await commonApi(apiList.updateInfoPw.api, await apiList.updateInfoPw.param(accountPw, newPw));
             if(resultData === -1) {
-                message = 'Registration failed. Please try again.'
+                message = 'Incorrect password. Please try again.'
                 setMsg(message)
-            }
-            else if(resultData === -2 || !resultData || resultData.length < 1){
-                removeCookie('xipToken') // 토큰 오류시 로그아웃
-                navigate('/shop')
             }
             else {
                 setChangePw(false);
                 setMsg('');
             }
         } catch (error) {
-                
+            setMsg('Please try again.');
         } finally {
             commonHideLoading();
         }
@@ -174,21 +155,11 @@ const AccountInfo = (props) => {
         // webauthn 지우기
         try{
             await commonShowLoading();
-            let resultData = await commonApi(apiList.deleteWebauthn.api, apiList.deleteWebauthn.param());
-
-            if(resultData === -1) {
-                alert('Registration failed. Please try again.')
-            }
-            else if(resultData === -2){
-                removeCookie('xipToken') // 토큰 오류시 로그아웃
-                navigate('/shop')
-            }
-            else {
-                setUserItem({...userItem, webAuthId: '0'})
-                alert('Successfully Deleted.')
-            }
+            await commonApi(apiList.deleteWebauthn.api, apiList.deleteWebauthn.param());
+            setUserItem({...userItem, webAuthId: '0'})
+            alert('Successfully Deleted.')
         } catch (error) {
-                
+            alert('Please try again.')
         } finally {
             commonHideLoading();
         }

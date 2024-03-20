@@ -42,7 +42,7 @@ export const useCommon = () => {
 		};
 	}
 
-	const {getCookie} = useCookie();
+	const {getCookie, removeCookie} = useCookie();
 
   	const commonApi = async(url, param) => {
 		try{
@@ -62,10 +62,19 @@ export const useCommon = () => {
 			).then(json  => {
 				result = json
 			});
-			return result
-		} catch (error) {
-			console.log(error)
-			return -1;
+			if(result.resultCode === 1) {
+				return result.resultData;
+			}
+			else if(result.resultCode === -2) {
+				console.error(result.resultMsg) 
+				removeCookie('xipToken') // 토큰 오류시 로그아웃
+                navigate('/shop')
+			}
+			else {
+				throw new Error(result.resultMsg);
+			}
+		} catch (e) {
+			console.error(e) ;
 		}
   	};
 

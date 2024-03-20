@@ -9,11 +9,9 @@ const OrderDetails = () => {
 
     const {orderCd} = useParams();
 
-    const [useEffectCheck, setUseEffectCheck] = useState(0);      // 처음에만 api 호출하도록
-
     const [orderItem, setOrderItem] = useState({});   //  주문 정보 state 에 저장
 
-    const {getCookie, removeCookie} = useCookie();
+    const {getCookie} = useCookie();
 
     const {navigate, commonApi, commonShowLoading, commonHideLoading} = useCommon();
 
@@ -25,29 +23,22 @@ const OrderDetails = () => {
             await commonShowLoading();
             try {
                 let resultData = await commonApi('/shop/shopR006', {orderCd: orderCd});
-                if(resultData === -2) {
-                    removeCookie('xipToken') // 토큰 오류시 로그아웃
-                    navigate('/shop')
-                }
-                else if(!!resultData && resultData.length > 0) {
+                if(!!resultData && resultData.length > 0) {
                     setOrderItem(resultData[0])
-                    
                 }
                 else {
                     navigate('/shop')
                 }
             } catch (error) {
-                
+                navigate('/shop')
             } finally {
                 commonHideLoading();
             }
             
         }
-        if(useEffectCheck === 0) { // 처음시작인지 아니면 파라미터가 바뀌었을 경우
-            setUseEffectCheck(1);
-            getItem();
-        }
-    },[commonShowLoading, commonHideLoading, commonApi, useEffectCheck, navigate,orderCd,removeCookie,getCookie]);
+        getItem();
+        /* eslint-disable */
+    },[]);
 
 
     const orderStatus = () => {

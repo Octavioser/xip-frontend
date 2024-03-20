@@ -14,8 +14,6 @@ const AccountDetails = () => {
 
     const [userItem, setUserItem] = useState([]);
 
-    const [useEffectCheck, setUseEffectCheck] = useState(0);      // 처음에만 api 호출하도록
-
     useEffect(() => {
         if(!getCookie('xipToken')) {
             navigate('/shop')
@@ -24,8 +22,7 @@ const AccountDetails = () => {
             try{
                 await commonShowLoading();
                 let resultData = await commonApi('/shop/shopR001', {});
-                if (resultData === -2 || !resultData || resultData.length < 1){
-                    removeCookie('xipToken') // 토큰 오류시 로그아웃
+                if (!resultData || resultData.length < 1){  // 데이터 없을시
                     navigate('/shop')
                 }
                 else {
@@ -37,12 +34,9 @@ const AccountDetails = () => {
                 commonHideLoading();
             }
         }
-        if(useEffectCheck === 0) {
-            setUseEffectCheck(1);
-            getUserItem();
-        }
-        
-    },[navigate, getCookie, commonApi, commonHideLoading, commonShowLoading, removeCookie, setUserItem, useEffectCheck])
+        getUserItem();
+        /* eslint-disable */
+    },[])
 
     const apiList = {
         deleteAccount: {
@@ -61,22 +55,12 @@ const AccountDetails = () => {
         // webauthn 지우기
         try{
             await commonShowLoading();
-            let resultData = await commonApi(apiList.deleteAccount.api, apiList.deleteAccount.param());
-
-            if(resultData === -1) {
-                alert('Registration failed. Please try again.')
-            }
-            else if(resultData === -2){
-                removeCookie('xipToken') // 토큰 오류시 로그아웃
-                navigate('/shop')
-            }
-            else {
-                alert('Successfully Deleted.')
-                removeCookie('xipToken') // 토큰 오류시 로그아웃
-                navigate('/shop')
-            }
+            await commonApi(apiList.deleteAccount.api, apiList.deleteAccount.param());
+            alert('Successfully Deleted.')
+            removeCookie('xipToken') // 토큰 오류시 로그아웃
+            navigate('/shop')
         } catch (error) {
-                
+            alert('Please try again.')
         } finally {
             commonHideLoading();
         }

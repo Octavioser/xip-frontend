@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
 import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 import XipengineeringMenu from './XipengineeringMenu';
@@ -9,16 +9,13 @@ const Xipengineering = () => {
 
     const { commonShowLoading, commonHideLoading, commonApi, navigate} = useCommon();
 
-    const {removeCookie, getCookie, setCookie} = useCookie();
-
-    const [useEffectCheck, setUseEffectCheck] = useState(0);      // 처음에만 api 호출하도록
+    const {removeCookie, getCookie} = useCookie();
 
     useEffect(()=> {
         if(!getCookie('xipToken')) {
             navigate('/shop')
         }
-       
-
+  
         const roleCheck = async() => {
             try {
                 await commonShowLoading();
@@ -29,16 +26,15 @@ const Xipengineering = () => {
                     navigate('/shop')
                 }
             } catch (error) {
-                console.log(error);
+                removeCookie('xipToken')
+                navigate('/shop')
             } finally {
                 commonHideLoading(false)
             }
         }
-        if(useEffectCheck === 0) { // 처음시작인지 
-            setUseEffectCheck(1);
-            roleCheck();
-        }
-    },[commonApi, commonHideLoading, commonShowLoading, getCookie, navigate, useEffectCheck, removeCookie, setCookie])
+        roleCheck();
+        /* eslint-disable */
+    },[])
 
     return(
         <div className="default-cursor-page" style={{position:'fixed',backgroundColor:'white', width:'100%', height:'100%', color:'black'}}>

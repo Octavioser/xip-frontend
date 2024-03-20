@@ -1,15 +1,12 @@
 import React, { useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common';
-import { useCookie } from 'app/components/xip/RED/Login/Cookie';
 import { PBtn, ImgBtn } from 'app/components/xip/REDCommon/CommonStyle'
 import { isMobile } from 'react-device-detect';
 
 const AccountAdd = (props) => {
     const [userItem, setUserItem] = useState(props.userItem);
 
-    const {removeCookie} = useCookie();
-
-    const { commonShowLoading, commonHideLoading, commonApi, navigate } = useCommon();
+    const { commonShowLoading, commonHideLoading, commonApi } = useCommon();
 
     const [edit, setEdit] = useState(false);
 
@@ -23,7 +20,6 @@ const AccountAdd = (props) => {
             param: () => {
                 return (
                     { 
-                        email: userItem.email,
                         addFirstNm: userEditItem?.addFirstNm,
                         addLastNm: userEditItem?.addLastNm,
                         phone: userEditItem?.phone,
@@ -118,34 +114,24 @@ const AccountAdd = (props) => {
         // 회원가입
         try{
             await commonShowLoading();
-            let resultData = await commonApi(apiList.insertAdd.api, apiList.insertAdd.param());
-            if(resultData === -1) {
-                message = 'Registration failed. Please try again.'
-                setMsg(message)
-            }
-            else if(resultData === -2 || !resultData || resultData.length < 1){
-                removeCookie('xipToken') // 토큰 오류시 로그아웃
-                navigate('/shop')
-            }
-            else {
-                setUserItem({...userItem,
-                    addFirstNm: addFirstNm,
-                    addLastNm: addLastNm,
-                    phone: phone,
-                    company: userEditItem?.company,
-                    add1: add1,
-                    add2: add2,
-                    city: city,
-                    addCountry: addCountry,
-                    iso2: iso2,
-                    state: state,
-                    postalCd: postalCd,
-                    addCount: 1
-                })
-                setEdit(false);
-            }
+            await commonApi(apiList.insertAdd.api, apiList.insertAdd.param());
+            setUserItem({...userItem,
+                addFirstNm: addFirstNm,
+                addLastNm: addLastNm,
+                phone: phone,
+                company: userEditItem?.company,
+                add1: add1,
+                add2: add2,
+                city: city,
+                addCountry: addCountry,
+                iso2: iso2,
+                state: state,
+                postalCd: postalCd,
+                addCount: 1
+            })
+            setEdit(false);
         } catch (error) {
-                
+            setMsg('Please try again.')
         } finally {
             commonHideLoading();
         }

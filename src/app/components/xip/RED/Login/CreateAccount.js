@@ -4,11 +4,13 @@ import {useCommon} from '../../REDCommon/Common';
 import EmailAuthCode from 'app/components/xip/RED/Login/EmailAuthCode';
 import TermsOfUse from 'app/components/xip/RED/Shop/Service/TermsOfUse'
 import Privacy from 'app/components/xip/RED/Shop/Service/Privacy';
+import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 
 const CreateAccount = (props) => {
 
     const { commonShowLoading, commonHideLoading, commonApi, commonEncode } = useCommon();
 
+    const {setCookie } = useCookie();    
     const [email, setEmail] = useState(props.email || '');                 // 이메일
     const [pw, setPw] = useState('');                       // 비밀번호
     const [confirmPw, setConfirmPw] = useState('');                       // 확인 비밀번호
@@ -68,8 +70,8 @@ const CreateAccount = (props) => {
                         msg = 'Invalid authentication code. Please try again.'
                     }
                     props.setMsg(msg)
-                } catch (error) {
-                    console.log(error);    
+                } catch (error) { 
+                    props.setMsg('Please try again.')  
                 } finally {
                     commonHideLoading();
                 }
@@ -101,7 +103,7 @@ const CreateAccount = (props) => {
                     props.setMsg('Enter the verification code received via email')
                 }
             } catch (error) {
-                
+                props.setMsg('Please try again.')
             } finally {
                 commonHideLoading();
             }
@@ -158,15 +160,19 @@ const CreateAccount = (props) => {
         try{
             await commonShowLoading();
             let resultData = await commonApi(apiList.insertCreateAccount.api, await apiList.insertCreateAccount.param());
-            if(resultData === -1) {
+            if(!!resultData && resultData.length > 0) {
+                const expiresTime =  new Date();
+                expiresTime.setTime(expiresTime.getTime() + (12 * 60 * 60 * 1000)) // 12시간 후
+                props.setMsg('')
+                setCookie('xipToken', resultData[0].token, {path: '/', expires: expiresTime}); // 쿠키 저장
+                props.loginModalBtn(false)
+            }
+            else {
                 msg = 'Registration failed. Please try again.'
                 props.setMsg(msg)
             }
-            else {
-                props.loginModalBtn()
-            }
         } catch (error) {
-                
+            props.setMsg('Please try again.')
         } finally {
             commonHideLoading();
         }

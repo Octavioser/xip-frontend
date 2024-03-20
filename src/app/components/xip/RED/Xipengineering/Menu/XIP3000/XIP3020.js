@@ -1,14 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
-import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import XIP3020ProdCode from './XIP3020ProdCode';
 import XIP3020ImageUpload from './XIP3020ImageUpload';
 
 const XIP3020 = () => {
 
-    const { commonShowLoading, commonHideLoading, commonApi, navigate , commonConfirm} = useCommon();
-    const {removeCookie} = useCookie();
+    const { commonShowLoading, commonHideLoading, commonApi, commonConfirm} = useCommon();
 
     const [prodItem, setProdItem] = useState({size:[0,0,0,0,0,0]});     
     // 각 파일 입력 필드의 파일을 객체로 관리
@@ -250,14 +248,14 @@ const XIP3020 = () => {
     }
 
     const insertProdApi = async(param, imgItem) => {
-        let resultData = await commonApi(apiList.insertProdItem.api, apiList.insertProdItem.param(param, imgItem));
-        if(resultData === -2) {
-            removeCookie('xipToken') // 토큰 오류시 로그아웃
-            navigate('/shop')
+        try {
+            await commonApi(apiList.insertProdItem.api, apiList.insertProdItem.param(param, imgItem));    
+            alert('등록되었습니다.')
+        } catch (error) {
+            alert('오류입니다. 다시 시도해주세요.')
         }
-        else {
-            console.log(resultData)
-        }
+        
+        
     }
 
     return (
