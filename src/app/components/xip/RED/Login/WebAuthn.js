@@ -75,6 +75,7 @@ const WebAuthn = (props) => {
     const handelCreate = async() =>{
         props.setMsg('')
         await commonShowLoading();
+        // 생체인증이 가능한 기기 인지 확인
         const isAvailable = await window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
         if (!!isAvailable) {
             // 생체 인증 기능이 사용 가능하면 등록 또는 로그인 프로세스 진행

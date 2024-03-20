@@ -4,20 +4,16 @@ import { isMobile } from 'react-device-detect';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
 import {useCookie} from 'app/components/xip/RED/Login/Cookie';
 
-const Cart = () => {
+const Cart = (props) => {
 
     const { commonShowLoading, commonHideLoading, commonApi, navigate, commonRegion } = useCommon();
 
     const {removeCookie} = useCookie();
-    
-    const [cartList, setCartList] = useState([]);   //  상품 정보 state 에 저장
-
-    const [useEffectCheck, setUseEffectCheck] = useState(0);      // 처음에만 api 호출하도록
 
     const [totalPrice, setTotalPrice] = useState(0); // 전체 가격
 
     const [totalUsPrice, setTotalUsPrice] = useState(0); // 달러 전체 가격
-
+ 
     const getTotalPrice = useCallback((list) => {
         let totalPrice = 0;
         let totalUsPrice = 0;
@@ -45,8 +41,7 @@ const Cart = () => {
                 }
                 else {
                     getTotalPrice(resultData)
-                    setCartList(resultData)
-                    
+                    props.setCartList(resultData)
                 }
             } catch (error) {
                 
@@ -55,131 +50,100 @@ const Cart = () => {
             }
             
         }
-        if(useEffectCheck === 0) { // 처음시작인지 
-            setUseEffectCheck(1);
-            getItem();
-        }
-    },[commonShowLoading, commonHideLoading, commonApi, useEffectCheck, navigate,removeCookie, getTotalPrice]);
+        getItem();
+        /* eslint-disable */
+    },[]);
 
-    const apiList = {
-        updateCartQty: {
-            api: '/shop/shopU203',
-            param: (prodCdD, prodQty, qtyChangeType) => {
-                return (
-                    { 
-                        prodCdD:prodCdD,
-                        prodQty:prodQty,
-                        qtyChangeType: qtyChangeType
-                    }
-                )
-            }
+
+    useEffect(() => {
+        // 페이지 벗어날시
+        const handleBeforeUnload = () => {
+            props.savedCart();
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+    
+        // 컴포넌트 언마운트 시 삭제
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [props.cartList]);// props.savedCart 함수가 props.cartList의 변경 사항에 의존적이므로 추가
+
+
+    // 바뀐 데이터 state 저장
+    const changeCartListSetting = (prodCdD, value) => {
+        let item = {...props.changeCartList}
+
+        if(value === 'X') {
+            item[prodCdD] = 'X'
         }
+        else {
+            let result  = (item[prodCdD] || 0) + value
+            if(result === 0) {
+                delete item[prodCdD]
+                props.setChangeCartList({...item}) 
+                return;          
+            }
+            item[prodCdD] = result
+        }
+        props.setChangeCartList({...item})
     }
+    
 
     const productQty = {
-        up: async(index, prodCdD) => {
-            try {
-                await commonShowLoading();
-
-                let list = [...cartList]
-                let qty = list[index].prodQty + 1
-
-                let resultData = await commonApi(apiList.updateCartQty.api, apiList.updateCartQty.param(prodCdD, qty, 'UP'));
-
-                if(!resultData || resultData === -1 || resultData.length < 1) {
-                    alert('Registration failed. Please try again.')
-                }
-                else if(resultData === -2){
-                    removeCookie('xipToken') // 토큰 오류시 로그아웃
-                    navigate('/shop')
-                }
-                else if(resultData === -3){ // 재고부족
-                    alert('The requested quantity is not available.')
-                }
-                else {
-                    list[index].prodQty = qty
-                    setCartList(list);
-                    getTotalPrice(list);
-                }
-            } catch (error) {
-                console.log(error)
-            } finally {
-                commonHideLoading();
+        // 제품 수량 업 
+        up: (index) => {
+            // 보여줄 데이터 적용
+            let data = [...props.cartList]
+            let prodCdD = data[index].prodCdD
+            data[index].prodQty = data[index].prodQty +1 
+            if(data[index].prodQty > data[index].maxQty) {
+                alert('You\'ve added more items than available in stock.')
+                return;
             }
+            props.setCartList(data)
+
+            // 바뀐 데이터 state 저장
+            changeCartListSetting(prodCdD,1)
             
         },
-
-        down: async(index, prodCdD) => {
-            try {
-                await commonShowLoading();
-
-                let list = [...cartList]
-                let qty = list[index].prodQty - 1
-
-                let resultData = await commonApi(apiList.updateCartQty.api, apiList.updateCartQty.param(prodCdD, qty, 'DOWN'));
-
-                if(!resultData || resultData === -1 || resultData.length < 1) {
-                    alert('Registration failed. Please try again.')
-                }
-                else if(resultData === -2){
-                    removeCookie('xipToken') // 토큰 오류시 로그아웃
-                    navigate('/shop')
-                }
-                else {
-                    if(qty < 1) {
-                        list.splice(index,1) // 객체삭제
-                        setCartList(list)
-                        getTotalPrice(list);
-                    }
-                    else {
-                        list[index].prodQty = qty
-                        setCartList(list)
-                        getTotalPrice(list);
-                    }
-                }
-            } catch (error) {
-                console.log(error)
-            } finally {
-                commonHideLoading();
+        // 제품 수량 다운 1미만이면 삭제
+        down: (index) => {
+            // 보여줄 데이터 적용
+            let data = [...props.cartList]
+            let prodCdD = data[index].prodCdD
+            data[index].prodQty = data[index].prodQty -1 
+            if(data[index].prodQty  < 1) {
+                productQty.delete(index);
             }
+            else {
+                props.setCartList(data)
+                // 바뀐 데이터 state 저장
+                changeCartListSetting(prodCdD,-1)
+            }
+
+            
+            
         },
+        // 제품 삭제
+        delete: (index) => {
+            // 보여줄 데이터 적용
+            let prodCdD = [...props.cartList][index].prodCdD
+            let data = [...props.cartList].filter((e,i) => i !== index) // 해당 인덱스 제품 삭제
+            props.setCartList([...data])
 
-        delete: async(index, prodCdD) => {
-            try {
-                let list = [...cartList]
-
-                await commonShowLoading();
-
-                let resultData = await commonApi(apiList.updateCartQty.api, apiList.updateCartQty.param(prodCdD, 0, 'DOWN'));
-
-                if(!resultData || resultData === -1 || resultData.length < 1) {
-                    alert('Registration failed. Please try again.')
-                }
-                else if(resultData === -2){
-                    removeCookie('xipToken') // 토큰 오류시 로그아웃
-                    navigate('/shop')
-                }
-                else {
-                    list.splice(index,1) // 객체삭제
-                    setCartList(list)
-                    getTotalPrice(list);
-                }
-            } catch (error) {
-                console.log(error)
-            } finally {
-                commonHideLoading();
-            }
+            // 바뀐 데이터 state 저장
+            changeCartListSetting(prodCdD,'X')
         }
     }
 
     const clickCheckout = async() => {  // PROCEED TO CHECKOUT 클릭시
-        if(!cartList || cartList.length < 1) {
+        if(!props.cartList || props.cartList.length < 1) {
             alert('Please select a product before adding to cart.')
             return;
         }
 
         // 장바구니 담기
-        navigate('/shop/purchase', {state: {item:cartList, orderMethod:'cart'}})  // putchase에 state 값 넘겨주기
+        navigate('/shop/purchase', {state: {item: props.cartList, orderMethod:'cart'}})  // putchase에 state 값 넘겨주기
     }
 
     const productColumn = () => {
@@ -187,7 +151,7 @@ const Cart = () => {
         
         return(
             <>
-                {cartList.map((e, index)=> 
+                {props.cartList.map((e, index)=> 
                     { 
                         return(
                             <div key={'0div'+index} style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center',padding: '10px'}}>

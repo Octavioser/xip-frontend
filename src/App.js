@@ -32,13 +32,14 @@ const Root = () => {
 
     const [display, setDisPlay] = useState(false);  // 음악아이콘 상태
 
-    const { navigate } = useCommon();
-        
-      
-    useEffect(() => { // 스크롤 초기화
-        window.scrollTo(0, 0);
-    }, [pathname]);
+    const [beforePathName, setBeforePathName] = useState('') // 바뀌기기 직전 pathName
 
+    const [cartList, setCartList] = useState([]);   //  cart 상품 정보 state 에 저장
+
+    const [changeCartList, setChangeCartList] = useState({});   //  바뀐상품
+
+    const { navigate, commonApi} = useCommon();
+        
     useEffect(() => {
         document.body.style.color = 'white'; //폰트
         // 배경화면 변경
@@ -57,6 +58,37 @@ const Root = () => {
             document.body.style.backgroundColor = 'transparent'; // background-color 제거
         }
     })
+
+    // 페이지 이동시 스크롤 초기화 및 장바구니저장
+    useEffect(() => { 
+        window.scrollTo(0, 0); // 스크롤 초기화
+        if(beforePathName === '/shop/cart') { // 페이지 전환시 전환전 페이지가 장바구니면 저장하기
+            savedCart();
+            setChangeCartList({}) // 값 초기화
+        }
+        setBeforePathName(pathname)
+        /* eslint-disable */
+    }, [pathname]);// path name만 바뀔때 실행
+
+
+    // cart 정보 저장하기
+    const savedCart = async() => {
+        if(!changeCartList || Object.keys(changeCartList).length < 1) {    // 바뀐게 없으면 동작 x
+            return;
+        }
+        // api로 넘겨줄 데이터 객체에서 배열로 변환
+        let list = {...changeCartList}
+        let keyItem = Object.keys(changeCartList);
+        let item = [];
+        
+        keyItem.forEach(e => { 
+            item.push({prodCdD:e, prodQty:list[e]})
+        })
+
+        // 저장 api
+        commonApi('/shop/shopU203', {cartList: item});
+    }
+
 
     const setStartClick = () =>{setStartClickValue('1')}
     
@@ -118,7 +150,7 @@ const Root = () => {
                         <Route path="orderDetails/:orderCd" element={<OrderDetails/>}/>
                     </Route> 
                     <Route path="detailproduct/:prodCd" element={<DetailProduct/>}/>
-                    <Route path="cart" element={<Cart/>}/>
+                    <Route path="cart" element={<Cart setCartList={setCartList} cartList={cartList} changeCartList={changeCartList} setChangeCartList={setChangeCartList} savedCart={savedCart}/>}/>
                     <Route path="purchase" element={<Purchase/>}/>
                     <Route path="success/:orderMethod" element={<Success/>}/>
                     <Route path="service" element={<Service/>}/>

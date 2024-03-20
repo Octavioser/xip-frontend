@@ -35,7 +35,6 @@ const AuthShopBtn = (props) => {
     }
 
     
-    const subfont = isMobile? '1rem':'12px'
     const fontSize = isMobile? '1.3rem':'15px'
 
     const authBtnStyle = 

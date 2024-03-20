@@ -14,7 +14,6 @@ const Shop = () => {
 
     useEffect(() => {
         const storedShopStart = localStorage.getItem('shopRegion'); // 로컬 스토리지 가져오기
-        console.log(storedShopStart)
         if (storedShopStart === null) {
             setShopStart(true);
             

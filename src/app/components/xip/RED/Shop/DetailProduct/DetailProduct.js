@@ -15,7 +15,7 @@ const DetailProduct = () => {
 
     const [imgList, setImgList] = useState([]); // s3 이미지
 
-    const {navigate, commonApi, commonShowLoading, commonHideLoading, commonGetS3Img} = useCommon();
+    const {navigate, commonApi, commonShowLoading, commonHideLoading} = useCommon();
 
     useEffect(() => {       
         const getItem = async() => {
@@ -43,7 +43,7 @@ const DetailProduct = () => {
             window.scrollTo(0, 0);
             getItem();
         }
-    },[commonShowLoading, commonHideLoading, commonApi, useEffectCheck, navigate, prodCd, commonGetS3Img]);
+    },[commonShowLoading, commonHideLoading, commonApi, useEffectCheck, navigate, prodCd]);
 
     const parentDivStyle = () => {
 

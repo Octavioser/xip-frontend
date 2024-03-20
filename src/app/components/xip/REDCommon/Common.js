@@ -4,9 +4,7 @@ import { useCookie } from 'app/components/xip/RED/Login/Cookie';
 import { useNavigate } from 'react-router-dom';
 
 export const useCommon = () => {
-  	const { setLoading, openConfirm, region} = useAppContext();
-
-	const {getCookie} = useCookie();
+  	const { setLoading, openConfirm, region} = useAppContext(); // AppContext에서 상태 관리 함수와 통화 정보
 
 	const navigate = useNavigate(); // 페이지 이동
 
@@ -44,6 +42,8 @@ export const useCommon = () => {
 		};
 	}
 
+	const {getCookie} = useCookie();
+
   	const commonApi = async(url, param) => {
 		try{
 			let apiurl = process.env.REACT_APP_API_URL + url
@@ -69,28 +69,28 @@ export const useCommon = () => {
 		}
   	};
 
-	const commonGetS3Img = async(type, code) => {
-		try{
-			let result = [];
-			await fetch('https://xf0vgf3mof.execute-api.ap-northeast-2.amazonaws.com/prod/geturl', 
-			{
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({"type": type,"code": code})
-			}).then(response => 
-				response.json()
-			).then(json  => {
-				result = json
-			});
-			return result;
-		}
-		catch (error) {
-			console.log(error)
-			return -1;
-		}
+	// const commonGetS3Img = async(type, code) => {
+	// 	try{
+	// 		let result = [];
+	// 		await fetch('https://xf0vgf3mof.execute-api.ap-northeast-2.amazonaws.com/prod/geturl', 
+	// 		{
+	// 			method: "POST",
+	// 			headers: {
+	// 				"Content-Type": "application/json",
+	// 			},
+	// 			body: JSON.stringify({"type": type,"code": code})
+	// 		}).then(response => 
+	// 			response.json()
+	// 		).then(json  => {
+	// 			result = json
+	// 		});
+	// 		return result;
+	// 	}
+	// 	catch (error) {
+	// 		console.log(error)
+	// 		return -1;
+	// 	}
 		
-	}
-	return { commonShowLoading, commonHideLoading, commonApi, commonEncode, navigate, commonConfirm, commonRegion, commonGetS3Img};
+	// }
+	return { commonShowLoading, commonHideLoading, commonApi, commonEncode, navigate, commonConfirm, commonRegion};
 }

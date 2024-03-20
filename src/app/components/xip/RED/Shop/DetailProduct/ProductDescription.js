@@ -14,7 +14,8 @@ const ProductDescription = (props) => {
     const {getCookie, removeCookie} = useCookie();
 
     const [loginModal, setLoginModal] = useState(false);
-    const [showShipReturn, setShowShipReturn] = useState(false);
+
+    const [showShipReturn, setShowShipReturn] = useState(false); // 배송 환불정책
 
     const { commonShowLoading, commonHideLoading, commonApi, navigate , commonRegion} = useCommon();
 

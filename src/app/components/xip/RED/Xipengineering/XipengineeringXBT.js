@@ -51,7 +51,7 @@ export const XBTDatePicker = (props) => {
                 selected={getTimeType(props.value)}
                 locale={ko}
                 dateFormat="yyyy-MM-dd"
-                minDate={new Date('2023-10-01')}
+                minDate={new Date('2023-10-01')} // 데이터가 이때부터 생성됨
                 onChange={(date) => {
                     if(!!date) {
                         date.setHours(date.getHours() + 9); // 9시간 더하기
@@ -116,7 +116,7 @@ export const XBTDataGrid = (props) => {
 
     const [data, setData] = useState([])
 
-    const [isEditing, setIsEditing] = useState('');
+    const [isEditing, setIsEditing] = useState(''); 
 
     useEffect(()=>{
         let item = JSON.parse(JSON.stringify(props.dataList))

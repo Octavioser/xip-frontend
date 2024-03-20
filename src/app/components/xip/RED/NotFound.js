@@ -3,12 +3,11 @@ import React from 'react';
 const NotFound = () => {
 
     return(
-        <p
-            className='logoImage' 
-            alt='commingSoon'
-            style={{width: '50vw', height:'auto', fontSize:'1rem', textAlign: 'center'}}>
-            not found
-        </p>
+        <div style={{display:'flex', width:'100%', minHeight:'100vh' , justifyContent:'center', alignItems:'center'}}>
+            <div style={{width:'10%', textAlign:'center'}}>
+                <p>Not Found</p>
+            </div>
+        </div>
     )
 };
 export default NotFound
