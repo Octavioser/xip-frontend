@@ -21,8 +21,6 @@ const Gallery = () => {
     const [galleryList, setGalleryList] = useState([]);             // 이미지 슬라이드 데이터
 
     const [displayList, setDisplayList] = useState([]);             // 화면에 보여줄 이미지 슬라이드x
-
-    const [useEffectCheck, setUseEffectCheck] = useState(0);      // 처음에만 api 호출하도록
     
     const awsUrl = 'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/';
     
@@ -121,11 +119,9 @@ const Gallery = () => {
                 commonHideLoading();
             }
         }
-        if(useEffectCheck === 0) { // 처음시작인지 아니면 파라미터가 바뀌었을 경우
-            setUseEffectCheck(1);
-            getData();
-        }
-    },[galleryType,commonHideLoading,commonShowLoading,useEffectCheck,commonApi]);  // useEffect(() => { },[]) 처음에만 동작
+        getData();
+        /* eslint-disable */
+    },[]);
 
 
     const arrowSize = isMobile? '5vw' : '2vw' ;

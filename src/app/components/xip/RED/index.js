@@ -28,6 +28,9 @@ export { default as TermsOfUse } from './Shop/Service/TermsOfUse';
 export { default as Privacy } from './Shop/Service/Privacy';
 export { default as ShipReturn } from './Shop/Service/ShipReturn';
 
+export { default as Success } from './Shop/Purchase/TossPayments/Success';
+export { default as Fail } from './Shop/Purchase/TossPayments/Fail';
+
 
 
 

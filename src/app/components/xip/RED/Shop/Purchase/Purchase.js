@@ -27,8 +27,6 @@ const Purchase = () => {
     const {getCookie, removeCookie} = useCookie();
 
     const [userItem, setUserItem] = useState({});
-
-    const [useEffectCheck, setUseEffectCheck] = useState(0);      // 처음에만 api 호출하도록
     
     useEffect(() => {
         if(!getCookie('xipToken')) {
@@ -51,7 +49,17 @@ const Purchase = () => {
             setSubOrderTotalUsPrice(subTotalUSPrice)
             setItemList(state['item'])
         }
-    },[state,getCookie, navigate])
+    },[])
+
+
+    useEffect(() => {
+        if(commonRegion() === 'KOR') {
+            setShippingPrice(0)
+        }
+        else {
+            setShippingPrice(userItem.shipFee || 0)
+        }
+    },[commonRegion(),userItem])
 
 
     useEffect(()=>{
@@ -72,11 +80,8 @@ const Purchase = () => {
                 commonHideLoading();
             }
         }
-        if(useEffectCheck === 0) {
-            setUseEffectCheck(1);
-            getUserItem();
-        }
-    },[navigate, commonApi, commonHideLoading, commonShowLoading, removeCookie, setUserItem, useEffectCheck])
+        getUserItem();
+    },[])
 
     const setOrderList = () => {
         let list = [...itemList];
@@ -91,7 +96,7 @@ const Purchase = () => {
                         {   commonRegion()  === 'KOR' ?
                             <span style={{width:'30%', textAlign:'right'}}>{'₩' + e.price}</span>
                             :
-                            <span style={{width:'30%'}}>{'$' + e.usPrice}</span>
+                            <span style={{width:'30%', textAlign:'right'}}>{'$' + e.usPrice}</span>
                         }
                     </div>
                 )}
@@ -101,36 +106,45 @@ const Purchase = () => {
     }
 
     const clickCheckOut = () => {
-        if(commonRegion() === 'KOR' && !userItem.addCount) {
+        if(!userItem.addCount) {
             alert("Please add an address in the Acoount Details section." )
             return;
         }
-        seModal(true);
+        if((commonRegion()  === 'KOR' && userItem.addCountry === 'KOR') ||
+            (commonRegion()  !== 'KOR' && userItem.addCountry !== 'KOR')
+        ){
+            seModal(true);
+            return;
+        }
+        else {
+            alert("Please select the correct region matching your address." )
+            return;
+        }
+        
     }
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center', height:'100vh', width:'100%'}}>
-            <div style={{ display: isMobile?'' : 'flex', position:'relative', justifyContent: commonRegion() === 'KOR' ? 'space-between' : 'center', top: isMobile?'20vh':'15%', width:isMobile? '95vw':'80vw', height:'85%'}}>
-                    { commonRegion() === 'KOR' && 
-                    <div style={{width: isMobile? '100%':'48%', height: isMobile? '30%':'48%'}}>
-                    <div style={{fontWeight: 'bold',paddingBottom: '10px',borderBottom: '2px solid #ccc',marginBottom: '20px'}}>SHIPPING ADDRESS</div>
-                    {!!userItem.addCount ?
-                        <>
-                            <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.addLastNm + ', ' + userItem?.addFirstNm}</p>
-                            {!!(userItem?.company) && <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.company}</p>}
-                            <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.add1 + ', ' + userItem?.add2}</p>
-                            <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.state + ', ' + userItem?.city + ', ' + userItem?.postalCd}</p>
-                            <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.addCountry}</p>
-                            <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.postalCd}</p>
-                            <p></p>
-                        </>
-                        :
-                        <>
-                            <p>Please ensure that if your address is not in Korea, you change the region to USA.</p>
-                            <p>Please add an address in the <a style={{textDecoration: 'underline'}} href="/shop/account/accountdetails">Acoount Details</a> section.</p>
-                        </>
-                    }
-                </div>}
+            <div style={{ display: isMobile?'' : 'flex', position:'relative', justifyContent: 'space-between', top: isMobile?'20vh':'15%', width:isMobile? '95vw':'80vw', height:'85%'}}>
+                <div style={{width: isMobile? '100%':'48%', height: isMobile? '30%':'48%'}}>
+                <div style={{fontWeight: 'bold',paddingBottom: '10px',borderBottom: '2px solid #ccc',marginBottom: '20px'}}>SHIPPING ADDRESS</div>
+                {!!userItem.addCount ?
+                    <>
+                        <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.addLastNm + ', ' + userItem?.addFirstNm}</p>
+                        {!!(userItem?.company) && <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.company}</p>}
+                        <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.add1 + ', ' + userItem?.add2}</p>
+                        <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.state + ', ' + userItem?.city + ', ' + userItem?.postalCd}</p>
+                        <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.addCountry}</p>
+                        <p style={{textAlign: 'left',marginTop: 0, marginBottom: 0}}>{userItem?.postalCd}</p>
+                        <p></p>
+                    </>
+                    :
+                    <>
+                        <p>Please ensure that if your address is not in Korea, you change the region to USA.</p>
+                        <p>Please add an address in the <a style={{textDecoration: 'underline'}} href="/shop/account/accountdetails">Acoount Details</a> section.</p>
+                    </>
+                }
+            </div>
                 <div style={{width: isMobile? '100%':'48%', height:'48%'}}>
                     <div style={{fontWeight: 'bold',paddingBottom: '10px',borderBottom: '2px solid #ccc',marginBottom: '20px',}}>{`ORDER SUMMARY - (${orderQty}) ITEMS`}</div>
                     <div style={{maxHeight: '100px',overflowY: 'scroll'}}>
@@ -166,7 +180,7 @@ const Purchase = () => {
                     </div>
                     <div style={{display:'flex', height:'50%',justifyContent: 'center',alignItems: 'center'}}>
                         <PBtn 
-                            className= {commonRegion() === 'KOR' ?'pBtnNoRed' : 'pBtnNoHover'}
+                            className='pBtnNoRed'
                             style={{
                                 textAlign: 'center', 
                                 display: 'inline-block', 
@@ -174,9 +188,8 @@ const Purchase = () => {
                                 border: '2px solid white',  
                                 fontSize: '2rem'
                             }}
-                            labelText= {commonRegion() === 'KOR' ?'CHECKOUT' :'Preparing'}
+                            labelText='CHECKOUT'
                             onClick={() => {
-                                if(commonRegion()  === 'KOR')
                                 clickCheckOut();
                             }}
                         >
@@ -189,6 +202,7 @@ const Purchase = () => {
                     seModal={seModal} 
                     userItem={userItem} 
                     prodItem={itemList} 
+                    shippingPrice={shippingPrice}
                     orderMethod={state['orderMethod']}
                     totalPrice={   
                         commonRegion()  === 'KOR' ?

@@ -26,10 +26,13 @@ const Success = () => {
         const confirm = async() => {
             try{
                 await commonShowLoading();
-                let resultData = await commonApi('/payment/payC101', {...requestData, orderMethod:orderMethod, pgName:'TOSS'});
+                requestData.amount =  parseInt(requestData.amount, 10) + '';
+                let resultData = await commonApi('/payment/payC101', {
+                    ...requestData, 
+                    orderMethod:orderMethod, 
+                    pgName:'TOSS'
+                });
                 setOrderCd(resultData.orderCd)
-                let price = '₩' + (Number(requestData.amount)).toLocaleString()
-                setPrice(price)
             } catch (error) {
                 if(orderMethod === 'cart') {
                     navigate('/shop/cart')
@@ -63,7 +66,6 @@ const Success = () => {
                     <div style={{display:'flex', width:'100%', justifyContent:'center', textAlign:'center'}}>
                         <div style={{width:'50%',color:'black', textAlign:'left'}}>
                             <p>{`Order Number: #XIP-${orderCd}`}</p>
-                            <p>{`Price: ${price}`}</p>
                         </div>
                     </div>
                     <div style={{display:'flex', width:'100%', justifyContent:'center', textAlign:'center'}}>

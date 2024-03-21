@@ -37,7 +37,7 @@ const CheckoutPage = (props) => {
             { variantKey: "DEFAULT" }
         );
 
-        paymentWidget.renderAgreement("#agreement", { variantKey: "AGREEMENT" });
+        paymentWidget.renderAgreement("#agreement", { variantKey: "AGREEMENT-KR" });
 
         paymentMethodsWidgetRef.current = paymentMethodsWidget;
     }, [paymentWidget, price]);
@@ -70,11 +70,11 @@ const CheckoutPage = (props) => {
             await paymentWidget?.requestPayment({
                 orderId: nanoid(),
                 orderName: orderName,
-                customerName: props.userItem.firstNm + props.userItem.lastNm,
+                customerName: props.userItem.firstNm + ' ' + props.userItem.lastNm,
                 customerEmail: props.userItem.email,
                 customerMobilePhone: props.userItem.phone,
                 successUrl: `${window.location.origin}/shop/success/${props.orderMethod}`,
-                failUrl: `${window.location.origin}/shop/fail`,
+                failUrl: `${window.location.origin}/shop/fail/${props.orderMethod}`,
             });
         } catch (error) {
             console.error("Error requesting payment:", error);

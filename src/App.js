@@ -6,9 +6,7 @@ import {
     Loading, ConfirmModal,
     Credit, Works, Video, StartPage, Home, NotFound,Masterinnovation,MasterinnovationBunka,Gallery, Shop, MainBtn, MusicBtn,
     ProductList, Account, AccountDetails, DetailProduct, Cart, OrderHistory, Purchase, OrderDetails, Xipengineering, Service, 
-    TermsOfUse, Privacy, ShipReturn} from 'app/components/xip/RED'; //index.js
-
-import Success from 'app/components/xip/RED/Shop/Purchase/TossPayments/Success.js'
+    TermsOfUse, Privacy, ShipReturn, Success, Fail} from 'app/components/xip/RED'; //index.js
 import { PBtn } from 'app/components/xip/REDCommon/CommonStyle';
 import { useCommon }  from 'app/components/xip/REDCommon/Common';
 
@@ -153,6 +151,7 @@ const Root = () => {
                     <Route path="cart" element={<Cart setCartList={setCartList} cartList={cartList} changeCartList={changeCartList} setChangeCartList={setChangeCartList} savedCart={savedCart}/>}/>
                     <Route path="purchase" element={<Purchase/>}/>
                     <Route path="success/:orderMethod" element={<Success/>}/>
+                    <Route path="fail/:orderMethod" element={<Fail/>}/>
                     <Route path="service" element={<Service/>}/>
                     <Route path="termsofuse" element={<TermsOfUse/>}/>
                     <Route path="privacy" element={<Privacy/>}/>

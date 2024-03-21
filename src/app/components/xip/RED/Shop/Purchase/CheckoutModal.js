@@ -24,7 +24,7 @@ const CheckoutModal = (props) => {
                 content: {
                     left: '50%',  /* 왼쪽에서 중앙 */
                     top: '50%',    /* 위에서 중앙*/
-                    width: isMobile?'80vw' :'25vw',
+                    width: isMobile?'80vw' :'30vw',
                     height:'80vh',
                     backgroundColor: 'rgba(255, 255, 255)',
                     transform: 'translate(-50%, -50%)'
@@ -37,7 +37,7 @@ const CheckoutModal = (props) => {
         {commonRegion() === 'KOR' ? 
             <CheckoutPage item={props.prodItem} totalPrice={props.totalPrice} userItem={props.userItem} orderMethod={props.orderMethod}/> 
             : 
-            <CheckoutPagePaypal item={props} totalPrice={props.totalPrice} userItem={props.userItem} orderMethod={props.orderMethod}/>}
+            <CheckoutPagePaypal item={props.prodItem} totalPrice={props.totalPrice} userItem={props.userItem} orderMethod={props.orderMethod} shippingPrice={props.shippingPrice}/>}
         </Modal>
     )
 }

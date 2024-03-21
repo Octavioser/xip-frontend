@@ -118,7 +118,7 @@ const LoginModal = (props) => {
                     return false;
                 }
             } catch (error) {
-                setMessage('Please try again.')
+                setMessage('Authentication failed.')
                 return false;
             }
         }

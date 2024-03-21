@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common';
 import { PBtn, ImgBtn } from 'app/components/xip/REDCommon/CommonStyle'
 import { isMobile } from 'react-device-detect';
@@ -6,13 +6,36 @@ import { isMobile } from 'react-device-detect';
 const AccountAdd = (props) => {
     const [userItem, setUserItem] = useState(props.userItem);
 
-    const { commonShowLoading, commonHideLoading, commonApi } = useCommon();
+    const { commonShowLoading, commonHideLoading, commonApi, navigate} = useCommon();
 
     const [edit, setEdit] = useState(false);
 
     const [msg, setMsg] = useState(false);
 
+    const [countries, setCountries] = useState([]);
+
     const [userEditItem, setUserEditItem] = useState({});
+
+    useEffect(() => {
+        const getCountry = async() => {
+            try{
+                await commonShowLoading();
+                let resultData = await commonApi('/shop/shopR007', {});
+                if (!resultData || resultData.length < 1){  // 데이터 없을시
+                    navigate('/shop')
+                }
+                else {
+                    setCountries(resultData)
+                }
+            } catch (error) {
+                console.log(error);
+            } finally {
+                commonHideLoading();
+            }
+        }
+        getCountry();
+        /* eslint-disable */
+    },[])
 
     const apiList = {
         insertAdd: {
@@ -187,24 +210,10 @@ const AccountAdd = (props) => {
         },
 
         setCountryDropDown: () => {
-            const countries = [
-                { name: "South Korea", iso2: "KR", iso3: "KOR" }, // 대한민국을 첫 번째로 배치
-                // { name: "Australia", iso2: "AU", iso3: "AUS" },
-                // { name: "Canada", iso2: "CA", iso3: "CAN" },
-                // { name: "China", iso2: "CN", iso3: "CHN" },
-                // { name: "France", iso2: "FR", iso3: "FRA" },
-                // { name: "Germany", iso2: "DE", iso3: "DEU" },
-                // { name: "Hong Kong", iso2: "HK", iso3: "HKG" },
-                // { name: "Japan", iso2: "JP", iso3: "JPN" },
-                // { name: "Spain", iso2: "ES", iso3: "ESP" },
-                // { name: "United Kingdom", iso2: "GB", iso3: "GBR" },
-                // { name: "United States", iso2: "US", iso3: "USA" }
-            ];
 
             const handleChange = (e) => {
                 const iso3 = e.target.value;
                 const country = countries.find(c => c.iso3 === iso3);
-                console.log(iso3)
                 setUserEditItem({...userEditItem, addCountry:iso3,iso2:country.iso2});
             };
 
@@ -213,7 +222,6 @@ const AccountAdd = (props) => {
                 <div style={{ display:'flex', width: 'auto', flexGrow: 1, marginLeft: isMobile? '' :'10%', height: heigthLength, justifyContent: isMobile? 'center' :'left', alignItems: 'center'}}>
                     <select  
                         style={{ width: '67%'}}
-                        disabled={true}
                         onChange={(e)=>{
                             handleChange(e)
                         }}
