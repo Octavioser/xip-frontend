@@ -4,9 +4,11 @@ import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
 const XIP2040Dialog = (props) => {
 
-    const { commonShowLoading, commonHideLoading, commonApi} = useCommon();
+    const { commonShowLoading, commonHideLoading, commonApi, commonConfirm} = useCommon();
 
     const [dataItem, setDataItem] = useState([]);
+
+    const [dataInfo,] = useState({...props.item})
 
     const [reason, setReason] = useState('');
 
@@ -16,7 +18,7 @@ const XIP2040Dialog = (props) => {
         const getItem = async() => {
             await commonShowLoading();
             try {
-                let resultData = await commonApi('/xipengineering/incuR008', {orderCd: props.orderCd});
+                let resultData = await commonApi('/xipengineering/incuR008', {orderCd: props.item.orderCd});
                 if(resultData.length > 0) {
                     let totalPrice = 0
                     resultData.forEach((e) => {
@@ -41,12 +43,12 @@ const XIP2040Dialog = (props) => {
     const apiList = {
         updateCanceled: {
             api: '/xipengineering/incuU202',
-            param: () => {
+            param: (cancelamount) => {
                 return (
                     {
-                        cancelAmount: cancelPrice,
+                        cancelAmount: cancelamount,
                         reason: reason,
-                        orderCd: props.orderCd
+                        orderCd: dataInfo.orderCd
                     }
                 )
             }
@@ -76,17 +78,30 @@ const XIP2040Dialog = (props) => {
     }
 
     const cancelOrder = async(e) => {
-        try{
-            await commonShowLoading();
-            await commonApi(apiList.updateCanceled.api, apiList.updateCanceled.param());
-            alert('취소 완료')
-            props.modalBtn();
-            props.getCancelItem();
-        } catch (error) {
-            alert('Please try again.')   
-        } finally {
-            commonHideLoading();
+        let total = dataInfo.totalAmount.replace(/[^0-9]/g, '');
+        let cancelamount = Number(cancelPrice)
+        if( cancelamount > total) {
+            alert('총금액보다 취소금액이 큽니다.')
+            return;
         }
+        if(!reason || reason === '') {
+            alert('사유를 입력하세요')
+            return;
+        }
+        commonConfirm(`총금액:${dataInfo.totalAmount} 취소금액:${cancelPrice}`, async() => {
+            try{
+                await commonShowLoading();
+                await commonApi(apiList.updateCanceled.api, apiList.updateCanceled.param(cancelamount));
+                alert('취소 완료')
+                props.modalBtn();
+                props.getCancelItem();
+            } catch (error) {
+                alert('Please try again.')   
+            } finally {
+                commonHideLoading();
+            }
+        })
+        
     }
 
     return (
@@ -139,11 +154,27 @@ const XIP2040Dialog = (props) => {
                         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                             <thead style={{ backgroundColor: '#F4F4F4'}}>
                                 <tr>
+                                    <th style={{ border: '2px solid #E8E8E8'}}>주문번호</th>
+                                    <th style={{ border: '2px solid #E8E8E8'}}>총금액</th>
+                                    <th style={{ border: '2px solid #E8E8E8'}}>배송비</th>
+                                    <th style={{ border: '2px solid #E8E8E8'}}>주문금액</th>
+                                </tr>
+                            </thead>
+                            <tbody  style={{ backgroundColor: 'white', textAlign:'center'}}>
+                            <td key={'orderCd'} style={{ border: '2px solid #E8E8E8', height: '40px', fontSize:'0.9rem'}}>{dataInfo?.orderCd}</td>
+                            <td key={'totalPrice'} style={{ border: '2px solid #E8E8E8', height: '40px', fontSize:'0.9rem'}}>{dataInfo?.totalAmount}</td>
+                            <td key={'shipee'} style={{ border: '2px solid #E8E8E8', height: '40px', fontSize:'0.9rem'}}>{dataInfo?.shippingAmount}</td>
+                            <td key={'subTotal'} style={{ border: '2px solid #E8E8E8', height: '40px', fontSize:'0.9rem'}}>{dataInfo?.subTotal}</td>
+                            </tbody>
+                        </table>
+                        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <thead style={{ backgroundColor: '#F4F4F4'}}>
+                                <tr>
                                     <th style={{ border: '2px solid #E8E8E8'}}>제품코드</th>
                                     <th style={{ border: '2px solid #E8E8E8'}}>제품이름</th>
                                     <th style={{ border: '2px solid #E8E8E8'}}>제품사이즈</th>
                                     <th style={{ border: '2px solid #E8E8E8'}}>제품수량</th>
-                                    <th style={{ border: '2px solid #E8E8E8'}}>가격</th>
+                                    <th style={{ border: '2px solid #E8E8E8'}}>상품가격</th>
                                     <th style={{ border: '2px solid #E8E8E8'}}>통화</th>
                                 </tr>
                             </thead>
@@ -168,12 +199,12 @@ const XIP2040Dialog = (props) => {
                         </textarea>
                         <p style={{padding:20}}>취소금액:</p>
                         <input 
-                            id='text'
+                            id='number'
                             type='number'
                             name='text'
                             value={cancelPrice}
                             onChange={(e)=>{         
-                                setCancelPrice(e.target.value.trim())
+                                setCancelPrice(e.target.value)
                             }}
                         ></input>
                     </div>

@@ -209,12 +209,12 @@ const AccountAdd = (props) => {
             )
         },
 
-        setCountryDropDown: () => {
+        setCountryDropDown: (value) => {
 
             const handleChange = (e) => {
                 const iso3 = e.target.value;
                 const country = countries.find(c => c.iso3 === iso3);
-                setUserEditItem({...userEditItem, addCountry:iso3,iso2:country.iso2});
+                setUserEditItem({...userEditItem, addCountry:iso3, iso2:country.iso2});
             };
 
             return(
@@ -222,6 +222,7 @@ const AccountAdd = (props) => {
                 <div style={{ display:'flex', width: 'auto', flexGrow: 1, marginLeft: isMobile? '' :'10%', height: heigthLength, justifyContent: isMobile? 'center' :'left', alignItems: 'center'}}>
                     <select  
                         style={{ width: '67%'}}
+                        value={value}
                         onChange={(e)=>{
                             handleChange(e)
                         }}
@@ -282,7 +283,7 @@ const AccountAdd = (props) => {
                         {textBox.setValue(userEditItem?.city, 'city', 33, 'text')}
 
                         {textBox.setTopic('Country/Region')}
-                        {textBox.setCountryDropDown()}
+                        {textBox.setCountryDropDown(userEditItem?.addCountry)}
 
                         {textBox.setTopic('State/Province')}
                         {textBox.setValue(userEditItem?.state, 'state', 33, 'text')}
@@ -342,7 +343,11 @@ const AccountAdd = (props) => {
                             }}
                             labelText= 'EDIT'
                             onClick={() => {
-                                setUserEditItem({...userItem, addCountry:'KOR', iso2:'KR'});
+                                setUserEditItem({
+                                    ...userItem, 
+                                    addCountry: userItem?.addCountry || 'KOR', 
+                                    iso2: userItem?.iso2 || 'KR'
+                                });
                                 setEdit(true)
                             }}
                         >

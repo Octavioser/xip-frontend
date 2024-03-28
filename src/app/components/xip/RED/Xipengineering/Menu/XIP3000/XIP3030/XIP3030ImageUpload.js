@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-const XIP3020ImageUpload = (props) => {
+const XIP3030ImageUpload = (props) => {
 
     const [forms, setForms] = useState([]);
 
@@ -46,4 +46,4 @@ const XIP3020ImageUpload = (props) => {
         </div>
     )
 }
-export default XIP3020ImageUpload;
+export default XIP3030ImageUpload;

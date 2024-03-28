@@ -15,7 +15,7 @@ export const useCommon = () => {
      * 컨펌창
      * @param msg       텍스트
      * @param func    확인 눌렀을시 실행할 함수 
-     * ex) openConfirm("정말 삭제하시겠습니까?", () => {console.log("삭제 로직 수행");}))
+     * ex) commonConfirm("정말 삭제하시겠습니까?", () => {console.log("삭제 로직 수행");}))
      */
 	const commonConfirm = async(msg, func) => {  // 컨펌창
 		openConfirm(msg, func);
@@ -69,12 +69,14 @@ export const useCommon = () => {
 				console.error(result.resultMsg) 
 				removeCookie('xipToken') // 토큰 오류시 로그아웃
                 navigate('/shop')
+				throw new Error(result.resultMsg);
 			}
 			else {
 				throw new Error(result.resultMsg);
 			}
 		} catch (e) {
 			console.error(e) ;
+			throw e;
 		}
   	};
 

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 
-const XIP3020ProdCode = (props) => {
+const XIP3030ProdCode = (props) => {
 
     const [desc, setDesc] = useState([]);
 
@@ -270,4 +270,4 @@ const XIP3020ProdCode = (props) => {
         </div>
     )
 }
-export default XIP3020ProdCode;
+export default XIP3030ProdCode;

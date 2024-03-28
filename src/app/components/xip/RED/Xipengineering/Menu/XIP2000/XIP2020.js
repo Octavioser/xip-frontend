@@ -64,7 +64,7 @@ const XIP2020 = (props) => {
                       {name:'orderDt', header:'주문날짜', type: 'text'},
                       {name:'trackingInput', header:'운송장', type:'button', 
                         onClick:(e)=>{
-                            openDialog(e)
+                            openDialog(e.targetData)
                         }}
                     ]
     let dropDownList = [{key:'배송전', name: '배송전', value:'1'},
@@ -106,7 +106,7 @@ const XIP2020 = (props) => {
                 columnList={columnList}
                 dataList={dataList}
                 onChange= {(e) => {
-                    console.log(e)
+
                 }}
             >
             </XBTDataGrid>

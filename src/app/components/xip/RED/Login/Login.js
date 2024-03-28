@@ -15,6 +15,7 @@ const Login = (props) => {
 
     const {setCookie } = useCookie();        
 
+
     const apiList = {
         checkEmail:{
             api: '/login/loginR007',
@@ -141,6 +142,7 @@ const Login = (props) => {
                 id='email'
                 type='email'
                 name='email'
+                autoFocus={true}
                 style={{width: textWidth}} 
                 value={email}
                 maxLength="50"

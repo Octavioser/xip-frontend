@@ -51,12 +51,12 @@ const XIP2010 = (props) => {
     let columnList = [{name:'orderCd', header:'주문번호', type: 'text'},
                       {name:'orderDt', header:'주문날짜', type: 'text'},
                       {name:'orderStatus', header:'주문상태', type: 'text'},
-                      {name:'krwSubTotal', header:'원화_제품금액', type: 'text', footer: true},
-                      {name:'krwShippingAmount', header:'원화_배송비', type: 'text', footer: true},
-                      {name:'krwTotalAmount', header:'원화_총금액', type: 'text', footer: true},
-                      {name:'usdSubTotal', header:'달러_제품금액', type: 'text', footer: true},
-                      {name:'usdShippingAmount', header:'달러_배송비', type: 'text', footer: true},
-                      {name:'usdTotalAmount', header:'달러_총금액', type: 'text', footer: true}]
+                      {name:'krwSubTotal', header:'원화_제품금액', type: 'text', currency:'₩',footer: true},
+                      {name:'krwShippingAmount', header:'원화_배송비', type: 'text', currency:'₩',footer: true},
+                      {name:'krwTotalAmount', header:'원화_총금액', type: 'text', currency:'₩',footer: true},
+                      {name:'usdSubTotal', header:'달러_제품금액', type: 'text', currency:'$',footer: true},
+                      {name:'usdShippingAmount', header:'달러_배송비', type: 'text', currency:'$',footer: true},
+                      {name:'usdTotalAmount', header:'달러_총금액', type: 'text', currency:'$',footer: true}]
 
     let dropDownList = [{key:'전체', name: '전체', value:''},
                         {key:'배송전', name: '배송전', value:'1'},

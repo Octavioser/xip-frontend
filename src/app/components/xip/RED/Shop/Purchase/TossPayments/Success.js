@@ -12,7 +12,6 @@ const Success = () => {
     const { commonShowLoading, commonHideLoading, commonApi, navigate} = useCommon();
 
     const [orderCd, setOrderCd] = useState();
-    const [price, setPrice] = useState();
 
     useEffect(() => {
         // TODO: 쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.

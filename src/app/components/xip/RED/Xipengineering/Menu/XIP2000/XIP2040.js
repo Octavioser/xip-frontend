@@ -20,7 +20,7 @@ const XIP2040 = (props) => {
 
     const [dialog, setDialog] = useState(false);
 
-    const [dialogOrderCd, setDialogOrderCd] = useState(false);
+    const [dialogItem, setDialogItem] = useState(false);
 
     const apiList = {
         selectCancelling: {
@@ -57,7 +57,7 @@ const XIP2040 = (props) => {
     }                    
 
     const openDialog = (e) => {
-        setDialogOrderCd(e.orderCd)
+        setDialogItem(e)
         setDialog(true);
     }
 
@@ -72,7 +72,7 @@ const XIP2040 = (props) => {
                       {name:'subTotal', header:'제품금액', type: 'text'},
                       {name:'cancelBtn', header:'취소버튼', type:'button', 
                       onClick:(e)=>{
-                        openDialog(e)
+                        openDialog(e.targetData)
                       }}]
 
     let dropDownList = [{key:'배송전', name: '배송전', value:'1'},
@@ -121,11 +121,11 @@ const XIP2040 = (props) => {
                 columnList={columnList}
                 dataList={dataList}
                 onChange= {(e) => {
-                    console.log(e)
+
                 }}
             >
             </XBTDataGrid>
-            {dialog && <XIP2040Dialog orderCd={dialogOrderCd} modalBtn={() => setDialog(false)} getCancelItem={() => getCancelItem()}/>}
+            {dialog && <XIP2040Dialog item={dialogItem} modalBtn={() => setDialog(false)} getCancelItem={() => getCancelItem()}/>}
         </>
     )
 }

@@ -53,7 +53,11 @@ const XIP2050 = (props) => {
                       {name:'email', header:'이메일', type: 'text'},
                       {name:'orderDt', header:'주문날짜', type: 'text'},
                       {name:'cancelDt', header:'취소날짜', type: 'text'},
-                      {name:'cancelAmount', header:'취소금액', type: 'text'}]
+                      {name:'cancelAmount', header:'취소금액', type: 'text'},
+                      {name:'totalAmount', header:'총금액', type: 'text'},
+                      {name:'shippingAmount', header:'배송비', type: 'text'},
+                      {name:'subTotal', header:'제품금액', type: 'text'},
+                    ]
 
     return (
         <>
@@ -90,7 +94,7 @@ const XIP2050 = (props) => {
                 columnList={columnList}
                 dataList={dataList}
                 onChange= {(e) => {
-                    console.log(e)
+
                 }}
             >
             </XBTDataGrid>

@@ -1,313 +1,217 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
-import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
-import XIP3020ProdCode from './XIP3020ProdCode';
-import XIP3020ImageUpload from './XIP3020ImageUpload';
+import {XBTDataGrid, XBTSearchFrame, XBTTextField, XBTDropDown} from '../../XipengineeringXBT'
+import XIP3020Dialog from './XIP3020Dialog'
 
-const XIP3020 = () => {
+const XIP3020 = (props) => {
 
-    const { commonShowLoading, commonHideLoading, commonApi, commonConfirm} = useCommon();
+    const { commonShowLoading, commonHideLoading, commonApi} = useCommon();
 
-    const [prodItem, setProdItem] = useState({size:[0,0,0,0,0,0]});     
-    // 각 파일 입력 필드의 파일을 객체로 관리
-    const [base64File, setBase64File] = useState({});
+    const [dataList, setDataList] = useState([])
 
+    const [dropDownList, setDropDownList] = useState([]);
+
+    const [season, setSeason] = useState('');
+
+    const [line, setLine] = useState('');
+
+    const [name, setName] = useState('');
+
+    const [openDialog, setOpenDialog] = useState(false);
+
+    const [dialogItem, setDialogItem] = useState({});
 
     const apiList = {
-        insertProdItem: {
-            api: '/xipengineering/incuC101',
-            param: (param, base64Img) => {
+        selectSeasonLst: {
+            api: '/xipengineering/incuR011',
+            param: () => {
                 return (
                     {
-                        ...param,
-                        img:base64Img
+
                     }
+                )
+            }
+        },
+        selectProdStatus: {
+            api: '/xipengineering/incuR012',
+            param: () => {
+                return (
+                    {
+                        season: season,
+                        line:line,
+                        name:name
+                    }
+                )
+            }
+        },
+        updateProd: {
+            api: '/xipengineering/incuU205',
+            param: (param) => {
+                return (
+                    param
                 )
             }
         },
     }
 
-    useEffect(() => {
-        // 상태가 업데이트되고 나서 실행할 코드
-        commonHideLoading();
-    }, [base64File, commonHideLoading]); 
-
-    // 이미지 업로드
-    const handleFileChange = (event) => {
-        commonShowLoading();
-        const { name, files } = event.target;
-        const file = files[0]; // 첫 번째 파일을 선택\
-        if(name === 'image0') {
-            if (file.type !== 'image/gif') {
-                let item = {...base64File}
-                delete item[name]
-                setBase64File({...item})
-
-                alert('gif 확장자로 변환 후 올려주세요.');
-                event.target.value = ''; 
-                return;
+    useEffect(()=>{
+        const getSeasonlist = async() => {
+            await commonShowLoading();
+            try {
+                let result = await commonApi(apiList.selectSeasonLst.api, apiList.selectSeasonLst.param());    
+                if(!!result && result.length > 0) {
+                    let item = [{key:'전체', name:'전체', value:''}];
+                    result.forEach((e)=>{
+                        item.push( {key:e.season, name:e.season, value:e.season})
+                    })
+                    setDropDownList(item);
+                }
+            } catch (error) {
+                setDataList([])
+            } finally {
+                commonHideLoading();
             }
         }
-        else if (file.type !== 'image/webp') {
-            let item = {...base64File}
-            delete item[name]
-            setBase64File({...item})
+        getSeasonlist();
+         /* eslint-disable */
+    },[])
 
-            alert('webp 확장자로 변환 후 올려주세요.');
-            event.target.value = ''; 
-            return;
-        } 
-
-        if (file) {
-            readFileAsDataURL(file).then(base64String  =>{
-                setBase64File(base64File => ({...base64File, [name]: base64String })); // Base64 문자열을 상태에 저장
-            })
-            .catch(error => {
-                console.error('파일 읽기 오류', error);
-                commonHideLoading();
-            });
-        }
-    };
-
-    // base64로 이미지 바꾸기
-    const readFileAsDataURL = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-    
-            reader.onload = () => {
-                resolve(reader.result);
-            };
-    
-            reader.onerror = (error) => {
-                reject(error);
-            };
-    
-            reader.readAsDataURL(file);
-        });
-    }
-
-    const filedelete = (name) => {
-        let item = {...base64File}
-        if(item[name]) {
-            delete item[name]
-            setBase64File({...item})
-        }
-    };
-
-    const validateField = (field, message, length = true) => {
-        if (!field || !length) {
-            alert(message);
-            return false;
-        }
-        return true;
-    }
-    // api 호출
-    const insertProd= async() => {
+    const getProdStatus= async() => {
         try{
             await commonShowLoading();
+            let resultData = await commonApi(apiList.selectProdStatus.api, apiList.selectProdStatus.param());
+            if(!!resultData && resultData.length > 0) {
 
-            let product = JSON.parse(JSON.stringify(prodItem))
-
-            let imgItem = JSON.parse(JSON.stringify(base64File))
-
-            if (!validateField(product.line, 'line을 입력하세요')) return;
-            if (!validateField(product.sex, 'sex를 입력하세요')) return;
-            if (!validateField(product.year, 'year를 올바르게 입력하세요', product.year.length === 2)) return;
-            if (!validateField(product.season, 'season을 입력하세요')) return;
-            if (!validateField(product.item, 'item을 입력하세요')) return;
-            if (!validateField(product.itemCode, 'itemCode를 입력하세요', product.itemCode.length === 2)) return;
-            if (!validateField(product.textile, 'textile을 입력하세요', product.textile.length === 2)) return;
-            if (!validateField(product.colorCode, 'colorCode를 입력하세요')) return;
-            if (!validateField(product.name, 'name을 입력하세요')) return;
-            if (!validateField(product.price, 'price를 입력하세요')) return;
-            if (!validateField(product.usPrice, 'usPrice를 입력하세요')) return;
-            if (!validateField(product.status, 'status를 입력하세요')) return;
-            if (!validateField(product.total, 'total를 입력하세요')) return;
-            if (!validateField(product.prodDesc, 'prodDesc를 입력하세요')) return;
-            if (!validateField(product.prodDescD0, 'prodDesc1을 입력하세요')) return;
-            
-            
-            let base64 = Object.keys(imgItem)
-            if(base64.length < 2) {
-                alert('사진을 올려주세요')
-                return;
             }
-
-            let base64Check = false;
-
-            for(let i=0; i<base64.length; i++) {
-                if(!(imgItem['image' + i])){
-                    base64Check = true
-                    alert('사진' + i + ' 올려주세요.')
-                    break;
-                }
+            else {
+                resultData = [];
             }
-
-            if(base64Check) {
-                return;
-            }
-
-            let seasonName = product.year + (product.season === 'S' ? 'SS' : 'FW')
-            let sizeCheck = 0;
-            let sizeValue = '';
-            let prodCdDSize = [];
-            let sizeList = {'0':'XS', '1':'S', '2':'M', '3':'L', '4':'XL', '5':'ONE SIZE'}
-
-            product.size.forEach((e, index) => {
-                sizeCheck = sizeCheck + e
-                if(e > 0) {
-                    if(sizeValue === '') {
-                        sizeValue = sizeValue + sizeList[index+'']
-                    }
-                    else {
-                        sizeValue = sizeValue + '|' + sizeList[index+'']
-                    }
-                    prodCdDSize.push({sizeNum:index + '', sizeName:sizeList[index+'']})
-                }
-            })
-
-            if(sizeCheck < 1) {
-                alert('size 입력하세요');
-                return;
-            }
-
-            let prodDescD = ''
-
-            for(let i = 0; i<10; i++) {
-                if(!!(prodItem['prodDescD' + i])) {
-                    if(prodDescD === '') {
-                        prodDescD = prodDescD + prodItem['prodDescD' + i]
-                    }
-                    else {
-                        prodDescD = prodDescD + '|' + prodItem['prodDescD' + i]
-                    }
-                }
-            }
-
-            let prodCd = (
-                product.line + 
-                product.sex + 
-                product.year + 
-                product.season + 
-                product.item + 
-                product.itemCode +
-                product.textile +
-                product.colorCode
-            );
-
-            let prodCdDFront = (
-                product.line + 
-                product.sex + 
-                product.year + 
-                product.season + 
-                product.item 
-            )
-            
-            let proCdDBack = product.itemCode + product.textile +product.colorCode
-
-            let totalQty = Number(product.total)
-
-            let prodCdD = []
-            
-            prodCdDSize.forEach(e => {
-                prodCdD.push({
-                    prodCdD:(prodCdDFront + e.sizeNum + proCdDBack), 
-                    prodSize:e.sizeName,
-                    prodCd: prodCd,
-                    totalQty: totalQty
-                })
-            })
-
-            let prodDesc1 = '';
-
-            if(!!(product.prodDesc1)) {
-                prodDesc1 = '|' + product.prodDesc1
-            }
-
-            let param = {
-                prodCd: prodCd,
-                name: product.name,
-                price: Number(product.price),
-                usPrice: Number(product.usPrice),
-                sizeOpt: sizeValue,
-                status: product.status,
-                line: product.line,
-                season: seasonName,
-                prodDesc: product.prodDesc + prodDesc1,
-                prodDescD: prodDescD,
-
-                prodCdD:prodCdD,
-            };
-
-            commonConfirm(<><p>제품코드: {param.prodCd}</p>  <p>저장하시겠습니까?</p></>, () => {insertProdApi(param, imgItem)});
+            setDataList(resultData)
         } catch (error) {
-                
+            alert('Please try again.')   
+        } finally {
+            commonHideLoading();
+        }
+    }                    
+
+    const saveData = async(e) => {
+        let param = {prodCd: e.prodCd, name:e.name, price: e.price, usPrice:e.usPrice, sizeOpt:e.sizeOpt, status: e.status}
+        try{
+            await commonShowLoading();
+            await commonApi(apiList.updateProd.api, apiList.updateProd.param(param));
+            alert('저장완료')   
+            getProdStatus();
+        } catch (error) {
+            alert('Please try again.')       
         } finally {
             commonHideLoading();
         }
     }
 
-    const insertProdApi = async(param, imgItem) => {
-        try {
-            await commonApi(apiList.insertProdItem.api, apiList.insertProdItem.param(param, imgItem));    
-            alert('등록되었습니다.')
-        } catch (error) {
-            alert('오류입니다. 다시 시도해주세요.')
-        }
-        
-        
+    const listItem = {
+        propStatus: [
+            {name:'판매중단', value:'-1'},
+            {name:'판매전', value:'0'},
+            {name:'판매중', value:'1'},
+            {name:'판매완료', value:'2'},
+            {name:'프리오더', value:'3'},
+        ],
+    
+        Sizelist: [
+            {name:'XS', value:'XS', index:0},
+            {name:'S', value:'S', index:1},
+            {name:'M', value:'M', index:2},
+            {name:'L', value:'L', index:3},
+            {name:'XL', value:'XL', index:4},
+            {name:'One Size', value:'One Size', index:5}
+        ],
+
+        prodLineList: [
+            {key:'전체',name:'전체', value:''},
+            {key:'XM',name:'XIP Mainline', value:'XM'},
+            {key:'XP',name:'XIPro', value:'XP'},
+            {key:'XS',name:'Xskin', value:'XS'},
+            {key:'CC',name:'Cue choi', value:'CC'},
+            {key:'JV',name:'Jun Valentine', value:'JV'}
+        ]
+    }
+
+    let columnList = [
+                        {name: 'prodCd', header: '제품코드', type: 'text'},
+                        {name: 'name', header: '이름', type: 'text', editable:true},
+                        {name: 'price', header: '가격', type: 'number', currency:'₩', editable:true},
+                        {name: 'usPrice', header: '미국 가격', type: 'number', currency:'$', editable:true},
+                        // {name: 'sizeOpt', header: '사이즈 옵션', type: 'checkDropDown', list: listItem.Sizelist},
+                        {name: 'status', header: '상태', type: 'dropDown', list: listItem.propStatus},
+                        {name:'prodDescBtn', header:'제품 설명', type:'button', 
+                            onClick: async(e)=>{
+                                let descItem = (e.targetData.prodDesc || []).split('|')
+                                let descDItem = (e.targetData.prodDescD || []).split('|')
+                                let prodCd = e.targetData.prodCd
+                                setDialogItem({prodDesc: descItem, prodDescD:descDItem, prodCd:prodCd})
+                                setOpenDialog(true)
+                            }
+                        },
+                        {name:'saveBtn', header:'저장', type:'button', modifyDisabled: true,
+                            onClick: async({targetData})=>{
+                                saveData(targetData);
+                            }
+                        },
+                        {name:'deleteBtn', header:'제품삭제', type:'button', 
+                            onClick: async({targetData})=>{
+                                console.log(targetData)
+                            }
+                        }
+                    ]
+    
+
+    const closeDialog = () => {
+        setDialogItem({})
+        setOpenDialog(false)
     }
 
     return (
         <>
-             <div style={{display:'flex', position:'relative', width:'100%' ,height:'12%', textAlign:'center', border:'3px solid #E1E1E1'}}>
-                {/* 검색 창 */}
-                
-                <div style={{position:'relative', width:'94%' ,height:'100%', textAlign:'center', alignItems: 'center'}}>
-                    <p style={{padding:2, margin:2}}>사진은 png 파일을 webp로 변환 후 올리기
-                        <a 
-                            style={{textDecoration: 'underline', color:'red'}} 
-                            href='https://convertio.co/kr/png-webp/'
-                            target="_blank" // 새 탭에서 링크를 열도록 설정
-                            rel='noopener noreferrer'
-                            >
-                            사이트
-                        </a>
-                    </p>
-                    <p style={{padding:1, margin:1}}>영어로만 입력하시고  사진은 크기 800 x 1200</p>
-                </div>
+            <XBTSearchFrame
+                onClick={()=>{
+                    getProdStatus();
+                }}
+            >
+                <XBTDropDown
+                    labelText={'제품시즌'}
+                    list={dropDownList}
+                    value={season}
+                    onChange={(e) => {
+                        setSeason(e)
+                    }}
+                />
 
-                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center',position:'relative', width:'6%' ,height:'100%', textAlign:'center'}}>
-                    <PBtn 
-                        className= 'pBtnNoRed'
-                        style={{ margin: 0, padding: 0, fontSize:'2rem',backgroundColor: '#F4F4F4', border: '2px solid #E8E8E8'}}
-                        labelText='저장'
-                        alt='저장'
-                        onClick={(e) =>{
-                            insertProd();
-                        }}
-                    >
-                    </PBtn>
-                </div>
-            </div>
-            <div style={{position:'relative', backgroundColor:'white',width:'100%', height:'3%'}}></div> {/* XBTSearchFrame 사이 */}
+                <XBTDropDown
+                    labelText={'제품라인'}
+                    list={listItem.prodLineList}
+                    value={line}
+                    onChange={(e) => {
+                        setLine(e)
+                    }}
+                />
 
-            <div  
-                style={{
-                    display:'flex',
-                    position:'relative', 
-                    backgroundColor:'#FAFAFA',
-                    width:'100%', 
-                    height:'84%' , 
-                    borderRight:'2px solid #E1E1E1', 
-                    borderLeft:'2px solid #E1E1E1', 
-                    borderBottom:'2px solid #E1E1E1', 
-                    borderTop:'2px solid black', 
-                    fontSize:'0.8rem',
-                }}>
-                <XIP3020ProdCode prodItem={prodItem} setProdItem={setProdItem}/>
-                <XIP3020ImageUpload handleFileChange={handleFileChange} filedelete={filedelete}/>
-            </div>
+                <XBTTextField
+                    labelText={'제품명(제품코드)'}
+                    value={name}
+                    onChange={(e) => {
+                        setName(e)
+                    }}
+                />
+            </XBTSearchFrame>
+            <XBTDataGrid
+                columnList={columnList}
+                dataList={dataList}
+                onChange= {(e) => {
+                    // console.log(e)
+                }}
+            >
+            </XBTDataGrid>
+            {openDialog && <XIP3020Dialog modalBtn={closeDialog} item={dialogItem} dataList={dataList} setDataList={setDataList}/>}
         </>
     )
 }

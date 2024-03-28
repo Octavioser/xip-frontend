@@ -91,7 +91,7 @@ const XIP2030 = (props) => {
                 columnList={columnList}
                 dataList={dataList}
                 onChange= {(e) => {
-                    console.log(e)
+
                 }}
             >
             </XBTDataGrid>

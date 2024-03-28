@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {PBtn, ImgBtn} from 'app/components/xip/REDCommon/CommonStyle';
 
-import {XIP1010, XIP2010, XIP2020, XIP2030, XIP2040, XIP2050, XIP3010, XIP3020} from 'app/components/xip/RED/Xipengineering';
+import {XIP1010, XIP2010, XIP2020, XIP2030, XIP2040, XIP2050, XIP3010, XIP3020, XIP3030} from 'app/components/xip/RED/Xipengineering';
 const XipengineeringMenu = () => {
 
     const [category, setCategory] = useState('');
@@ -16,7 +16,8 @@ const XipengineeringMenu = () => {
                     {key:'XIP2040', name:'주문취소'},
                     {key:'XIP2050', name:'취소내역'},
                     {key:'XIP3010', name:'재고관리'},
-                    {key:'XIP3020', name:'제품등록'}]
+                    {key:'XIP3020', name:'제품상태'},
+                    {key:'XIP3030', name:'제품등록'}]
         return (
             list.map((e, index) => 
                 <PBtn 
@@ -99,6 +100,7 @@ const XipengineeringMenu = () => {
                     {category === 'XIP2050' && <XIP2050 date={date()}/>}
                     {category === 'XIP3010' && <XIP3010 date={date()}/>}
                     {category === 'XIP3020' && <XIP3020 date={date()}/>}
+                    {category === 'XIP3030' && <XIP3030 date={date()}/>}
                 </div>
             </div>
             <div style={{position:'relative', width:'100%' ,height:'3%'}}></div>{/* 맨밑빈칸 */}

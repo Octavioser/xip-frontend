@@ -198,9 +198,11 @@ const ProductDescription = (props) => {
 
                 <ul style={{ listStyle: 'none', padding: '0', textAlign: isMobile?'center':'left' }}>
                     {getProdDescD()}
-                    {/* <PBtn 
-                        className='pBtnNoHover' 
-                        style={{fontSize:'1rem', fontWeight:'600', border: '1.5px solid black',display: 'inline-block', padding: '2px 4px',}} 
+                    <br/>
+                    <div style={{display: 'flex', justifyContent:'center'}}>
+                    <PBtn 
+                        className='pBtnNoRed' 
+                        style={{fontSize:'1.2rem', fontWeight:'600',  border: '1.5px solid black',display: 'inline-block', padding: '2px 4px'}} 
                         labelText='NOTICE'
                         onClick={()=>{
                             setShowShipReturn(!showShipReturn);
@@ -208,8 +210,8 @@ const ProductDescription = (props) => {
                         >
                         
                     </PBtn>
-                    {showShipReturn && <ShipReturn type='menu'/>} */}
-                    <ShipReturn type='menu'/>
+                    </div>
+                    {showShipReturn && <ShipReturn type='menu'/>}
                     <br/><br/><br/><br/><br/>
                 </ul>
             </>
