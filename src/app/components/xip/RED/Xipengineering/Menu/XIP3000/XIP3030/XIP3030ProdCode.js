@@ -114,19 +114,6 @@ const XIP3030ProdCode = (props) => {
         {name:'name', type:'text', description: '제품이름', maxLength:30},
         {name:'price', type:'number', description: '원화가격', maxLength:10},
         {name:'usPrice', type:'number', description: '달러가격', maxLength:10},
-        {
-            name:'status', 
-            type:'dropDown',
-            list: [
-                {name:'', value:''},
-                {name:'판매중단', value:'-1'},
-                {name:'판매전', value:'0'},
-                {name:'판매중', value:'1'},
-                {name:'판매완료', value:'2'},
-                {name:'프리오더', value:'3'},
-            ]
-        },
-        {name:'total', type:'number',description: '사이즈당 수량(사이드마다 다르면 재고관리에서 수정)', maxLength:4},
         {name:'prodDesc', type:'text', description: '한줄설명 ex) ZIP-UP VEST IN BLACK', maxLength:50},
         {name:'prodDesc1', type:'text', description: '한줄설명 ex) ZIP-UP VEST IN BLACK', maxLength:50},
         {name:'prodDescD0', type:'text', description: '상품 설명 1 ex) 100% NYLON', maxLength:50},

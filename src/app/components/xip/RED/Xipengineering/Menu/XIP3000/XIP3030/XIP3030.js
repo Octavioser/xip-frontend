@@ -121,8 +121,6 @@ const XIP3030 = () => {
             if (!validateField(product.name, 'name을 입력하세요')) return;
             if (!validateField(product.price, 'price를 입력하세요')) return;
             if (!validateField(product.usPrice, 'usPrice를 입력하세요')) return;
-            if (!validateField(product.status, 'status를 입력하세요')) return;
-            if (!validateField(product.total, 'total를 입력하세요')) return;
             if (!validateField(product.prodDesc, 'prodDesc를 입력하세요')) return;
             if (!validateField(product.prodDescD0, 'prodDesc1을 입력하세요')) return;
             
@@ -150,7 +148,6 @@ const XIP3030 = () => {
             let seasonName = product.year + (product.season === 'S' ? 'SS' : 'FW')
             let sizeCheck = 0;
             let sizeValue = '';
-            let prodCdDSize = [];
             let sizeList = {'0':'XS', '1':'S', '2':'M', '3':'L', '4':'XL', '5':'ONE SIZE'}
 
             product.size.forEach((e, index) => {
@@ -162,7 +159,6 @@ const XIP3030 = () => {
                     else {
                         sizeValue = sizeValue + '|' + sizeList[index+'']
                     }
-                    prodCdDSize.push({sizeNum:index + '', sizeName:sizeList[index+'']})
                 }
             })
 
@@ -205,16 +201,15 @@ const XIP3030 = () => {
             
             let proCdDBack = product.itemCode + product.textile +product.colorCode
 
-            let totalQty = Number(product.total)
-
             let prodCdD = []
+
+            let sizeKeyList = Object.keys(sizeList)
             
-            prodCdDSize.forEach(e => {
+            sizeKeyList.forEach(e => {
                 prodCdD.push({
-                    prodCdD:(prodCdDFront + e.sizeNum + proCdDBack), 
-                    prodSize:e.sizeName,
+                    prodCdD:(prodCdDFront + e + proCdDBack), 
+                    prodSize: sizeList[e],
                     prodCd: prodCd,
-                    totalQty: totalQty
                 })
             })
 
@@ -230,7 +225,6 @@ const XIP3030 = () => {
                 price: Number(product.price),
                 usPrice: Number(product.usPrice),
                 sizeOpt: sizeValue,
-                status: product.status,
                 line: product.line,
                 season: seasonName,
                 prodDesc: product.prodDesc + prodDesc1,

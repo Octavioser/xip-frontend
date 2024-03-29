@@ -203,10 +203,16 @@ export const XBTDataGrid = (props) => {
         }
 
         // 체크 드랍다운 onchange
-        const checkDropDownOnChange = (value, checked, stateValue, list) => { // 체크 로직
+        const checkDropDownOnChange = (value, checked, stateValue, list, func) => { // 체크 로직
             let data = stateValue.split('|')
             let result = '';
-
+            if(func !== undefined) { // 함수가 있을경우
+                let funcResult = func({value, checked, data})
+                if(!!funcResult) {
+                    return funcResult;
+                }
+            }
+            
             list.forEach(e => {
                 if(checked && value === e.value) { // 체크한값
                     if(result === '') { 
@@ -318,65 +324,64 @@ export const XBTDataGrid = (props) => {
 
                             if(j.type === 'checkDropDown') {
                                 return (
-                                        
-                                            <td key={'checkDropDowntd1' + j.name + index} style={checkDropDownOpen ===  j.name + index ? { position:'relative'} : { border: '2px solid #E8E8E8'}}>
-                                                {checkDropDownOpen ===  j.name + index ? 
-                                                    <ul style={{ 
-                                                        position: 'absolute', 
-                                                        width: '100%', 
-                                                        top:0,
-                                                        left:0,
-                                                        margin:0, 
-                                                        padding:0, 
-                                                        listStyleType: 'none', 
-                                                        backgroundColor:'white'
+                                    <td key={'checkDropDowntd1' + j.name + index} style={checkDropDownOpen ===  j.name + index ? { position:'relative'} : { border: '2px solid #E8E8E8'}}>
+                                        {checkDropDownOpen ===  j.name + index ? 
+                                            <ul style={{ 
+                                                position: 'absolute', 
+                                                width: '100%', 
+                                                top:0,
+                                                left:0,
+                                                margin:0, 
+                                                padding:0, 
+                                                listStyleType: 'none', 
+                                                backgroundColor:'white'
+                                            }}>
+                                                <div style={{width:'100%', height:'100%',boxSizing: 'border-box', border: '2px solid #E8E8E8'}}>
+                                                    <PBtn 
+                                                        className='pBtnNoHover'
+                                                        style={{fontSize:'1rem', padding: 0, margin:0, textAlign:'right',  borderBottom:'2px solid #E8E8E8'}} 
+                                                        labelText={'∧'} 
+                                                        onClick={()=>{
+                                                            setCheckDropDownOpen('');
+                                                        }}>
+                                                    </PBtn>
+                                                    {j.list.map(option => (
+                                                        <li key={'checkDropDownLi' + j.name + index + option.value} style={{textAlign:'left'}}>
+                                                            <label>
+                                                                <input
+                                                                    type="checkbox"
+                                                                    value={option.value}
+                                                                    checked={e?.[j.name].split('|').includes(option.value)}
+                                                                    onChange={(item)=>{
+                                                                        const { value, checked } = item.target;
+                                                                        let result = checkDropDownOnChange(value, checked, e?.[j.name], j.list, j.func);
+                                                                        let dataItem = [...data]
+                                                                        dataItem[index][j.name] = result
+                                                                        completeModify(index); // 수정완료시
+                                                                        setData(dataItem)  
+                                                                    }}
+                                                                />
+                                                                {option.name}
+                                                            </label>
+                                                        </li>
+                                                    ))}
+                                                </div>
+                                            </ul>
+                                            :
+                                            <div style={{display:'flex', justifyContent: 'space-between'}}>
+                                                <span key={'checkDropDownspan' + j.name + index} style={{width:'100%'}}>{e?.[j.name].replaceAll('|', ', ')}</span>
+                                                <PBtn 
+                                                    key={'checkDropDownPBtn' + j.name + index}
+                                                    className='pBtnNoHover'
+                                                    style={{fontSize:'1rem', padding:0, margin:0}} 
+                                                    labelText={'∨'} 
+                                                    onClick={()=>{
+                                                        setCheckDropDownOpen(j.name + index);
                                                     }}>
-                                                        <div style={{width:'100%', height:'100%',boxSizing: 'border-box', border: '2px solid #E8E8E8'}}>
-                                                            <PBtn 
-                                                                className='pBtnNoHover'
-                                                                style={{fontSize:'1rem', padding: 0, margin:0, textAlign:'right',  borderBottom:'2px solid #E8E8E8'}} 
-                                                                labelText={'∧'} 
-                                                                onClick={()=>{
-                                                                    setCheckDropDownOpen('');
-                                                                }}>
-                                                            </PBtn>
-                                                            {j.list.map(option => (
-                                                                <li key={'checkDropDownLi' + j.name + index + option.value} style={{textAlign:'left'}}>
-                                                                    <label>
-                                                                        <input
-                                                                            type="checkbox"
-                                                                            value={option.value}
-                                                                            checked={e?.[j.name].split('|').includes(option.value)}
-                                                                            onChange={(item)=>{
-                                                                                const { value, checked } = item.target;
-                                                                                let result = checkDropDownOnChange(value, checked, e?.[j.name], j.list);
-                                                                                let dataItem = [...data]
-                                                                                dataItem[index][j.name] = result
-                                                                                completeModify(index); // 수정완료시
-                                                                                setData(dataItem)  
-                                                                            }}
-                                                                        />
-                                                                        {option.name}
-                                                                    </label>
-                                                                </li>
-                                                            ))}
-                                                        </div>
-                                                    </ul>
-                                                    :
-                                                    <div style={{display:'flex', justifyContent: 'space-between'}}>
-                                                        <span key={'checkDropDownspan' + j.name + index} style={{width:'100%'}}>{e?.[j.name].replaceAll('|', ', ')}</span>
-                                                        <PBtn 
-                                                            key={'checkDropDownPBtn' + j.name + index}
-                                                            className='pBtnNoHover'
-                                                            style={{fontSize:'1rem', padding:0, margin:0}} 
-                                                            labelText={'∨'} 
-                                                            onClick={()=>{
-                                                                setCheckDropDownOpen(j.name + index);
-                                                            }}>
-                                                        </PBtn> 
-                                                    </div>
-                                                }
-                                            </td>
+                                                </PBtn> 
+                                            </div>
+                                        }
+                                    </td>
                                 )
                             }
                             // j.type이 'text'나 'input' 이외의 경우에 대한 처리

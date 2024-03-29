@@ -76,6 +76,7 @@ const XIP3020 = (props) => {
          /* eslint-disable */
     },[])
 
+    // 그리드 데이터 조회
     const getProdStatus= async() => {
         try{
             await commonShowLoading();
@@ -94,6 +95,7 @@ const XIP3020 = (props) => {
         }
     }                    
 
+    // 저장하기
     const saveData = async(e) => {
         let param = {prodCd: e.prodCd, name:e.name, price: e.price, usPrice:e.usPrice, sizeOpt:e.sizeOpt, status: e.status}
         try{
@@ -106,6 +108,19 @@ const XIP3020 = (props) => {
         } finally {
             commonHideLoading();
         }
+    }
+
+    // 체크함수 조건 
+    const checkCondition = (e) => {
+        // oneSize를 체크하거나 onesize가 체크 되어있으면 
+        if((!!e.checked && e.value === 'One Size') ) 
+        {
+            return 'One Size';
+        }
+        else if (!!e.checked && e.value !== 'One Size' && e.data.includes('One Size')) {
+            return e.value;
+        }
+        return false;
     }
 
     const listItem = {
@@ -141,7 +156,7 @@ const XIP3020 = (props) => {
                         {name: 'name', header: '이름', type: 'text', editable:true},
                         {name: 'price', header: '가격', type: 'number', currency:'₩', editable:true},
                         {name: 'usPrice', header: '미국 가격', type: 'number', currency:'$', editable:true},
-                        // {name: 'sizeOpt', header: '사이즈 옵션', type: 'checkDropDown', list: listItem.Sizelist},
+                        {name: 'sizeOpt', header: '사이즈 옵션', type: 'checkDropDown', list: listItem.Sizelist, func:(e)=>{return checkCondition(e)}},
                         {name: 'status', header: '상태', type: 'dropDown', list: listItem.propStatus},
                         {name:'prodDescBtn', header:'제품 설명', type:'button', 
                             onClick: async(e)=>{
