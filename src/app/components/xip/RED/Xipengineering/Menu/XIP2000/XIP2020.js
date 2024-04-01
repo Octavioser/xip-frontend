@@ -62,7 +62,7 @@ const XIP2020 = (props) => {
                       {name:'userNm', header:'유저이름', type: 'text'},
                       {name:'email', header:'이메일', type: 'text'},
                       {name:'orderDt', header:'주문날짜', type: 'text'},
-                      {name:'trackingInput', header:'운송장', type:'button', 
+                      {name:'trackingInput', header:'운송장', type:'button', labelText:'운송장 등록', 
                         onClick:(e)=>{
                             openDialog(e.targetData)
                         }}

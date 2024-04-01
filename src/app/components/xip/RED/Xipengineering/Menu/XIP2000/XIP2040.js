@@ -70,7 +70,7 @@ const XIP2040 = (props) => {
                       {name:'totalAmount', header:'총금액', type: 'text'},
                       {name:'shippingAmount', header:'배송비', type: 'text'},
                       {name:'subTotal', header:'제품금액', type: 'text'},
-                      {name:'cancelBtn', header:'취소버튼', type:'button', 
+                      {name:'cancelBtn', header:'취소버튼', type:'button', labelText:'취소',
                       onClick:(e)=>{
                         openDialog(e.targetData)
                       }}]

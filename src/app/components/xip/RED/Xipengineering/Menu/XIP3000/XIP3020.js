@@ -158,7 +158,7 @@ const XIP3020 = (props) => {
                         {name: 'usPrice', header: '미국 가격', type: 'number', currency:'$', editable:true},
                         {name: 'sizeOpt', header: '사이즈 옵션', type: 'checkDropDown', list: listItem.Sizelist, func:(e)=>{return checkCondition(e)}},
                         {name: 'status', header: '상태', type: 'dropDown', list: listItem.propStatus},
-                        {name:'prodDescBtn', header:'제품 설명', type:'button', 
+                        {name:'prodDescBtn', header:'제품 설명', type:'button', labelText:'제품 설명 수정',
                             onClick: async(e)=>{
                                 let descItem = (e.targetData.prodDesc || []).split('|')
                                 let descDItem = (e.targetData.prodDescD || []).split('|')
@@ -167,12 +167,12 @@ const XIP3020 = (props) => {
                                 setOpenDialog(true)
                             }
                         },
-                        {name:'saveBtn', header:'저장', type:'button', modifyDisabled: true,
+                        {name:'saveBtn', header:'저장', type:'button', modifyDisabled: true, labelText:'저장',
                             onClick: async({targetData})=>{
                                 saveData(targetData);
                             }
                         },
-                        {name:'deleteBtn', header:'제품삭제', type:'button', 
+                        {name:'deleteBtn', header:'제품삭제', type:'button', labelText:'삭제',
                             onClick: async({targetData})=>{
                                 console.log(targetData)
                             }

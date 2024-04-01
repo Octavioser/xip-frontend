@@ -284,7 +284,7 @@ export const XBTDataGrid = (props) => {
                                             onClick={()=> {
                                                 j.onClick({targetData:e, targetOldData : [...props.dataList][index]})
                                             }}>
-                                                {e?.[j.name]}
+                                                {!!j.labelText ? j.labelText : e?.[j.name]}
                                             </button>
                                     </td>
                                 )
@@ -422,8 +422,16 @@ export const XBTDataGrid = (props) => {
             , borderRight:'2px solid #E1E1E1', borderLeft:'2px solid #E1E1E1', borderBottom:'2px solid #E1E1E1', fontSize:'0.8rem'}}>
                 <tr>
                     <th key={'fth' + 0} style={{ border: '2px solid #E8E8E8'}}>합계</th>
-                {columnList.map((e, index) => 
-                    <th key={'fth' + (index + 1)} style={{ border: '2px solid #E8E8E8'}}>{footerItem[e.name]}</th>
+                {columnList.map((e, index) => {
+                    let textValue = footerItem[e.name] || ''
+                    if(!!e.currency && !!textValue) { // 통화단위가 있을경우
+                        textValue = e.currency + textValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }
+                    return (
+                        <th key={'fth' + (index + 1)} style={{ border: '2px solid #E8E8E8'}}>
+                            {textValue}
+                        </th>
+                    )}
                 )}
                 </tr>
             </tfoot>

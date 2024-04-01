@@ -10,7 +10,7 @@ const XIP3010 = (props) => {
 
     const [dropDownList, setDropDownList] = useState([]);
 
-    const [fromDt, setFromDt] = useState(props.date.today);
+    const [fromDt, setFromDt] = useState(props.date.beforeMonth);
 
     const [toDt, setTodt] = useState(props.date.today);
 
@@ -111,9 +111,10 @@ const XIP3010 = (props) => {
                         {name:'totalQty', header:'총 수량', type: 'number', editable:true},
                         {name:'stockQty', header:'재고수량(총수량 - 판매수량)', type: 'text'},
                         {name:'prodQty', header:'주문수량(기간)', type: 'text'},
+                        {name:'cancelQty', header:'취소수량(기간)', type: 'text'},
                         {name:'krwSubTotal', header:'원화 판매금액(기간)', type: 'text',currency:'₩'},
                         {name:'usdSubTotal', header:'달러 판매금액(기간)', type: 'text', currency:'$'},
-                        {name:'saveBtn', header:'수정버튼', type:'button', modifyDisabled: true, 
+                        {name:'saveBtn', header:'수정버튼', type:'button', modifyDisabled: true, labelText:'수정',
                             onClick: async(e)=>{
                                 let soldQty = Number(e.targetData.soldQty) 
                                 let totalQty = Number(e.targetData.totalQty)

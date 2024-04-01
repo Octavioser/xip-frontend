@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import {PBtn, ImgBtn} from 'app/components/xip/REDCommon/CommonStyle';
 
 import {XIP1010, XIP2010, XIP2020, XIP2030, XIP2040, XIP2050, XIP3010, XIP3020, XIP3030} from 'app/components/xip/RED/Xipengineering';
@@ -37,7 +37,8 @@ const XipengineeringMenu = () => {
         )
     }
 
-    const date = () => {
+
+    const timeValue = useMemo(() =>{
         let date = new Date();
         let y = date.getFullYear();
         let m = date.getMonth();
@@ -45,21 +46,24 @@ const XipengineeringMenu = () => {
         let startMonth = new Date(y, m , 1)
         let endMonth = new Date(y, m + 1, 0)
         let beforeMonth = new Date(y, m - 1, d)
+
+        const dateStrType = (date) => {
+            return (
+                date.getFullYear().toString() + 
+                (date.getMonth() + 1).toString().padStart(2, '0') + 
+                date.getDate().toString().padStart(2, '0')
+            )
+        }
+
         return {
             startDate : dateStrType(startMonth),
             endDate : dateStrType(endMonth),
             today : dateStrType(date),
             beforeMonth: dateStrType(beforeMonth)
         }
-    }
+    },[])
 
-    const dateStrType = (date) => {
-        return (
-            date.getFullYear().toString() + 
-            (date.getMonth() + 1).toString().padStart(2, '0') + 
-            date.getDate().toString().padStart(2, '0')
-        )
-    }
+    
 
     return(
         <>
@@ -92,15 +96,15 @@ const XipengineeringMenu = () => {
                 
                 <div style={{position:'relative', width:'88%' ,height:'100%', textAlign:'center'}}>
                     {/* 오른쪽  */}
-                    {category === 'XIP1010' && <XIP1010 date={date()}/>}
-                    {category === 'XIP2010' && <XIP2010 date={date()}/>}
-                    {category === 'XIP2020' && <XIP2020 date={date()}/>}
-                    {category === 'XIP2030' && <XIP2030 date={date()}/>}
-                    {category === 'XIP2040' && <XIP2040 date={date()}/>}
-                    {category === 'XIP2050' && <XIP2050 date={date()}/>}
-                    {category === 'XIP3010' && <XIP3010 date={date()}/>}
-                    {category === 'XIP3020' && <XIP3020 date={date()}/>}
-                    {category === 'XIP3030' && <XIP3030 date={date()}/>}
+                    {category === 'XIP1010' && <XIP1010 date={timeValue}/>}
+                    {category === 'XIP2010' && <XIP2010 date={timeValue}/>}
+                    {category === 'XIP2020' && <XIP2020 date={timeValue}/>}
+                    {category === 'XIP2030' && <XIP2030 date={timeValue}/>}
+                    {category === 'XIP2040' && <XIP2040 date={timeValue}/>}
+                    {category === 'XIP2050' && <XIP2050 date={timeValue}/>}
+                    {category === 'XIP3010' && <XIP3010 date={timeValue}/>}
+                    {category === 'XIP3020' && <XIP3020 date={timeValue}/>}
+                    {category === 'XIP3030' && <XIP3030 date={timeValue}/>}
                 </div>
             </div>
             <div style={{position:'relative', width:'100%' ,height:'3%'}}></div>{/* 맨밑빈칸 */}

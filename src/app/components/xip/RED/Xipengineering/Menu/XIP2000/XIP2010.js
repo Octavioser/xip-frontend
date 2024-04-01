@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
 import {XBTDataGrid, XBTSearchFrame, XBTDatePicker, XBTDropDown} from '../../XipengineeringXBT'
+import XIP2010Dialog from './XIP2010Dialog';
 
 const XIP2010 = (props) => {
 
@@ -13,6 +14,10 @@ const XIP2010 = (props) => {
     const [fromDt, setFromDt] = useState(props.date.beforeMonth)
 
     const [toDt, setTodt] = useState(props.date.today)
+
+    const [dialog, setDialog] = useState(false);
+
+    const [dialogOrderCd, setDialogOrderCd] = useState(false);
 
     const apiList = {
         selectOrders: {
@@ -45,7 +50,12 @@ const XIP2010 = (props) => {
         } finally {
             commonHideLoading();
         }
-    }                    
+    }  
+    
+    const openDialog = (e) => {
+        setDialogOrderCd(e.orderCd)
+        setDialog(true);
+    }
 
 
     let columnList = [{name:'orderCd', header:'주문번호', type: 'text'},
@@ -56,7 +66,11 @@ const XIP2010 = (props) => {
                       {name:'krwTotalAmount', header:'원화_총금액', type: 'text', currency:'₩',footer: true},
                       {name:'usdSubTotal', header:'달러_제품금액', type: 'text', currency:'$',footer: true},
                       {name:'usdShippingAmount', header:'달러_배송비', type: 'text', currency:'$',footer: true},
-                      {name:'usdTotalAmount', header:'달러_총금액', type: 'text', currency:'$',footer: true}]
+                      {name:'usdTotalAmount', header:'달러_총금액', type: 'text', currency:'$',footer: true},
+                      {name:'productDetails', header:'제품정보', type:'button', labelText:'제품정보', 
+                      onClick:(e)=>{
+                          openDialog(e.targetData)
+                      }}]
 
     let dropDownList = [{key:'전체', name: '전체', value:''},
                         {key:'배송전', name: '배송전', value:'1'},
@@ -107,6 +121,7 @@ const XIP2010 = (props) => {
                 }}
             >
             </XBTDataGrid>
+            {dialog && <XIP2010Dialog orderCd={dialogOrderCd} modalBtn={() => setDialog(false)}/>}
         </>
     )
 }
