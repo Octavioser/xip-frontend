@@ -84,6 +84,29 @@ const Gallery = () => {
                             ]) 
                         }
                     }
+                    // 이미지 4개씩 한줄로 넣어주고 사진팝업 데이터 넣어주기
+                    // newtype 만 4열로
+                    else if(pFolderName === 'newtype' || pFolderName === 'newtypeDetails') {
+                        if((i % 4 === 0)) {
+                            displaylistData = 
+                            displaylistData.concat([
+                                <div id={i} key={i} style={{ display: "flex" }}>
+                                    <div id={i} key={i + 'a'} style={{ marginRight: "0.5vh" }}>
+                                        {setImgTag(imageWidth, awsUrl, i)}  
+                                    </div>
+                                    <div id={i} key={i + 'b'}style={{ marginRight: "0.5vh" }}>
+                                        {setImgTag(imageWidth, awsUrl, i+1)}
+                                    </div>
+                                    <div id={i} key={i + 'c'}style={{ marginRight: "0.5vh" }}>
+                                        {setImgTag(imageWidth, awsUrl, i+2)}
+                                    </div>
+                                    <div id={i} key={i + 'd'}>
+                                        {setImgTag(imageWidth, awsUrl, i+3)}
+                                    </div>
+                                </div>
+                            ]) 
+                        }
+                    }
                     // 3열이 아닌 works
                     else {
                         displaylistData = 
@@ -176,13 +199,26 @@ const Gallery = () => {
     }
     
     const divImageWidth = isMobile ? '45vw' : '20vw'
+    
+    const newtypeBackground = (galleryType === 'newtype' || galleryType === 'newtypeDetails')  ? {
+        backgroundImage: 'url(https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/newtype/background/newtypeBackground.webp)',
+        backgroundSize: "130% 100%",
+    }
+    :
+    {}
     return (
         <>
-            <div style={{display:'flex', justifyContent: 'center', alignItems:'center', minHeight: '85vh'}}>
+            <div style={{
+                display:'flex', 
+                justifyContent: 'center', 
+                alignItems:'center', 
+                height: '100%',
+                ...newtypeBackground
+            }}>
                 <div>
-                <div style={{width: divImageWidth, height: isMobile ? '18vh' : '10vh'}}>  
-                </div>
+                    <div style={{width: divImageWidth, height: isMobile ? '18vh' : '10vh'}}> </div>
                     {displayList}
+                    <div style={{width: divImageWidth, height: isMobile ? '18vh' : '10vh'}}> </div>
                 </div>
             </div>
             {isOpen && <div className={'popUp'} style={{ display: isOpen ? 'flex' : 'none' }}>

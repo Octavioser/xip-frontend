@@ -3,10 +3,12 @@ export { default as Home } from './Home';
 export { default as NotFound } from './NotFound'; 
 export { default as StartPage } from './StartPage'; 
 export { default as Video } from './Video/Video';  
-export { default as Works } from './Works/Works'; 
+export { default as Works } from './Works/Works';
+export { default as Gallery } from './Works/Gallery';
+export { default as Newtype } from './Works/Newtype';
+export { default as Fetus } from './Works/Fetus'; 
 export { default as Masterinnovation } from './Video/Masterinnovation'; 
-export { default as MasterinnovationBunka } from './Video/MasterinnovationBunka';  
-export { default as Gallery } from './Works/Gallery'; 
+export { default as MasterinnovationBunka } from './Video/MasterinnovationBunka';   
 export { default as Shop } from './Shop/Shop'; 
 export { default as MainBtn } from './MainBtn';
 export { default as MusicBtn } from './MusicBtn';
@@ -30,6 +32,9 @@ export { default as ShipReturn } from './Shop/Service/ShipReturn';
 
 export { default as Success } from './Shop/Purchase/TossPayments/Success';
 export { default as Fail } from './Shop/Purchase/TossPayments/Fail';
+
+
+export { default as NewtypeHome } from './Newtype/NewtypeHome';
 
 
 

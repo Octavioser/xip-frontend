@@ -6,7 +6,7 @@ import {
     Loading, ConfirmModal,
     Credit, Works, Video, StartPage, Home, NotFound,Masterinnovation,MasterinnovationBunka,Gallery, Shop, MainBtn, MusicBtn,
     ProductList, Account, AccountDetails, DetailProduct, Cart, OrderHistory, Purchase, OrderDetails, Xipengineering, Service, 
-    TermsOfUse, Privacy, ShipReturn, Success, Fail} from 'app/components/xip/RED'; //index.js
+    TermsOfUse, Privacy, ShipReturn, Success, Fail, NewtypeHome, Newtype, Fetus} from 'app/components/xip/RED'; //index.js
 import { PBtn } from 'app/components/xip/REDCommon/CommonStyle';
 import { useCommon }  from 'app/components/xip/REDCommon/Common';
 
@@ -46,7 +46,7 @@ const Root = () => {
             document.body.style.backgroundImage = 'none';
             document.body.style.backgroundColor = 'red';
 
-            if((pathname.toLowerCase()).startsWith('/shop/detailproduct') ) {
+            if((pathname.toLowerCase()).startsWith('/shop/detailproduct')) {
                 document.body.style.color = 'black';
                 document.body.style.backgroundColor = 'white';
             }
@@ -129,6 +129,7 @@ const Root = () => {
                 {/* 맨처음화면 */}
                 <Route path='/' element={<StartPage musicSwitch={musicSwitch}></StartPage>}/>
                 {pathname.substring(0,5).toLowerCase() === '/home' && <Route path="/home" element={<Home startClickValue={startClickValue}/>}/>}
+                <Route path="newtypehome" element={<NewtypeHome/>}/>
                 <Route path="/video">
                     <Route path="" element={<Video/>}/>
                     <Route path="masterinnovation" element={<Masterinnovation/>}/>
@@ -137,6 +138,8 @@ const Root = () => {
                 <Route path="/credit" element={<Credit/>}/>
                 <Route path="/works">
                     <Route path="" element={<Works/>}/>
+                    <Route path="newtype" element={<Newtype/>}/>
+                    <Route path="fetus" element={<Fetus/>}/>
                     <Route path="gallery/:galleryType" element={<Gallery/>}/>
                 </Route>
                 <Route path="/shop">
@@ -155,7 +158,7 @@ const Root = () => {
                     <Route path="service" element={<Service/>}/>
                     <Route path="termsofuse" element={<TermsOfUse/>}/>
                     <Route path="privacy" element={<Privacy/>}/>
-                    <Route path="ShipReturn" element={<ShipReturn/>}/>
+                    <Route path="shipReturn" element={<ShipReturn/>}/>
                 </Route>
                 <Route path="/xipengineering" element={<Xipengineering/>}/>
                 {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}

@@ -56,6 +56,16 @@ const MainBtn = (props) => {
 
                             {menuOpen &&
                             <>
+                                <Link to="./newtypeHome"> 
+                                    <PBtn 
+                                        labelText='new+ype'
+                                        alt='newtypeBtn'
+                                        onClick={() =>{
+                                            setMenuOpen(false) 
+                                        }}
+                                    >
+                                    </PBtn>
+                                </Link>
                                 <Link to="./works"> 
                                     <PBtn //works
                                         labelText='works'
@@ -107,6 +117,7 @@ const MainBtn = (props) => {
                                     >
                                     </PBtn>
                                 </Link>
+                                
                             </>}
                         </div>
                     </nav>
