@@ -16,7 +16,7 @@ const NewtypeHome = () => {
     const handleTouchMove = (e) => {
         const touchX = e.touches[0].clientX; // 현재 터치 좌표
         const diffX = (touchX - startX)/8; // 이동한 거리
-        setRotation((currentRotation) => currentRotation + diffX / 10); // 회전 각도 업데이트
+        setRotation((currentRotation) => currentRotation + diffX); // 회전 각도 업데이트
     };
 
     const menuStyle = {

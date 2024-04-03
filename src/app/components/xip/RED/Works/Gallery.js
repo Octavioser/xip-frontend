@@ -92,16 +92,16 @@ const Gallery = () => {
                             displaylistData.concat([
                                 <div id={i} key={i} style={{ display: "flex" }}>
                                     <div id={i} key={i + 'a'} style={{ marginRight: "0.5vh" }}>
-                                        {setImgTag(imageWidth, awsUrl, i)}  
+                                        {setImgTag('20vw', awsUrl, i)}  
                                     </div>
                                     <div id={i} key={i + 'b'}style={{ marginRight: "0.5vh" }}>
-                                        {setImgTag(imageWidth, awsUrl, i+1)}
+                                        {setImgTag('20vw', awsUrl, i+1)}
                                     </div>
                                     <div id={i} key={i + 'c'}style={{ marginRight: "0.5vh" }}>
-                                        {setImgTag(imageWidth, awsUrl, i+2)}
+                                        {setImgTag('20vw', awsUrl, i+2)}
                                     </div>
                                     <div id={i} key={i + 'd'}>
-                                        {setImgTag(imageWidth, awsUrl, i+3)}
+                                        {setImgTag('20vw', awsUrl, i+3)}
                                     </div>
                                 </div>
                             ]) 
