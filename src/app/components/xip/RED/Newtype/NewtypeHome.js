@@ -36,9 +36,6 @@ const NewtypeHome = () => {
                 position: 'fixed', 
                 width: '100%', 
                 height: '100%', 
-                backgroundImage: 'url(https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/newtype/background/newtypeBackground.webp)',
-                // backgroundPosition: "center",
-                backgroundSize: "130% 100%",
             }}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}

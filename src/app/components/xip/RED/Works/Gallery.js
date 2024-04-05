@@ -200,20 +200,13 @@ const Gallery = () => {
     
     const divImageWidth = isMobile ? '45vw' : '20vw'
     
-    const newtypeBackground = (galleryType === 'newtype' || galleryType === 'newtypeDetails')  ? {
-        backgroundImage: 'url(https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/newtype/background/newtypeBackground.webp)',
-        backgroundSize: "130% 100%",
-    }
-    :
-    {}
     return (
         <>
             <div style={{
                 display:'flex', 
                 justifyContent: 'center', 
                 alignItems:'center', 
-                height: '100%',
-                ...newtypeBackground
+                height: '100%'
             }}>
                 <div>
                     <div style={{width: divImageWidth, height: isMobile ? '18vh' : '10vh'}}> </div>

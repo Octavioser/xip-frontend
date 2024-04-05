@@ -15,9 +15,7 @@ const Newtype = () => {
                 alignItems:'center', 
                 justifyContent: 'center', 
                 width:'100%', 
-                height:'100%',
-                backgroundImage: 'url(https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/newtype/background/newtypeBackground.webp)',
-                backgroundSize: "130% 100%",
+                height:'100%'
             }}>
             <div style={{width:isMobile? '100%' : '50%', height: isMobile?'30%':'40%', textAlign:'center'}}>
                 <br/><br/><br/><br/>

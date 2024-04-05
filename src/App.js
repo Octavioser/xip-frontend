@@ -1,14 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import { BrowserRouter, Routes, Route, useLocation} from 'react-router-dom';
-import { AppProvider, useAppContext } from 'app/components/xip/REDCommon/CommonContext'
+import { AppProvider } from 'app/components/xip/REDCommon/CommonContext'
 
 import {
     Loading, ConfirmModal,
     Credit, Works, Video, StartPage, Home, NotFound,Masterinnovation,MasterinnovationBunka,Gallery, Shop, MainBtn, MusicBtn,
     ProductList, Account, AccountDetails, DetailProduct, Cart, OrderHistory, Purchase, OrderDetails, Xipengineering, Service, 
-    TermsOfUse, Privacy, ShipReturn, Success, Fail, NewtypeHome, Newtype, Fetus} from 'app/components/xip/RED'; //index.js
-import { PBtn } from 'app/components/xip/REDCommon/CommonStyle';
-import { useCommon }  from 'app/components/xip/REDCommon/Common';
+    TermsOfUse, Privacy, ShipReturn, Success, Fail, NewtypeHome, Newtype, Fetus, Footer} from 'app/components/xip/RED'; //index.js
+import { useCookie } from 'app/components/xip/RED/Login/Cookie';
+import ComingSoon from 'app/components/xip/RED/Shop/ComingSoon';
 
 function preloadImage(url) { // 이미지 미리 불러오기
     const img = new Image();
@@ -17,12 +17,15 @@ function preloadImage(url) { // 이미지 미리 불러오기
 preloadImage('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/loadingLogo.gif');
 
 const backgroundMusic = new Audio('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/m/wow.wav');
-backgroundMusic.loop = true;  // 반복
+backgroundMusic.loop = true;  // 반복 
+
+const newTypeMusic = new Audio('https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/m/netypeMusic.wav')
+newTypeMusic.loop = true;
 
 // 메뉴 컴포넌트 (경로이동)
 const Root = () => {
 
-    const { loading, confirm} = useAppContext();
+    const {getCookie} = useCookie();
 
     const { pathname } = useLocation();
 
@@ -36,11 +39,15 @@ const Root = () => {
 
     const [changeCartList, setChangeCartList] = useState({});   //  바뀐상품
 
-    const { navigate, commonApi} = useCommon();
-        
     useEffect(() => {
         document.body.style.color = 'white'; //폰트
-        // 배경화면 변경
+        // newtype 배경화면 변경
+        if(pathname.toLowerCase().indexOf('newtype') > -1 ) {
+            document.body.style.backgroundImage = 'url(https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/newtype/background/newtypeBackground.webp)'; // 여기에 원하는 이미지 URL을 넣습니다.
+            document.body.style.backgroundSize = "130% 100%"
+            return;
+        }
+
         if(pathname.substring(0,5).toLowerCase() === '/shop' ) {
             // shop 이용시 배경화면 변경
             document.body.style.backgroundImage = 'none';
@@ -55,15 +62,34 @@ const Root = () => {
             document.body.style.backgroundImage = 'url(https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/backgroundVideo.gif)'; // 여기에 원하는 이미지 URL을 넣습니다.
             document.body.style.backgroundColor = 'transparent'; // background-color 제거
         }
-    })
+        
+        
+    },[pathname])
 
-    // 페이지 이동시 스크롤 초기화 및 장바구니저장
+   
+   
     useEffect(() => { 
         window.scrollTo(0, 0); // 스크롤 초기화
+
+         // 페이지 이동시 스크롤 초기화 및 장바구니저장
         if(beforePathName === '/shop/cart') { // 페이지 전환시 전환전 페이지가 장바구니면 저장하기
             savedCart();
             setChangeCartList({}) // 값 초기화
         }
+
+
+         // 노래 체인지
+        if(display && pathname.toLowerCase().indexOf('newtype') > -1 && beforePathName.toLowerCase().indexOf('newtype') === -1) { // 오리지널 - > 뉴타입 
+            backgroundMusic.pause();
+            newTypeMusic.play();
+        }
+
+         // 노래 체인지
+         if(display && beforePathName.toLowerCase().indexOf('newtype') > -1 && pathname.toLowerCase().indexOf('newtype') === -1) { // 뉴타입 - >  오리지널
+            backgroundMusic.play();
+            newTypeMusic.pause();
+        }
+
         setBeforePathName(pathname)
         /* eslint-disable */
     }, [pathname]);// path name만 바뀔때 실행
@@ -71,7 +97,9 @@ const Root = () => {
 
     // cart 정보 저장하기
     const savedCart = async() => {
+        console.log('전송시작')
         if(!changeCartList || Object.keys(changeCartList).length < 1) {    // 바뀐게 없으면 동작 x
+            console.log('실패')
             return;
         }
         // api로 넘겨줄 데이터 객체에서 배열로 변환
@@ -84,40 +112,55 @@ const Root = () => {
         })
 
         // 저장 api
-        commonApi('/shop/shopU203', {cartList: item});
+        fetch(process.env.REACT_APP_API_URL +'/shop/shopU203', 
+			{
+				method: "POST",
+				credentials: 'include',
+				headers: {
+					"Content-Type": "application/json",
+					'Authorization': `Bearer ${getCookie('xipToken')}`
+				},
+				body: JSON.stringify({cartList: item})
+			}
+        )
     }
 
 
     const setStartClick = () =>{setStartClickValue('1')}
     
-   
-
-    const musicSwitch = (e) =>{ // 음악 재생
-        if(e) {
+    const musicSwitch = (e , type) =>{ // 음악 재생
+        if(e && (type === 'newtype' || pathname.toLowerCase().indexOf('newtype') > -1) ) {
+            backgroundMusic.pause();
+            newTypeMusic.play();
+            setDisPlay(true) 
+            return;
+        }
+        else if(e) {
+            newTypeMusic.pause();
             backgroundMusic.play();   //재생
             setDisPlay(true)          //재생하는 버튼 보여주기
-            return true;
+            return;
         }
         else{
+            newTypeMusic.pause();
             backgroundMusic.pause();  //멈춤
             setDisPlay(false)         //멈춰있는 버튼 보여주기
-            return false;
-        }		
-        
+            return;
+        }		 
     }
 
-    const footerStyle = {color:'black', padding:'1px', margin:'1px'};
+    
 
     return (
         <>
-            {confirm && <ConfirmModal/>}  {/* 컨펌창 */} 
-            {loading && <Loading/>}       {/* 로딩창 */}
+            <ConfirmModal/>  {/* 컨펌창 */} 
+            <Loading/>       {/* 로딩창 */}
             {/* shop 일경우 버튼 삭제 */}            
             {pathname.substring(0,5).toLowerCase() === '/shop' ?
                 <Shop/>
             :
                 <>
-                {pathname.substring(0,15).toLowerCase() !== '/xipengineering' && <MainBtn setStartClick={setStartClick}/>}
+                {pathname.substring(0,15).toLowerCase() !== '/xipengineering' && <MainBtn setStartClick={setStartClick} musicSwitch={musicSwitch} display={display}/>}
                 </>
             }
 
@@ -143,7 +186,8 @@ const Root = () => {
                     <Route path="gallery/:galleryType" element={<Gallery/>}/>
                 </Route>
                 <Route path="/shop">
-                    <Route path="" element={<ProductList/>}/>
+                    {/* <Route path="" element={<ProductList/>}/> */}
+                    <Route path="" element={<ComingSoon/>}/>
                     <Route path="account">
                         <Route path="" element={<Account/>}/>
                         <Route path="accountdetails" element={<AccountDetails/>}/>
@@ -164,18 +208,7 @@ const Root = () => {
                 {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
                 <Route path="*" element={<NotFound />}/>
             </Routes>
-            {pathname.substring(0,5).toLowerCase() === '/shop'  && 
-                <div style={{position: 'relative', bottom:0, left:0, width:'100%', minHeight:'7vh', fontSize:'0.7rem', textAlign:'center'}}>
-                    <p style={footerStyle}><span style={{fontSize:'1rem'}}>ⓒ XIP</span> BUSINESS NUMBER 424-19-02088 | MAIL-ORDER-SALES REGISTRATION NUMBER 2024-성남분당A-0198 |  CEO PARK JUNHEE | CONTACT 010-5160-6202</p>
-                    <p style={footerStyle}>804-52, 124, Unjung-ro, Bundang-gu, Seongnam-si, Gyeonggi-do, Republic of Korea</p>
-                    <div style={{display:'flex', justifyContent:'center'}}>
-                        <PBtn  style={footerStyle} labelText='AGREEMENT' onClick={()=>navigate('/shop/termsofuse')}></PBtn>
-                        <PBtn  style={footerStyle} labelText='PRIVACY' onClick={()=>navigate('/shop/privacy')}></PBtn>
-                        <PBtn  style={footerStyle} labelText='SHIPPING & RETURN POLICY' onClick={()=>navigate('/shop/shipReturn')}></PBtn>
-                    </div>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                </div>
-            }
+            <Footer/>
         </>
     );
 };

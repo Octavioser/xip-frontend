@@ -172,11 +172,11 @@ const XIP3020 = (props) => {
                                 saveData(targetData);
                             }
                         },
-                        {name:'deleteBtn', header:'제품삭제', type:'button', labelText:'삭제',
-                            onClick: async({targetData})=>{
-                                console.log(targetData)
-                            }
-                        }
+                        // {name:'deleteBtn', header:'제품삭제', type:'button', labelText:'삭제',
+                        //     onClick: async({targetData})=>{
+                        //         console.log(targetData)
+                        //     }
+                        // }
                     ]
     
 

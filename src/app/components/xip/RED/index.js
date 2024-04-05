@@ -35,6 +35,7 @@ export { default as Fail } from './Shop/Purchase/TossPayments/Fail';
 
 
 export { default as NewtypeHome } from './Newtype/NewtypeHome';
+export { default as Footer } from './Shop/Footer';
 
 
 

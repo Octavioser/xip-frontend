@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
-import {XBTDataGrid, XBTSearchFrame, XBTDatePicker,XBTDropDown} from '../../XipengineeringXBT'
+import {XBTDataGrid, XBTSearchFrame, XBTDatePicker,XBTDropDown, XBTTextField} from '../../XipengineeringXBT'
 
 const XIP3010 = (props) => {
 
@@ -16,7 +16,9 @@ const XIP3010 = (props) => {
 
     const [season, setSeason] = useState('');
 
-    const [sizeStatus, setSizeStatus] = useState(''); // 사용여부
+    const [sizeStatus, setSizeStatus] = useState('1'); // 사용여부
+
+    const [searchProdCd, setSearchProdCd] = useState('');
 
     const apiList = {
         selectSeasonLst: {
@@ -37,7 +39,8 @@ const XIP3010 = (props) => {
                         fromDt: fromDt,
                         toDt: toDt,
                         season: season,
-                        sizeStatus: sizeStatus
+                        sizeStatus: sizeStatus,
+                        searchProdCd: searchProdCd
                     }
                 )
             }
@@ -171,6 +174,13 @@ const XIP3010 = (props) => {
                     value={sizeStatus}
                     onChange={(e) => {
                         setSizeStatus(e)
+                    }}
+                />
+                <XBTTextField
+                    labelText={'제품코드'}
+                    value={searchProdCd}
+                    onChange={(e) => {
+                        setSearchProdCd(e)
                     }}
                 />
             </XBTSearchFrame>

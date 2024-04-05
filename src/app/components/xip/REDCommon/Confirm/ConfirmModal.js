@@ -5,9 +5,10 @@ import { useAppContext } from 'app/components/xip/REDCommon/CommonContext';
 
 const ConfirmModal = () => {
     
-    const { closeConfirm, confirmAction, confirmMessage } = useAppContext();
+    const { closeConfirm, confirmAction, confirmMessage, confirm} = useAppContext();
 
     return (
+        <>{confirm &&
         <Modal 
             isOpen={true} 
             onRequestClose={() => closeConfirm()}
@@ -79,6 +80,7 @@ const ConfirmModal = () => {
         >
         </PBtn>
         </Modal>
+        }</>
     )
 }
 export default ConfirmModal;

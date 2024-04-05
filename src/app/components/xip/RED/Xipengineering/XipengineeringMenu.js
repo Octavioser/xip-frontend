@@ -2,22 +2,28 @@ import React, {useState, useMemo} from 'react';
 import {PBtn, ImgBtn} from 'app/components/xip/REDCommon/CommonStyle';
 
 import {XIP1010, XIP2010, XIP2020, XIP2030, XIP2040, XIP2050, XIP3010, XIP3020, XIP3030} from 'app/components/xip/RED/Xipengineering';
+
 const XipengineeringMenu = () => {
 
     const [category, setCategory] = useState('');
 
     const [title, setTitle] = useState('');
 
+    let list = 
+            [
+                {key:'XIP1010', name:'회원'},
+                {key:'XIP2010', name:'주문내역'},
+                {key:'XIP2020', name:'운송장등록'},
+                {key:'XIP2030', name:'발송완료'},
+                {key:'XIP2040', name:'주문취소'},
+                {key:'XIP2050', name:'취소내역'},
+                {key:'XIP3010', name:'재고관리'},
+                {key:'XIP3020', name:'제품상태'},
+                {key:'XIP3030', name:'제품등록'}
+            ]
+
     const categoryColumns = () => {
-        let list = [{key:'XIP1010', name:'회원'},
-                    {key:'XIP2010', name:'주문내역'},
-                    {key:'XIP2020', name:'운송장등록'},
-                    {key:'XIP2030', name:'발송완료'},
-                    {key:'XIP2040', name:'주문취소'},
-                    {key:'XIP2050', name:'취소내역'},
-                    {key:'XIP3010', name:'재고관리'},
-                    {key:'XIP3020', name:'제품상태'},
-                    {key:'XIP3030', name:'제품등록'}]
+        
         return (
             list.map((e, index) => 
                 <PBtn 
@@ -29,7 +35,7 @@ const XipengineeringMenu = () => {
                     alt={e.name}
                     onClick={() =>{
                         setCategory(e.key)
-                        setTitle(e.name)
+                        setTitle(e.name + '(' + e.key + ')')
                     }}
                 >
                 </PBtn>
@@ -38,7 +44,7 @@ const XipengineeringMenu = () => {
     }
 
 
-    const timeValue = useMemo(() =>{
+    const timeValue = useMemo(() =>{ 
         let date = new Date();
         let y = date.getFullYear();
         let m = date.getMonth();

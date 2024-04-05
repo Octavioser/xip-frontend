@@ -1,8 +1,12 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
+import { useAppContext } from 'app/components/xip/REDCommon/CommonContext'
 
 const Loading = () => {
+    const { loading} = useAppContext();
     return (
+        <>
+        {loading &&
             <div style={{
                 position: 'fixed',
                 top: 0,
@@ -22,6 +26,8 @@ const Loading = () => {
                     alt="Loading"
                 />
             </div>
+        }
+        </>
     )
 };
 export default Loading
