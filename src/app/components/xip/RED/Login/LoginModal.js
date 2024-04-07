@@ -21,6 +21,8 @@ const LoginModal = (props) => {
 
     const [email, setEmail] = useState('') // 전달할 이메일
 
+    const [pw, setPw] = useState('') // 전달할 패스워드
+
     const [message, setMessage] = useState('');      // 이메일 패스워드 틀릴시
 
     const {setCookie } = useCookie();  
@@ -45,8 +47,9 @@ const LoginModal = (props) => {
         setShowCreateAccount(true)
     }
 
-    const showWebAuthnBtn = (e) => { // face id 화면
+    const showWebAuthnBtn = (e, pw) => { // face id 화면
         setEmail(e)
+        setPw(pw)
         setShowWebAuthn(true)
     }
 
@@ -91,7 +94,9 @@ const LoginModal = (props) => {
                 });
 
                 if(!publicKeyCredential) {
-                    return false
+                    // 로그인 실패 
+                    setMessage('Authentication failed.')
+                    return false;
                 }
                 
                 const response = publicKeyCredential.response;
@@ -118,7 +123,7 @@ const LoginModal = (props) => {
                     return false;
                 }
             } catch (error) {
-                setMessage('Authentication failed.')
+                setMessage('[Error]  Authentication failed.')
                 return false;
             }
         }
@@ -186,7 +191,7 @@ const LoginModal = (props) => {
                 <CreateAccount loginModalBtn={props.loginModalBtn} email={email} setMsg={setMsg} afterOpenModal={afterOpenModal}/>
             }
             { showWebAuthn &&
-                <WebAuthn loginModalBtn={props.loginModalBtn} email={email} setMsg={setMsg} webAuthLogin={webAuthLogin}/>
+                <WebAuthn loginModalBtn={props.loginModalBtn} email={email} pw={pw} setMsg={setMsg} webAuthLogin={webAuthLogin}/>
             }
             { showForgotPassword &&
                 <ForgotPassword loginModalBtn={props.loginModalBtn} email={email} setMsg={setMsg} />

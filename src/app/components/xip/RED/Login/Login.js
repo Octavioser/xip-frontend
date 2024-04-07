@@ -62,6 +62,7 @@ const Login = (props) => {
                 if(!!resultData[0].webAuthId) {  // 생체인증 로그인 등록 되어있는 사람
                     await props.webAuthLogin(email, resultData[0].challenge, resultData[0].webAuthId).then((e)=>{
                         if(!e) { // 실패시 패스워드 창 보이게
+                            props.setMsg('');
                             setShowPw(true);
                         }
                     })
@@ -199,7 +200,7 @@ const Login = (props) => {
                 alt='faceId'
                 style={{fontSize: '1em', whiteSpace:'nowrap'}} 
                 onClick={async()=>{
-                    props.showWebAuthnBtn(email);
+                    props.showWebAuthnBtn(email, pw);
                 }}
             >
             </PBtn>

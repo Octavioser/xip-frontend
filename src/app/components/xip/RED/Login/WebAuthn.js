@@ -11,7 +11,7 @@ const WebAuthn = (props) => {
 
     const [email, setEmail] = useState(props.email || '');            // 이메일
 
-    const [pw, setPw] = useState('');                // 비밀번호
+    const [pw, setPw] = useState(props.pw || '');                // 비밀번호
 
     const [emailDisabled, setEmailDisabled] = useState(false); // 이메일 입력 가능여부
 
@@ -76,14 +76,14 @@ const WebAuthn = (props) => {
             try {
                 if(!pw) {
                     props.setMsg('Please enter your password.')
-                    return
+                    return;
                 }
                 // 비번 체크 및 webAuth등록에 필요한값 가져오기
                 let resultData = await commonApi(apiList.createWebAuth.api, await apiList.createWebAuth.param()); 
 
                 if(!resultData || resultData.length < 1) { // 없는 이메일
                     props.setMsg('Incorrect email or password.')
-                    return
+                    return;
                 }
 
                 if(!!(resultData[0]?.userIdBase64)) {   // 회원가입이 된 사용자
@@ -104,41 +104,45 @@ const WebAuthn = (props) => {
                             attestation: "direct" // 공개키 증명서 반환 방법
                         }
                     })
-                    let credentialId = publicKeyCredential?.id
-                    if(!!credentialId) {
-                        const response = publicKeyCredential.response;
 
-                        // Access attestationObject ArrayBuffer
-                        const attestationObj = response.attestationObject;
-
-                        // Access client JSON
-                        const clientJSON = response.clientDataJSON;
-
-                        // Return public key ArrayBuffer
-                        const pk = response.getPublicKey();
-
-                        // Return public key algorithm identifier
-                        const pkAlgo = response.getPublicKeyAlgorithm();
-
-                        let publicKeyCredentialJSON = {
-                            email: email,
-                            clientDataJSON: await arrayBufferToBase64(clientJSON),
-                            attestationObject: await arrayBufferToBase64(attestationObj),
-                            pk: await arrayBufferToBase64(pk),
-                            pkAlgo: pkAlgo
-                        }
-                        let result = await commonApi(apiList.saveCreateWebAuth.api, apiList.saveCreateWebAuth.param(publicKeyCredentialJSON))
-                        if(result < 1) {
-                            props.setMsg('Please try again.')
-                        }
-                        else {
-                            props.setMsg('Registration is complete.')
-                            setShowCreateBtn(false);
-                        }
+                    if(!publicKeyCredential) {
+                        props.setMsg('Registration failed please try again.')
+                        return;
                     }
+
+                    const response = publicKeyCredential.response;
+
+                    // Access attestationObject ArrayBuffer
+                    const attestationObj = response.attestationObject;
+
+                    // Access client JSON
+                    const clientJSON = response.clientDataJSON;
+
+                    // Return public key ArrayBuffer
+                    const pk = response.getPublicKey();
+
+                    // Return public key algorithm identifier
+                    const pkAlgo = response.getPublicKeyAlgorithm();
+
+                    let publicKeyCredentialJSON = {
+                        email: email,
+                        clientDataJSON: await arrayBufferToBase64(clientJSON),
+                        attestationObject: await arrayBufferToBase64(attestationObj),
+                        pk: await arrayBufferToBase64(pk),
+                        pkAlgo: pkAlgo
+                    }
+                    let result = await commonApi(apiList.saveCreateWebAuth.api, apiList.saveCreateWebAuth.param(publicKeyCredentialJSON))
+                    if(result < 1) {
+                        props.setMsg('Please try again.')
+                    }
+                    else {
+                        props.setMsg('Registration is complete.')
+                        setShowCreateBtn(false);
+                    }
+                    
                 }
             } catch (error) {
-                props.setMsg('Please try again.')
+                props.setMsg('[Error] Please try again.')
             } finally {
                 commonHideLoading();
             }
@@ -181,11 +185,7 @@ const WebAuthn = (props) => {
                     return;
                 }
                 else {  // faceId 로그인 진행
-                   await props.webAuthLogin(email, resultData[0].challenge, resultData[0].webAuthId).then((e)=>{
-                        if(!e) { // 실패시 패스워드 창 보이게
-                            props.setMsg('Please try again.');
-                        }
-                    })
+                   await props.webAuthLogin(email, resultData[0].challenge, resultData[0].webAuthId);
                 }   
             }
             else {
@@ -193,7 +193,7 @@ const WebAuthn = (props) => {
             }
 
         } catch (error) {
-            props.setMsg('Please try again.')
+            props.setMsg('[ERROR] Please try again.')
         } finally {
             commonHideLoading();
         }
