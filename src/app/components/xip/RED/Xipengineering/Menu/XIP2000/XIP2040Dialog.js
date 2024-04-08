@@ -20,10 +20,12 @@ const XIP2040Dialog = (props) => {
             try {
                 let resultData = await commonApi('/xipengineering/incuR008', {orderCd: props.item.orderCd});
                 if(resultData.length > 0) {
-                    let totalPrice = 0
-                    resultData.forEach((e) => {
-                        totalPrice = e.price + totalPrice
-                    })
+                    let totalPrice = Number((props.item.totalAmount).replace(/[^0-9]/g, ''));
+                    // 배송후는 배송비 환불 x  취소요청(배송전)은 배송비까지 환불
+                    if(props.item.orderStatus !== '배송후') {
+                        let shipee = Number((props.item.shippingAmount).replace(/[^0-9]/g, ''));
+                        totalPrice = totalPrice + shipee 
+                    }
                     setCancelPrice(totalPrice)
                     setDataItem(resultData)
                 }
