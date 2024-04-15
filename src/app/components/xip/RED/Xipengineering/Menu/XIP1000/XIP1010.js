@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState ,useMemo} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
-import {XBTDataGrid, XBTSearchFrame, XBTTextField, XBTDatePicker} from '../../XipengineeringXBT'
+import {XBTDataGrid, XBTSearchFrame, XBTTextField, XBTDatePicker} from '../../XipengineeringXBTProvider'
 
 const XIP1010 = (props) => {
-
+    console.log('xip1010')
     const { commonShowLoading, commonHideLoading, commonApi} = useCommon();
 
     const [dataList, setDataList] = useState([])
@@ -49,11 +49,10 @@ const XIP1010 = (props) => {
     }                    
 
 
-    let columnList = [  {name:'firstNm', header:'이름', type: 'text'},
-                        {name:'lastNm', header:'성', type: 'text'},
-                        {name:'email', header:'이메일', type: 'text'},
-                        {name:'creatDt', header:'가입일시', type: 'text'}]
-
+    const columnList = [  {name:'firstNm', header:'이름', type: 'text'},
+        {name:'lastNm', header:'성', type: 'text'},
+        {name:'email', header:'이메일', type: 'text'},
+        {name:'creatDt', header:'가입일시', type: 'text'}];
     return (
         <>
             <XBTSearchFrame
@@ -88,9 +87,6 @@ const XIP1010 = (props) => {
             <XBTDataGrid
                 columnList={columnList}
                 dataList={dataList}
-                onChange= {(e) => {
-                    console.log(e)
-                }}
             >
             </XBTDataGrid>
         </>

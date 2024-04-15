@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
-import {XBTDataGrid, XBTSearchFrame, XBTDatePicker, XBTDropDown} from '../../XipengineeringXBT'
+import {XBTDataGrid, XBTSearchFrame, XBTDatePicker, XBTDropDown} from '../../XipengineeringXBTProvider'
 import XIP2010Dialog from './XIP2010Dialog';
 
 const XIP2010 = (props) => {
@@ -116,9 +116,6 @@ const XIP2010 = (props) => {
                 footer={true}
                 columnList={columnList}
                 dataList={dataList}
-                onChange= {(e) => {
-                    
-                }}
             >
             </XBTDataGrid>
             {dialog && <XIP2010Dialog orderCd={dialogOrderCd} modalBtn={() => setDialog(false)}/>}

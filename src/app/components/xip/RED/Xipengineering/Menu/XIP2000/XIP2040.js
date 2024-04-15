@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
-import {XBTDataGrid, XBTSearchFrame, XBTDatePicker, XBTTextField, XBTDropDown} from '../../XipengineeringXBT'
+import {XBTDataGrid, XBTSearchFrame, XBTDatePicker, XBTTextField, XBTDropDown} from '../../XipengineeringXBTProvider'
 import XIP2040Dialog from './XIP2040Dialog';
 
 
@@ -120,9 +120,6 @@ const XIP2040 = (props) => {
             <XBTDataGrid
                 columnList={columnList}
                 dataList={dataList}
-                onChange= {(e) => {
-
-                }}
             >
             </XBTDataGrid>
             {dialog && <XIP2040Dialog item={dialogItem} modalBtn={() => setDialog(false)} getCancelItem={() => getCancelItem()}/>}

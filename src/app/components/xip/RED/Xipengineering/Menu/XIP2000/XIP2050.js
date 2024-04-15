@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
-import {XBTDataGrid, XBTSearchFrame, XBTDatePicker, XBTTextField} from '../../XipengineeringXBT'
+import {XBTDataGrid, XBTSearchFrame, XBTDatePicker, XBTTextField} from '../../XipengineeringXBTProvider'
 
 const XIP2050 = (props) => {
 
@@ -93,9 +93,6 @@ const XIP2050 = (props) => {
             <XBTDataGrid
                 columnList={columnList}
                 dataList={dataList}
-                onChange= {(e) => {
-
-                }}
             >
             </XBTDataGrid>
         </>

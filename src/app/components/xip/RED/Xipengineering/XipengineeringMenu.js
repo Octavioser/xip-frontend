@@ -4,10 +4,14 @@ import {PBtn, ImgBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import {XIP1010, XIP2010, XIP2020, XIP2030, XIP2040, XIP2050, XIP3010, XIP3020, XIP3030} from 'app/components/xip/RED/Xipengineering';
 
 const XipengineeringMenu = () => {
-
+    console.log('XipengineeringMenu')
     const [category, setCategory] = useState('');
 
     const [title, setTitle] = useState('');
+
+    const [name, setName] = useState('');
+
+    const [openTab, setOpenTab] = useState([]);
 
     let list = 
             [
@@ -30,12 +34,23 @@ const XipengineeringMenu = () => {
                     id={index}
                     key={index}
                     className= 'pBtnNoRed'
-                    style={{border: '2px solid #E8E8E8', fontSize: '0.9rem', backgroundColor:'white', padding: '7px', margin:'3px', borderRadius:'10px', fontWeight:'600'}}
+                    style={{border: '2px solid #E8E8E8', fontSize: '0.9rem', 
+                        backgroundColor: category === e.key ? 'white' : '#E8E8E8', 
+                        padding: '7px', margin:'3px', borderRadius:'10px', fontWeight:'600'
+                    }}
                     labelText={e.name}
                     alt={e.name}
                     onClick={() =>{
                         setCategory(e.key)
                         setTitle(e.name + '(' + e.key + ')')
+                        setName(e.name)
+                        const exists = openTab.some(obj => obj['key'] === e.key);
+                        if(!exists) {
+                            setOpenTab(prev => ([
+                                ...prev,
+                                {'key': e.key, 'name': e.name}
+                            ]))
+                        }
                     }}
                 >
                 </PBtn>
@@ -69,21 +84,79 @@ const XipengineeringMenu = () => {
         }
     },[])
 
-    
+
+    const setTabMenu = () => {
+        return (
+            <>
+            {/* {openTab.map((e,i) => {
+                return (
+                    <div 
+                        key={'tabDiv' + i}
+                        style={{
+                            display:'flex', 
+                            position:'relative', 
+                            width:'7%', 
+                            height:'60%',
+                            alignItems:'center', 
+                            justifyContent:'center', 
+                            border:  category === e ? '2px solid black' : '2px solid #E1E1E1',
+                            color: category === e ? 'black' : '#E1E1E1', 
+                            borderRadius:'10px'
+                        }}>
+                        <PBtn
+                            key={'tabXBtn' + i}
+                            style={{position: 'absolute' , right:'0px', top:'0px'}}
+                            labelText='x'
+                            onClick={()=>{
+                                let data = openTab
+                                let item = data.filter((obj) => obj['key'] !== e.key)
+                                setOpenTab(item);
+                            }}
+                        >
+                        </PBtn>
+                        
+                        <PBtn
+                            key={'tabBtn' + i}
+                            className='pBtnNoHover'
+                            style={{width:'100%', fontSize:'1rem', fontWeight:'600', textAlign:'center'}}
+                            labelText={e}
+                            onClick={()=>{
+
+                            }}
+                        >
+                        </PBtn>
+                    </div>
+                )
+                }
+            )} */}
+            </>
+        )
+    }
+                        
 
     return(
         <>
-            <div style={{position:'relative', width:'100%', height:'10%', borderBottom:'3px solid #E1E1E1'}}>
-                <h2 style={{position:'absolute', margin:0, padding:0, bottom:5, left:40}}>{title}</h2>
-                <ImgBtn  //맨 왼쪽 위 메뉴 버튼
-                    src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/xipengineering/main/email_icon.webp'} 
-                    className='imgBtnNoRed'
-                    alt='email'
-                    style={{position:'absolute', margin:0, padding:0, bottom:5, right:40, width:'50px'}}
-                    onClick={() =>{
-                        window.open('https://pix.awsapps.com/mail', '_blank') 
-                    }}
-                ></ImgBtn>
+            <div style={{display:'flex', justifyContent:'ceter', alignItems:'center', width:'100%', height:'10%', borderBottom:'3px solid #E1E1E1'}}>
+                <div style={{width:'1%', height:'100%',display:'flex'}}></div>
+                <div style={{width:'12%', height:'100%',display:'flex', justifyContent:'ceter', alignItems:'center'}}>
+                    <h2>{title}</h2>
+                </div>
+                <div style={{display:'flex', alignItems:'center',  width:'77%', height:'100%'}}>
+                    {setTabMenu()}
+                </div>
+                
+                <div style={{width:'10%', height:'100%',display:'flex', alignItems:'center'}}>
+                    <ImgBtn  //맨 왼쪽 위 메뉴 버튼
+                        src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/xipengineering/main/email_icon.webp'} 
+                        className='imgBtnNoRed'
+                        alt='email'
+                        style={{width:'50px', position:'fixed', right:'20px'}}
+                        onClick={() =>{
+                            window.open('https://pix.awsapps.com/mail', '_blank') 
+                        }}
+                    >
+                    </ImgBtn>
+                </div>
             </div>
             <div style={{position:'relative', width:'100%', height:'4%'}}></div>
             <div style={{position:'relative', width:'100%', height:'83%', display: 'flex'}}>
@@ -101,6 +174,7 @@ const XipengineeringMenu = () => {
                 <div style={{position:'relative', width:'1%' ,height:'100%'}}></div>{/* 목록 과 조회사이빈칸 */}
                 
                 <div style={{position:'relative', width:'88%' ,height:'100%', textAlign:'center'}}>
+                    
                     {/* 오른쪽  */}
                     {category === 'XIP1010' && <XIP1010 date={timeValue}/>}
                     {category === 'XIP2010' && <XIP2010 date={timeValue}/>}
@@ -109,7 +183,7 @@ const XipengineeringMenu = () => {
                     {category === 'XIP2040' && <XIP2040 date={timeValue}/>}
                     {category === 'XIP2050' && <XIP2050 date={timeValue}/>}
                     {category === 'XIP3010' && <XIP3010 date={timeValue}/>}
-                    {category === 'XIP3020' && <XIP3020 date={timeValue}/>}
+                    {category === 'XIP3020' && <XIP3020/>}
                     {category === 'XIP3030' && <XIP3030 date={timeValue}/>}
                 </div>
             </div>

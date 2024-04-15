@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
-import {XBTDataGrid, XBTSearchFrame, XBTTextField, XBTDropDown} from '../../XipengineeringXBT'
+import {XBTDataGrid, XBTSearchFrame, XBTTextField, XBTDropDown} from '../../XipengineeringXBTProvider'
 import XIP3020Dialog from './XIP3020Dialog'
 
-const XIP3020 = (props) => {
+const XIP3020 = () => {
 
     const { commonShowLoading, commonHideLoading, commonApi} = useCommon();
 
@@ -221,9 +221,6 @@ const XIP3020 = (props) => {
             <XBTDataGrid
                 columnList={columnList}
                 dataList={dataList}
-                onChange= {(e) => {
-                    // console.log(e)
-                }}
             >
             </XBTDataGrid>
             {openDialog && <XIP3020Dialog modalBtn={closeDialog} item={dialogItem} dataList={dataList} setDataList={setDataList}/>}

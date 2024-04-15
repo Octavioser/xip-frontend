@@ -8,8 +8,6 @@ const ProductList = () => {
 
     const {navigate, commonApi, commonShowLoading, commonHideLoading, commonRegion} = useCommon();
 
-    const [productHover, setProductHover] = useState('');         // 마우스 올렸을시 바뀌는 값
-
     const [productListItem, setProductListItem] = useState([]);   //  상품 정보 state 에 저장
 
     const [season, setSeason] = useState('ALL');                     // 시즌
@@ -52,22 +50,6 @@ const ProductList = () => {
             navigate(`./detailproduct/${e.prodCd}`)
         }
     }
-
-    const productHoverStryle = {
-        position:'absolute',  
-        width: '90%', 
-        height:'30%', 
-        top: '45%', 
-        left: '50%',
-        transform: 'translate(-50%, -50%)', 
-        backgroundColor:'rgba(255, 255, 255, 0.5)',
-        display: 'flex',          // flexbox 활성화
-        justifyContent: 'center', // 가로 중앙 정렬
-        alignItems: 'center',      // 세로 중앙 정렬
-        color:'black',
-        textAlign: 'center',
-        fontSize: '1.2rem'
-    }
     
 
     return (
@@ -78,66 +60,70 @@ const ProductList = () => {
                 style={{
                     display:'flex', 
                     flexWrap: 'wrap',
-                    width:'80%'
+                    width:'84vw',
+                    height: 'auto'
                 }}
             >
                 {productListItem.map((e, index) => 
-                    <div 
+                    <div // 사진 640 x 480
                         key={index}
-                        style={{ position: 'relative', margin: '5px', width: isMobile? '100%':'24%', maxHeight:'65%'}}
-                        onMouseOver={()=>{
-                            setProductHover(e.prodCd)
+                        style={{ 
+                            display: 'block', 
+                            position: 'relative', 
+                            margin : '0.3vw',
+                            width:  isMobile? '100%':'20vw',  
+                            height: isMobile? 'auto': '26.6vw'
                         }}
-                        onMouseLeave={()=>{
-                            setProductHover('')
-                        }}
-                        >
+                    >
                         <ImgBtn
                             id={index}
                             src={'https://xip-bucket.s3.ap-northeast-2.amazonaws.com/' + e.imageSrc} 
                             className='imgBtnNoRed'
                             alt={e.name}
-                            style={{ width: '100%',height: 'auto', opacity: productHover === e.prodCd && (e.status === '2' || e.status === '0')? 0.5 : 1}}
-                            onClick={()=>{
-                                onClick(e);
-                            }}
+                            style={{ width: '100%',height: '100%', objectFit: 'contain'}}
                         >  
                         </ImgBtn>
-                        {productHover === e.prodCd &&
                             <>
-                                {e.status === '1'|| e.status === '3'  ? // status=1 판매중 status=3 프리오더
-                                    <div 
-                                        key={index}
-                                        style={productHoverStryle}
-                                        onClick={()=>{
-                                            onClick(e);
-                                        }}
-                                    >
+                            {e.status === '1'|| e.status === '3'  ? // status=1 판매중 status=3 프리오더
+                                <div 
+                                    key={index}
+                                    className='prodHover'
+                                    onClick={()=>{
+                                        onClick(e);
+                                    }}
+                                >
+                                    <div style={{display:'flex', alignItems:'center', width:'100%', height:'35%',backgroundColor:'rgba(255, 255, 255, 0.5)'}}>
+                                        <div style={{width:'100%'}}>
                                         {e.status === '3' && <>Pre-order<br/></>}
                                         {e.name}<br/>
                                         {commonRegion() === 'KOR' ? 
                                             '₩' + e.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                             :
                                             '$' + e.usPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                        }    
+                                        }
+                                        </div>
                                     </div>
-                                    :
-                                    <div 
-                                        key={index}
-                                        style={productHoverStryle}
-                                        onClick={()=>{
-                                            onClick(e);
-                                        }}
-                                    >
+                                </div>
+                                :
+                                <div 
+                                    key={index}
+                                    className='prodHover'
+                                    onClick={()=>{
+                                        onClick(e);
+                                    }}
+                                >
+                                    <div style={{display:'flex', alignItems:'center', width:'100%', height:'35%',backgroundColor:'rgba(255, 255, 255, 0.5)'}}>
+                                        <div style={{width:'100%'}}>
                                         {e.status === '2' ?
                                             <>SOLD OUT</>
                                         :
                                             <>Coming<br></br>Soon</>
                                         }
+                                        </div>
                                     </div>
-                                }
-                            </>
-                        }
+                                </div>
+                            }
+                        </>
                     </div>
                 )}
             </div>

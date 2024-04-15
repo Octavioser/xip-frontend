@@ -6,7 +6,6 @@ import XipengineeringMenu from './XipengineeringMenu';
 
 
 const Xipengineering = () => {
-
     const { commonShowLoading, commonHideLoading, commonApi, navigate} = useCommon();
 
     const {removeCookie, getCookie} = useCookie();

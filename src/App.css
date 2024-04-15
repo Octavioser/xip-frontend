@@ -185,3 +185,28 @@ nav {
 ::-webkit-scrollbar-track {
   background-color: transparent; /* 트랙의 배경색을 투명하게 설정 */
 }
+
+
+.prodHover {
+  display: flex;
+  align-items: center;
+  transition: .2s ease;
+  color: #000;
+  font-size: 1.2rem;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.container:hover .image {
+  opacity: 0.3;
+}
+
+.prodHover:hover  {
+  opacity: 1;
+}

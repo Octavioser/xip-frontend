@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import {PBtn, ImgBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import { isMobile } from 'react-device-detect';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
@@ -11,7 +11,7 @@ const Cart = (props) => {
 
     const [totalUsPrice, setTotalUsPrice] = useState(0); // 달러 전체 가격
  
-    const getTotalPrice = useCallback((list) => {
+    const getTotalPrice = (list) => {
         let totalPrice = 0;
         let totalUsPrice = 0;
         let item = [...list]    
@@ -22,7 +22,7 @@ const Cart = (props) => {
         
         setTotalPrice('₩' + totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") )
         setTotalUsPrice('$' + totalUsPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") )
-    },[])
+    }
 
     useEffect(() => {       
         const getItem = async() => {

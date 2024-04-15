@@ -1,22 +1,22 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, memo} from 'react';
 import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale'; // 한국어 변환
 
 
-export const XBTDropDown = (props) => {
+export const DropDown = ({labelText, value, list, onChange}) => {
     return (
         <>
-            <p style={{margin:'10px',fontSize:'0.8rem', fontWeight:'600'}}>{props.labelText}</p>
+            <p style={{margin:'10px',fontSize:'0.8rem', fontWeight:'600'}}>{labelText}</p>
             <select  
                 style={{ width: '15%'}}
-                value={props.value}
+                value={value}
                 onChange={(e)=>{
-                    props.onChange(e.target.value)
+                    onChange(e.target.value)
                 }}
             >
-                {props.list.map(item => (
+                {list.map(item => (
                     <option key={item.key} value={item.value}>
                         {item.name}
                     </option>
@@ -27,7 +27,7 @@ export const XBTDropDown = (props) => {
 }
 
 
-export const XBTDatePicker = (props) => {
+export const DateSearch = ({labelText, required, onChange, value}) => {
 
     const getTimeType = (time) => {
         try {
@@ -45,20 +45,20 @@ export const XBTDatePicker = (props) => {
 
     return (
         <>
-            <p style={{margin:'10px',fontSize:'0.8rem', fontWeight:'600'}}>{props.labelText}</p>
+            <p style={{margin:'10px',fontSize:'0.8rem', fontWeight:'600'}}>{labelText}</p>
             <DatePicker
-                className={props?.required && "requiredDatepicker"}
-                selected={getTimeType(props.value)}
+                className={!!required && "requiredDatepicker"}
+                selected={getTimeType(value)}
                 locale={ko}
                 dateFormat="yyyy-MM-dd"
                 minDate={new Date('2023-10-01')} // 데이터가 이때부터 생성됨
                 onChange={(date) => {
                     if(!!date) {
                         date.setHours(date.getHours() + 9); // 9시간 더하기
-                        props.onChange(date.toISOString().substring(0,10).replace(/-/g,''))
+                        onChange(date.toISOString().substring(0,10).replace(/-/g,''))
                     }
                     else {
-                        props.onChange('')
+                        onChange('')
                     }
                 }}
             />
@@ -66,17 +66,17 @@ export const XBTDatePicker = (props) => {
     );
 }
 
-export const XBTTextField = (props) => {
+export const TextField = ({labelText, value, onChange}) => {
 
     return (
         <>
-            <p style={{margin:'10px',fontSize:'0.8rem', fontWeight:'600'}}>{props.labelText}</p>
+            <p style={{margin:'10px',fontSize:'0.8rem', fontWeight:'600'}}>{labelText}</p>
             <input 
                 style={{margin:'10px'}}
                 type="text" 
-                value={props.value} 
+                value={value} 
                 onChange={(e)=>{
-                    props.onChange(e.target.value)
+                    onChange(e.target.value)
                 }} 
             />
         </>
@@ -84,15 +84,15 @@ export const XBTTextField = (props) => {
 }
 
 
-export const XBTSearchFrame = (props) => {
-
+export const SearchFrame = ({children, onClick}) => {
+    console.log('SearchFrame')
     return (
         <>
             <div style={{display:'flex', position:'relative', width:'100%' ,height:'12%', textAlign:'center', border:'3px solid #E1E1E1'}}>
                 {/* 검색 창 */}
                 
                 <div style={{display: 'flex', position:'relative', width:'94%' ,height:'100%', textAlign:'center', alignItems: 'center'}}>
-                    {props.children}
+                    {children}
                 </div>
 
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center',position:'relative', width:'6%' ,height:'100%', textAlign:'center'}}>
@@ -102,7 +102,7 @@ export const XBTSearchFrame = (props) => {
                         labelText='⌕'
                         alt='검색'
                         onClick={(e) =>{
-                            props.onClick(e);
+                            onClick(e);
                         }}
                     >
                     </PBtn>
@@ -112,8 +112,8 @@ export const XBTSearchFrame = (props) => {
     )
 }
 
-export const XBTDataGrid = (props) => {
-
+export const DataGrid = memo(({columnList, dataList, footer}) => {
+    console.log('XBTDataGrid')
     const [data, setData] = useState([])
 
     const [isEditing, setIsEditing] = useState(''); 
@@ -123,14 +123,13 @@ export const XBTDataGrid = (props) => {
     const [checkDropDownOpen, setCheckDropDownOpen] = useState('')
 
     useEffect(()=>{
-        let item = JSON.parse(JSON.stringify(props.dataList))
+        let item = JSON.parse(JSON.stringify(dataList))
         setData(item)
-    }, [props.dataList]); // 의존성 배열로 props.dataList를 전달
+    }, [dataList]); // 의존성 배열로 dataList를 전달
 
 
     // 헤더 컬럼 
     const setColumns = () => {
-        let columnList = [...props.columnList] || []
         return (
             <tr>
             <th key={'cth' + 0} style={{ border: '2px solid #E8E8E8'}}>순번</th>
@@ -146,12 +145,10 @@ export const XBTDataGrid = (props) => {
     //데이터 세팅
     const setTable = () => {
 
-        let columnList = [...props.columnList]
-
          // 데이터 입력시 
         const onChangeSetData = async(e, index, j) => {
             let dataItem = [...data]
-            // let oldList = [...props.dataList]
+            // let oldList = [...dataList]
             dataItem[index][j.name] = j.type === 'number' ? Number(e.target.value) : e.target.value
             setData(dataItem)  
             // return({   // 이전 리턴값
@@ -185,7 +182,7 @@ export const XBTDataGrid = (props) => {
             }
 
             // 현재 타켓 데이터와 원본데이터의 데이터를 비교
-            if(JSON.stringify(e) !== JSON.stringify([...props.dataList][index])) {
+            if(JSON.stringify(e) !== JSON.stringify([...dataList][index])) {
                 return false
             }
             else {
@@ -282,7 +279,7 @@ export const XBTDataGrid = (props) => {
                                             type="button" 
                                             disabled={j.modifyDisabled && handleDisabled(e, index)}
                                             onClick={()=> {
-                                                j.onClick({targetData:e, targetOldData : [...props.dataList][index]})
+                                                j.onClick({targetData:e, targetOldData : [...dataList][index]})
                                             }}>
                                                 {!!j.labelText ? j.labelText : e?.[j.name]}
                                             </button>
@@ -393,20 +390,20 @@ export const XBTDataGrid = (props) => {
             
         )                                
         
-    }
+    };
 
     // 푸터
     const setFooter = () => {
-        if(! props.footer) {
+        if(!footer) {
             return <></>
         }
 
-        let columnList = [...props.columnList] || []
+        let columnListDataLen = columnList.length;
 
         let footerItem = {}
         
         for(let i=0; i<data.length; i++) {
-            for(let j=0; j<columnList.length; j++) {
+            for(let j=0; j<columnListDataLen; j++) {
                 let columnName = columnList[j]['name']
                 if(!!columnList[j].footer) {
                     footerItem[columnName] = Number(footerItem[columnName] || 0) + Number(data[i][columnName] || 0)
@@ -467,4 +464,4 @@ export const XBTDataGrid = (props) => {
             </div>
     </>
     )
-}
+})
