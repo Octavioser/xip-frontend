@@ -190,8 +190,8 @@ const Root = () => {
                     <Route path="gallery/:galleryType" element={<Gallery/>}/>
                 </Route>
                 <Route path="/shop">
-                    {/* <Route path="" element={<ProductList/>}/> */}
-                    <Route path="" element={<ComingSoon/>}/>
+                    <Route path="" element={<ProductList/>}/>
+                    {/* <Route path="" element={<ComingSoon/>}/> */}
                     <Route path="account">
                         <Route path="" element={<Account/>}/>
                         <Route path="accountdetails" element={<AccountDetails/>}/>
