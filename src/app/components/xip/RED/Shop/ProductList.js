@@ -71,8 +71,8 @@ const ProductList = () => {
                             display: 'block', 
                             position: 'relative', 
                             margin : '0.3vw',
-                            width:  isMobile? '100%':'20vw',  
-                            height: isMobile? 'auto': '26.6vw'
+                            width:  isMobile? '40vw':'20vw',  
+                            height: isMobile? '53.2vw': '26.6vw'
                         }}
                     >
                         <ImgBtn
