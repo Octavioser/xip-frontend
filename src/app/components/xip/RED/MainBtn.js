@@ -56,7 +56,7 @@ const MainBtn = (props) => {
 
                             {menuOpen &&
                             <>
-                                <Link to="./newtypeHome"> 
+                                <Link to="./newtype"> 
                                     <PBtn 
                                         labelText='new+ype'
                                         alt='newtypeBtn'

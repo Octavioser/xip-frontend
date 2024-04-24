@@ -6,7 +6,7 @@ import {
     Loading, ConfirmModal,
     Credit, Works, Video, StartPage, Home, NotFound,Masterinnovation,MasterinnovationBunka,Gallery, Shop, MainBtn, MusicBtn,
     ProductList, Account, AccountDetails, DetailProduct, Cart, OrderHistory, Purchase, OrderDetails, Xipengineering, Service, 
-    TermsOfUse, Privacy, ShipReturn, Success, Fail, NewtypeHome, Newtype, Fetus, Footer} from 'app/components/xip/RED'; //index.js
+    TermsOfUse, Privacy, ShipReturn, Success, Fail, NewtypeHome, Newtype, Fetus, Footer, NewtypeVideo, Feb29} from 'app/components/xip/RED'; //index.js
 import { useCookie } from 'app/components/xip/RED/Login/Cookie';
 import ComingSoon from 'app/components/xip/RED/Shop/ComingSoon';
 
@@ -62,8 +62,6 @@ const Root = () => {
             document.body.style.backgroundImage = 'url(https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/main/backgroundVideo.gif)'; // 여기에 원하는 이미지 URL을 넣습니다.
             document.body.style.backgroundColor = 'transparent'; // background-color 제거
         }
-        
-        
     },[pathname])
 
    
@@ -172,7 +170,13 @@ const Root = () => {
                 {/* 맨처음화면 */}
                 <Route path='/' element={<StartPage musicSwitch={musicSwitch}></StartPage>}/>
                 {pathname.substring(0,5).toLowerCase() === '/home' && <Route path="/home" element={<Home startClickValue={startClickValue}/>}/>}
-                <Route path="newtypehome" element={<NewtypeHome/>}/>
+                <Route path="newtype">
+                    <Route path="" element={<NewtypeHome/>}/>
+                    <Route path="newtypevideo">
+                        <Route path="" element={<NewtypeVideo/>}/>
+                        <Route path="feb29" element={<Feb29/>}/>
+                    </Route>
+                </Route>
                 <Route path="/video">
                     <Route path="" element={<Video/>}/>
                     <Route path="masterinnovation" element={<Masterinnovation/>}/>

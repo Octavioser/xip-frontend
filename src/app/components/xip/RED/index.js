@@ -35,7 +35,10 @@ export { default as Fail } from './Shop/Purchase/TossPayments/Fail';
 
 
 export { default as NewtypeHome } from './Newtype/NewtypeHome';
+export { default as NewtypeVideo } from './Newtype/Video/NewtypeVideo';
+export { default as Feb29 } from './Newtype/Video/Feb29';
 export { default as Footer } from './Shop/Footer';
+
 
 
 
