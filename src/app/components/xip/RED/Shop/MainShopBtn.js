@@ -25,9 +25,9 @@ const MainShopBtn = () => {
     const seasonItem = () => {
         const item = 
         [
-            {id: 1, key:'24SS', name: 'S/S 2024'},
-            {id: 2, key:'24FW', name: 'F/W 2024'},
-            {id: 3, key:'25SS', name: 'S/S 2025'}
+            {id: 1, key:'3', name: 'Pre Order'},
+            {id: 2, key:'1', name: 'On Sale'},
+            {id: 3, key:'0', name: 'Coming Soon'}
         ]
         return(
             <div key={'div1'} style={{textAlign:'left',paddingLeft:'30px'}}>
@@ -49,7 +49,7 @@ const MainShopBtn = () => {
                             key={e.id}
                             id={e.id}
                             className='pBtnNoRed'
-                            labelText={e.key}
+                            labelText={e.name}
                             alt='e'
                             style={{fontSize: subfont}}
                             onClick={() =>{

@@ -153,7 +153,7 @@ const XIP3020 = () => {
 
     let columnList = [
                         {name: 'prodCd', header: '제품코드', type: 'text'},
-                        {name: 'name', header: '이름', type: 'text', editable:true},
+                        {name: 'name', header: '이름', type: 'text', editable:true, maxLength:30},
                         {name: 'price', header: '가격', type: 'number', currency:'₩', editable:true},
                         {name: 'usPrice', header: '미국 가격', type: 'number', currency:'$', editable:true},
                         {name: 'sizeOpt', header: '사이즈 옵션', type: 'checkDropDown', list: listItem.Sizelist, func:(e)=>{return checkCondition(e)}},

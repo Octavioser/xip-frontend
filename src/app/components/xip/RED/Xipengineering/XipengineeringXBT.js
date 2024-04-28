@@ -259,6 +259,7 @@ export const DataGrid = memo(({columnList, dataList, footer}) => {
                                             }} 
                                             type={j.type}
                                             value={e?.[j.name]}
+                                            maxLength={j.maxLength}
                                             onBlur={()=>handleBlur(index)} 
                                             onKeyDown={(e)=>handleKeyPress(e,index)}
                                             onChange={async(item)=>{

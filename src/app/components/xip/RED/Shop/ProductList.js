@@ -19,7 +19,7 @@ const ProductList = () => {
         const getItem = async() => {
             await commonShowLoading();
             try {
-                let resultData = await commonApi('/shop/shopR002', {season: state});
+                let resultData = await commonApi('/shop/shopR002', {status: state});
                 if(!!resultData || resultData.length > 0) {
                     setProductListItem(resultData);
                 }
@@ -72,7 +72,8 @@ const ProductList = () => {
                             position: 'relative', 
                             margin : '0.3vw',
                             width:  isMobile? '40vw':'20vw',  
-                            height: isMobile? '53.2vw': '26.6vw'
+                            height: isMobile? '53.2vw': '26.6vw',
+                            fontSize: isMobile? '0.8rem' : '1.2rem'
                         }}
                     >
                         <ImgBtn
