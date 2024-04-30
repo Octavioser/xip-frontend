@@ -10,7 +10,6 @@ const clientKey = process.env.REACT_APP_API_TOSS_CLIENT_KEY;
 const customerKey = nanoid();
 
 const CheckoutPage = (props) => {
-    console.log(props)
     const [paymentWidget, setPaymentWidget] = useState(null);
     const paymentMethodsWidgetRef = useRef(null);
     const [price, setPrice] = useState(props.totalPrice);

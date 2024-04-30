@@ -1,5 +1,4 @@
-import {memo, useMemo} from 'react';
-import 'react-datepicker/dist/react-datepicker.css';
+import {useCallback, useMemo} from 'react';
 import {DataGrid, SearchFrame, DateSearch, DropDown, TextField} from './XipengineeringXBT'
 
 
@@ -49,7 +48,7 @@ export const XBTSearchFrame = ({children, onClick}) => {
     )
 }
 
-export const XBTDataGrid = ({columnList, dataList, footer}) => {
+export const XBTDataGrid = ({columnList, dataList, footer, onClick}) => {
     const columnListData = useMemo(() => { 
         return columnList;
         /* eslint-disable */
@@ -64,11 +63,16 @@ export const XBTDataGrid = ({columnList, dataList, footer}) => {
         /* eslint-disable */
     },[]);
 
+    const clickBtn = useCallback((e)=>{
+        return onClick(e);
+    },[])
+
     return (
         <DataGrid
             footer = {footerData}
             columnList={columnListData}
             dataList={dataListData}
+            onClick={!!onClick ? clickBtn : false}
         >
         </DataGrid>
     )

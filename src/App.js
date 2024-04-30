@@ -95,9 +95,7 @@ const Root = () => {
 
     // cart 정보 저장하기
     const savedCart = async() => {
-        console.log('전송시작')
         if(!changeCartList || Object.keys(changeCartList).length < 1) {    // 바뀐게 없으면 동작 x
-            console.log('실패')
             return;
         }
         // api로 넘겨줄 데이터 객체에서 배열로 변환

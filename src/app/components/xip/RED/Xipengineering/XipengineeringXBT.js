@@ -85,7 +85,6 @@ export const TextField = ({labelText, value, onChange}) => {
 
 
 export const SearchFrame = ({children, onClick}) => {
-    console.log('SearchFrame')
     return (
         <>
             <div style={{display:'flex', position:'relative', width:'100%' ,height:'12%', textAlign:'center', border:'3px solid #E1E1E1'}}>
@@ -112,8 +111,7 @@ export const SearchFrame = ({children, onClick}) => {
     )
 }
 
-export const DataGrid = memo(({columnList, dataList, footer}) => {
-    console.log('XBTDataGrid')
+export const DataGrid = memo(({columnList, dataList, footer, onClick}) => {
     const [data, setData] = useState([])
 
     const [isEditing, setIsEditing] = useState(''); 
@@ -122,8 +120,15 @@ export const DataGrid = memo(({columnList, dataList, footer}) => {
 
     const [checkDropDownOpen, setCheckDropDownOpen] = useState('')
 
-    useEffect(()=>{
+    // 조회버튼클릭시 호출
+    useEffect(()=>{ 
+        // 상태초기화
+        setIsEditing('');
+        setModifyDisabled({});
+        setCheckDropDownOpen('');
+
         let item = JSON.parse(JSON.stringify(dataList))
+        
         setData(item)
     }, [dataList]); // 의존성 배열로 dataList를 전달
 
@@ -140,7 +145,17 @@ export const DataGrid = memo(({columnList, dataList, footer}) => {
         )
     }
     
-   
+    // 저장버튼 클릭시 수정된 데이터 넘겨주기
+    const clickSaveBtn = () => {
+        let dataItem = [...data]
+        let indexitem = Object.keys(modifyDisabled);
+        let item = [];
+        indexitem.forEach(e => {
+            item.push(dataItem[Number(e)])
+        })
+
+        onClick(item);
+    }
     
     //데이터 세팅
     const setTable = () => {
@@ -149,8 +164,8 @@ export const DataGrid = memo(({columnList, dataList, footer}) => {
         const onChangeSetData = async(e, index, j) => {
             let dataItem = [...data]
             // let oldList = [...dataList]
-            dataItem[index][j.name] = j.type === 'number' ? Number(e.target.value) : e.target.value
-            setData(dataItem)  
+            dataItem[index][j.name] = j.type === 'number' ? Number(e.target.value) : e.target.value;
+            setData(dataItem); 
             // return({   // 이전 리턴값
             //     oldData : oldList,
             //     newData : data,
@@ -169,7 +184,7 @@ export const DataGrid = memo(({columnList, dataList, footer}) => {
         // 엔터 키 입력 처리
         const handleKeyPress = (e, index) => {
             if (e.key === 'Enter') {
-                setIsEditing(false); // 편집 모드 종료
+                setIsEditing(''); // 편집 모드 종료
                 completeModify(index); // 수정완료시
             }
             
@@ -293,7 +308,7 @@ export const DataGrid = memo(({columnList, dataList, footer}) => {
                                         <PBtn
                                             style={{fontSize:'0.8rem', textDecoration: 'underline' }}
                                             labelText={j.labelText}
-                                            onClick={()=>{window.open(`https://trace.cjlogistics.com/next/tracking.html?wblNo=${e?.[j.name]}`, '_blank')}}
+                                            onClick={()=>{window.open(`https://service.epost.go.kr/trace.RetrieveDomRigiTraceList.comm?sid1=${e?.[j.name]}`, '_blank')}}
                                         >
                                         </PBtn>
                                     </td>
@@ -435,17 +450,22 @@ export const DataGrid = memo(({columnList, dataList, footer}) => {
             </tfoot>
         )
     }
-
     return (
         <>
-            <div style={{position:'relative', backgroundColor:'white',width:'100%', height:'3%'}}></div> {/* XBTSearchFrame 사이 */}
+            {!!onClick ?
+                <div style={{position:'relative', backgroundColor:'white',width:'100%', height:'4%', textAlign:'right'}}>
+                    <button style={{height:'100%'}} onClick={clickSaveBtn}>저장</button>
+                </div> /* XBTSearchFrame 사이 */
+            :
+                <div style={{position:'relative', backgroundColor:'white',width:'100%', height:'4%', textAlign:'right'}}></div> /* XBTSearchFrame 사이 */
+            }
 
             <div  
                 style={{
                     position:'relative', 
                     backgroundColor:'#FAFAFA',
                     width:'100%', 
-                    height:'84%' , 
+                    height:'83%' , 
                     borderRight:'2px solid #E1E1E1', 
                     borderLeft:'2px solid #E1E1E1', 
                     borderBottom:'2px solid #E1E1E1', 

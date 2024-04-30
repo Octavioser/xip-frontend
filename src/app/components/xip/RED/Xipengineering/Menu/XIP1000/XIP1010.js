@@ -1,9 +1,8 @@
-import React, {useState ,useMemo} from 'react';
+import React, {useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
 import {XBTDataGrid, XBTSearchFrame, XBTTextField, XBTDatePicker} from '../../XipengineeringXBTProvider'
 
 const XIP1010 = (props) => {
-    console.log('xip1010')
     const { commonShowLoading, commonHideLoading, commonApi} = useCommon();
 
     const [dataList, setDataList] = useState([])

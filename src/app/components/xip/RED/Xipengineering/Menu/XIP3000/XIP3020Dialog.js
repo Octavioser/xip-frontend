@@ -147,8 +147,7 @@ const XIP3020Dialog = (props) => {
         // 데이터 저장하기 
         try{
             await commonShowLoading();
-            let result = await commonApi(apiList.updateProdDesc.api, apiList.updateProdDesc.param(descStr, descDStr));
-            console.log('result==>', result)
+            await commonApi(apiList.updateProdDesc.api, apiList.updateProdDesc.param(descStr, descDStr));
             alert('저장 완료')
             props.modalBtn();
         } catch (error) {

@@ -4,7 +4,6 @@ import {PBtn, ImgBtn} from 'app/components/xip/REDCommon/CommonStyle';
 import {XIP1010, XIP2010, XIP2020, XIP2030, XIP2040, XIP2050, XIP3010, XIP3020, XIP3030} from 'app/components/xip/RED/Xipengineering';
 
 const XipengineeringMenu = () => {
-    console.log('XipengineeringMenu')
     const [category, setCategory] = useState('');
 
     const [title, setTitle] = useState('');
@@ -48,7 +47,7 @@ const XipengineeringMenu = () => {
                         if(!exists) {
                             setOpenTab(prev => ([
                                 ...prev,
-                                {'key': e.key, 'name': e.name}
+                                {'key': e.key, 'name': e.name, components: e.components}
                             ]))
                         }
                     }}
@@ -145,7 +144,7 @@ const XipengineeringMenu = () => {
     
         return (
             <>
-                {menuList.map(item => (
+                {openTab.map(item => (
                     <div key={item.key} style={{ width: '100%', height: '100%', display: category === item.key ? 'block' : 'none' }}>
                         {createElement(item.components, { date: timeValue })}
                     </div>
@@ -180,7 +179,7 @@ const XipengineeringMenu = () => {
                 </div>
             </div>
             <div style={{position:'relative', width:'100%', height:'4%'}}></div>
-            <div style={{position:'relative', width:'100%', height:'83%', display: 'flex'}}>
+            <div style={{position:'relative', width:'100%', height:'87%', display: 'flex'}}>
 
                 <div style={{position:'relative', width:'10%' ,height:'100%' }}>
                     {/* 왼쪽 목록 */}

@@ -47,16 +47,54 @@ const XIP3010 = (props) => {
         },
         updateProdOrder: {
             api: '/xipengineering/incuU203',
-            param: (soldQty,totalQty,prodCd) => {
+            param: (param) => {
                 return (
                     {
-                        soldQty: soldQty,
-                        totalQty: totalQty,
-                        prodCd: prodCd
+                        modifyData: param
                     }
                 )
             }
         },
+    }
+
+    const saveData = async(item) => {
+        await commonShowLoading();
+        try{
+            let param = [];
+            let soldQty;
+            let totalQty;
+            let check = '';
+            let len = item.length;
+
+            // 변경값이 없는 경우
+            if(len < 1) {
+                alert('수정된 값이 없습니다.')
+                return;
+            }
+
+            for(let i=0; i<len; i++){
+                let e = item[i]
+                soldQty = Number(e.soldQty);
+                totalQty = Number(e.totalQty)
+                if(soldQty > totalQty) { // 판매수량이 총 수량보다 많을경우
+                    check = e.name;
+                }
+                param.push({prodCdD: e.prodCdD, totalQty: totalQty, soldQty: soldQty})
+            }
+
+            // 제품 수량 체크
+            if(check !== '') {
+                alert(`${check} 제품의 판매수량이 총 수량보다 많습니다.`)
+                return;
+            }
+
+            await commonApi(apiList.updateProdOrder.api, apiList.updateProdOrder.param(param));
+            alert('수정되었습니다.')
+        } catch (error) {
+            alert('오류입니다. 다시시도해주세요')
+        } finally {
+            commonHideLoading();
+        }
     }
 
     useEffect(()=>{
@@ -116,25 +154,7 @@ const XIP3010 = (props) => {
                         {name:'prodQty', header:'주문수량(기간)', type: 'text'},
                         {name:'cancelQty', header:'취소수량(기간)', type: 'text'},
                         {name:'krwSubTotal', header:'원화 판매금액(기간)', type: 'text',currency:'₩'},
-                        {name:'usdSubTotal', header:'달러 판매금액(기간)', type: 'text', currency:'$'},
-                        {name:'saveBtn', header:'수정버튼', type:'button', modifyDisabled: true, labelText:'수정',
-                            onClick: async(e)=>{
-                                let soldQty = Number(e.targetData.soldQty) 
-                                let totalQty = Number(e.targetData.totalQty)
-                                if(soldQty > totalQty) { // 판매수량이 총 수량보다 많을경우
-                                    alert('판매수량이 총 수량보다 많습니다.')
-                                }
-                                try{
-                                    await commonShowLoading();
-                                    await commonApi(apiList.updateProdOrder.api, apiList.updateProdOrder.param(soldQty, totalQty, e.targetData.prodCdD));
-                                    alert('수정되었습니다.')
-                                } catch (error) {
-                                    alert('오류입니다. 다시시도해주세요')
-                                } finally {
-                                    commonHideLoading();
-                                }
-                            }
-                        }
+                        {name:'usdSubTotal', header:'달러 판매금액(기간)', type: 'text', currency:'$'}
                     ]
 
     return (
@@ -187,6 +207,7 @@ const XIP3010 = (props) => {
             <XBTDataGrid
                 columnList={columnList}
                 dataList={dataList}
+                onClick={saveData}
             >
             </XBTDataGrid>
         </>
