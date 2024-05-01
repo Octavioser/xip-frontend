@@ -1,14 +1,18 @@
-import {useState, useRef} from 'react';
+import {useEffect} from 'react';
 import { isMobile } from 'react-device-detect';
 import { PBtn } from 'app/components/xip/REDCommon/CommonStyle'
 import {Link} from 'react-router-dom';
 
 
-const Feb29 = () => {
+const Feb29 = ({newTypeMusic}) => {
 
 
     const centerWidth = '50%'
     const doubleImageWidth = '35%'
+
+    useEffect(()=>{
+        newTypeMusic.pause();
+    },[])
 
     const defaultImg = (key) =>{
         return `https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/newtype/video/image/defaultImg/${key}.webp`

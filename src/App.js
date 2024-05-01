@@ -172,7 +172,7 @@ const Root = () => {
                     <Route path="" element={<NewtypeHome/>}/>
                     <Route path="newtypevideo">
                         <Route path="" element={<NewtypeVideo/>}/>
-                        <Route path="feb29" element={<Feb29/>}/>
+                        <Route path="feb29" element={<Feb29 newTypeMusic={newTypeMusic}/>}/>
                     </Route>
                 </Route>
                 <Route path="/video">
