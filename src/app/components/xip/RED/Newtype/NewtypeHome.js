@@ -109,7 +109,7 @@ const NewtypeHome = () => {
                         style={{ transform: `rotateY(${rotation + 216}deg) translateZ(${isMobile? '200px' : '300px'})`, ...menuStyle }}
                         labelText="video"
                         onClick={()=>{
-                            // navigate('./newtypevideo')
+                            navigate('./newtypevideo')
                         }}
                     />
                     <PBtn

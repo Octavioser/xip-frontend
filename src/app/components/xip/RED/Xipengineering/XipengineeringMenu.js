@@ -179,7 +179,7 @@ const XipengineeringMenu = () => {
                 </div>
             </div>
             <div style={{position:'relative', width:'100%', height:'4%'}}></div>
-            <div style={{position:'relative', width:'100%', height:'87%', display: 'flex'}}>
+            <div style={{position:'relative', width:'100%', height:'83%', display: 'flex'}}>
 
                 <div style={{position:'relative', width:'10%' ,height:'100%' }}>
                     {/* 왼쪽 목록 */}
