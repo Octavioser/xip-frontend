@@ -53,7 +53,7 @@ const OrderDetails = () => {
             className = 'pBtnNoRed'
             labelText = 'SHIPPED'
             func = () => {
-                console.log('운송장번호 조회')
+                window.open(`${orderItem.trackingNum}`, '_blank')
             }
         }
         
@@ -186,10 +186,6 @@ const OrderDetails = () => {
                             <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center'}}>
                                 <p style={{margin: 0, fontSize:'1.2rem'}}>Shipping total</p>
                                 <p style={{margin: 0, fontSize:'1.2rem'}}>{orderItem?.shippingAmount}</p>
-                            </div>
-                            <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center'}}>
-                                <p style={{margin: 0, fontSize:'1.2rem'}}>Duties and taxes</p>
-                                <p style={{margin: 0, fontSize:'1.2rem'}}>Included</p>
                             </div>
                             <br/>
                             <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center'}}>

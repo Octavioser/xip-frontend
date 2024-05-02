@@ -308,7 +308,7 @@ export const DataGrid = memo(({columnList, dataList, footer, onClick}) => {
                                         <PBtn
                                             style={{fontSize:'0.8rem', textDecoration: 'underline' }}
                                             labelText={j.labelText}
-                                            onClick={()=>{window.open(`https://service.epost.go.kr/trace.RetrieveDomRigiTraceList.comm?sid1=${e?.[j.name]}`, '_blank')}}
+                                            onClick={()=>{window.open(`${e?.[j.name]}`, '_blank')}}
                                         >
                                         </PBtn>
                                     </td>
