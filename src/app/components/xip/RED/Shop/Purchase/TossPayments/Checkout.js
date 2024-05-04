@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { loadPaymentWidget, ANONYMOUS } from "@tosspayments/payment-widget-sdk";
+import { loadPaymentWidget } from "@tosspayments/payment-widget-sdk";
 import { nanoid } from "nanoid";
 import {PBtn} from 'app/components/xip/REDCommon/CommonStyle';
 
@@ -11,7 +11,7 @@ const customerKey = nanoid();
 const CheckoutPage = (props) => {
     const [paymentWidget, setPaymentWidget] = useState(null);
     const paymentMethodsWidgetRef = useRef(null);
-    const [price, setPrice] = useState(props.totalPrice); 
+    const [price,] = useState(props.totalPrice); 
 
     useEffect(() => {
         const fetchPaymentWidget = async () => {

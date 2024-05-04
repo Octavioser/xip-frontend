@@ -6,12 +6,12 @@ const Fail = () => {
     const {orderMethod} = useParams();
     const {navigate} = useCommon();
     useEffect(() => {
-        // if(orderMethod === 'cart') {
-        //     navigate('/shop/cart')
-        // }
-        // else {
-        //     navigate(`/shop/detailproduct/${orderMethod}`)
-        // }
+        if(orderMethod === 'cart') {
+            navigate('/shop/cart')
+        }
+        else {
+            navigate(`/shop/detailproduct/${orderMethod}`)
+        }
         
         /* eslint-disable */
     }, []);

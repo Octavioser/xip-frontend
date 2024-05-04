@@ -293,7 +293,7 @@ export const DataGrid = memo(({columnList, dataList, footer, onClick}) => {
                                     <td key={'btn' + j.name + index} style={{ border: '2px solid #E8E8E8' }}>
                                         <button
                                             type="button" 
-                                            disabled={j.modifyDisabled && handleDisabled(e, index)}
+                                            disabled={(j.modifyDisabled && handleDisabled(e, index)) || (!!j.disabled && j.disabled(e))}
                                             onClick={()=> {
                                                 j.onClick({targetData:e, targetOldData : [...dataList][index]})
                                             }}>

@@ -2,6 +2,7 @@ import React, { useState, useEffect} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common';
 import { PBtn, ImgBtn } from 'app/components/xip/REDCommon/CommonStyle'
 import { isMobile } from 'react-device-detect';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 const AccountAdd = (props) => {
     const [userItem, setUserItem] = useState(props.userItem);
@@ -60,6 +61,11 @@ const AccountAdd = (props) => {
         }
     }
 
+    const checkPhone = (number, country) =>{
+        const phoneNumber = parsePhoneNumberFromString(number, country);
+        return phoneNumber.isValid();
+    }
+
 
     const saveAddChange = async() => {
 
@@ -87,14 +93,6 @@ const AccountAdd = (props) => {
         //  전화번호 검사
         if(phone.trim() === '') {
             message = 'Enter your phone number.'
-            setMsg(message)
-            return
-        }
-
-        const phoneRegex = /^01(?:0|1|[6-9])(?:\d{3}|\d{4})\d{4}$/
-
-        if(!phoneRegex.test(phone)) {
-            message = 'Please enter the number in the format: XXX-XXX-XXXX.'
             setMsg(message)
             return
         }
@@ -130,6 +128,13 @@ const AccountAdd = (props) => {
         //  우편번호 검사
         if(postalCd.trim() === '') {
             message = 'Enter your zip postalCd.'
+            setMsg(message)
+            return
+        }
+
+        // 전화번호 형식 검사 
+        if(!checkPhone(phone, iso2)) {
+            message = 'Please enter your phone number in the correct format.'
             setMsg(message)
             return
         }
@@ -188,7 +193,7 @@ const AccountAdd = (props) => {
                         maxLength={maxLength}
                         onChange={(e)=>{
                             if(type === "number") {
-                                const numberRegex = /^[0-9]+$/
+                                const numberRegex = /^[0-9]*$/
                                 if(numberRegex.test(e.target.value)) {
                                     setUserEditItem({...userEditItem, [id]: e.target.value})
                                 }

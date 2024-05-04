@@ -5,7 +5,7 @@ import XIP3020Dialog from './XIP3020Dialog'
 
 const XIP3020 = () => {
 
-    const { commonShowLoading, commonHideLoading, commonApi} = useCommon();
+    const { commonShowLoading, commonHideLoading, commonApi, commonConfirm} = useCommon();
 
     const [dataList, setDataList] = useState([])
 
@@ -14,6 +14,8 @@ const XIP3020 = () => {
     const [season, setSeason] = useState('');
 
     const [line, setLine] = useState('');
+
+    const [searchStatus, setSearchStatus] = useState('');
 
     const [name, setName] = useState('');
 
@@ -39,7 +41,8 @@ const XIP3020 = () => {
                     {
                         season: season,
                         line:line,
-                        name:name
+                        name:name,
+                        status:searchStatus
                     }
                 )
             }
@@ -49,6 +52,16 @@ const XIP3020 = () => {
             param: (param) => {
                 return (
                     param
+                )
+            }
+        },
+        deleteProd: {
+            api: '/xipengineering/incuD301',
+            param: (prodCd) => {
+                return (
+                    {
+                        prodCd:prodCd
+                    }
                 )
             }
         },
@@ -123,6 +136,20 @@ const XIP3020 = () => {
         return false;
     }
 
+    // 삭제하기
+    const deleteProd = async(prodCd) => {
+        try{
+            await commonShowLoading();
+            await commonApi(apiList.deleteProd.api, apiList.deleteProd.param(prodCd));
+            alert('삭제완료')   
+            getProdStatus();
+        } catch (error) {
+            alert('Please try again.')       
+        } finally {
+            commonHideLoading();
+        }
+    }
+
     const listItem = {
         propStatus: [
             {name:'판매중단', value:'-1'},
@@ -148,7 +175,16 @@ const XIP3020 = () => {
             {key:'XS',name:'Xskin', value:'XS'},
             {key:'CC',name:'Cue choi', value:'CC'},
             {key:'JV',name:'Jun Valentine', value:'JV'}
-        ]
+        ],
+
+        searchStatusList: [
+            {key:'',name:'전체', value:''},
+            {key:'-1',name:'판매중단', value:'-1'},
+            {key:'0',name:'판매전', value:'0'},
+            {key:'1',name:'판매중', value:'1'},
+            {key:'2',name:'판매완료', value:'2'},
+            {key:'3',name:'프리오더', value:'3'},
+        ],
     }
 
     let columnList = [
@@ -172,11 +208,28 @@ const XIP3020 = () => {
                                 saveData(targetData);
                             }
                         },
-                        // {name:'deleteBtn', header:'제품삭제', type:'button', labelText:'삭제',
-                        //     onClick: async({targetData})=>{
-                        //         console.log(targetData)
-                        //     }
-                        // }
+                        {name:'deleteBtn', header:'제품삭제', type:'button', labelText:'삭제', 
+                            disabled:(e)=>{
+                                if(!!e) {
+                                    if(e.delAble === 1) {
+                                        return false;
+                                    }
+                                    else {
+                                        return true;
+                                    }
+                                }
+                                else {
+                                    return true;
+                                }
+                            },
+                            onClick: async({targetData})=>{
+                                if(targetData.status !== '-1') {
+                                    alert('판매중단 상태일때만 삭제가 가능합니다.')
+                                }
+                                let prodCd = targetData.prodCd;
+                                commonConfirm(<><p>제품코드: {prodCd}</p>  <p>삭제하시겠습니까?</p></>, () => {deleteProd(prodCd)});
+                            }
+                        }
                     ]
     
 
@@ -207,6 +260,15 @@ const XIP3020 = () => {
                     value={line}
                     onChange={(e) => {
                         setLine(e)
+                    }}
+                />
+
+                <XBTDropDown
+                    labelText={'제품상태'}
+                    list={listItem.searchStatusList}
+                    value={searchStatus}
+                    onChange={(e) => {
+                        setSearchStatus(e)
                     }}
                 />
 
