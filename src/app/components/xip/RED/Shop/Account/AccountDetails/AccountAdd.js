@@ -139,6 +139,17 @@ const AccountAdd = (props) => {
             return
         }
 
+        // 한국 전화번호 형식 검사 
+        if(iso2 === 'KR') {
+            const phoneRegex = /^01(?:0|1|[6-9])(?:\d{3}|\d{4})\d{4}$/
+
+            if(!phoneRegex.test(phone)) {
+                message = 'Please enter the number in the format: XXX XXX XXXX.'
+                setMsg(message)
+                return
+            }
+        }
+        
         // 회원가입
         try{
             await commonShowLoading();
