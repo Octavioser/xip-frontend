@@ -225,6 +225,7 @@ const XIP3020 = () => {
                             onClick: async({targetData})=>{
                                 if(targetData.status !== '-1') {
                                     alert('판매중단 상태일때만 삭제가 가능합니다.')
+                                    return;
                                 }
                                 let prodCd = targetData.prodCd;
                                 commonConfirm(<><p>제품코드: {prodCd}</p>  <p>삭제하시겠습니까?</p></>, () => {deleteProd(prodCd)});
