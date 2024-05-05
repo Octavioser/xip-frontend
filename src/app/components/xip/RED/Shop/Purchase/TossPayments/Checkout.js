@@ -77,6 +77,7 @@ const CheckoutPage = (props) => {
                 failUrl: `${window.location.origin}/shop/fail/${props.orderMethod}`,
             });
         } catch (error) {
+            alert(error)
             console.error("Error requesting payment:", error);
         }
     };

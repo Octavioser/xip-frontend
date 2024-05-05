@@ -125,6 +125,7 @@ const CheckoutPage = (props) => {
                 }
               })
         } catch (error) {
+            alert(error)
             console.error("Error requesting payment:", error);
         } finally {
             commonHideLoading();

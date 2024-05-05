@@ -141,15 +141,14 @@ const AccountAdd = (props) => {
 
         // 한국 전화번호 형식 검사 
         if(iso2 === 'KR') {
-            const phoneRegex = /^01(?:0|1|[6-9])(?:\d{3}|\d{4})\d{4}$/
+            const phoneRegex = /^01(0|1|[6-9])[0-9]{3,4}[0-9]{4}$/;
 
             if(!phoneRegex.test(phone)) {
-                message = 'Please enter the number in the format: XXX XXX XXXX.'
+                message = 'Please enter the number in the format: XXX XXXX XXXX.'
                 setMsg(message)
                 return
             }
         }
-        
         // 회원가입
         try{
             await commonShowLoading();
