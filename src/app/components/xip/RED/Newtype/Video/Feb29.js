@@ -453,7 +453,7 @@ const Feb29 = ({newTypeMusic}) => {
                         src={"https://xip-bucket.s3.ap-northeast-2.amazonaws.com/xItem/i/newtype/video/Feb29/image/ad/9.webp"}
                         onClick={handleClick}
                         style={{
-                            opacity: (isVisible && !imgClick)? 1 : 0, // isVisible 상태에 따라 display 속성을 조절합니다.
+                            display: (isVisible && !imgClick)? 'block' : 'none', // isVisible 상태에 따라 display 속성을 조절합니다.
                             width:  '100vw',
                             height: '100vh',
                             transition: 'none', // 서서히 나타나는 효과를 제거합니다.
