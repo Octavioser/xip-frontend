@@ -539,6 +539,13 @@ const Feb29 = ({newTypeMusic}) => {
                 {setText("On February 29th", 'left')}
             <br/><br/><br/><br/><br/><br/><br/>
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                <div style={{width:'100%', textAlign: 'center'}}>
+                <img
+                    src={defaultImg(81)}
+                    alt={'81'}
+                    style={{width:'15%'}}
+                />
+            </div>
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/> 
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                 {setAd.center(18,70, 'https://www.instagram.com/cuechoi_official?igsh=NThpOGNuM2FoZGY=')}
