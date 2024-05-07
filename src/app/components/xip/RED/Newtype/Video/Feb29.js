@@ -231,12 +231,12 @@ const Feb29 = ({newTypeMusic}) => {
                 {setimg(10)}
             <br/><br/><br/><br/><br/><br/><br/>
             <br/><br/><br/><br/><br/>
-                <div style={{display:'flex', width:'100%', justifyContent:'center', alignItems:'ceter'}}>
+                <div style={{display:'flex', width:'100%', justifyContent:'center', alignItems:'ceter', textAlign: 'center'}}>
                     <div style={{width:centerWidth}}>
-                        <p style={{fontSize:'4rem', textAlign: 'center', margin:1, padding:1, fontFamily: 'default'}}>“</p>
-                        <i style={{fontSize:'1.2rem', textAlign: 'center', margin:1, padding:1}}>Things are turning around on Feburary 29th.</i>
+                        <p style={{fontSize:'4rem', margin:1, padding:1, fontFamily: 'default'}}>“</p>
+                        <i style={{fontSize:'1.2rem',margin:1, padding:1}}>Things are turning around on Feburary 29th.</i>
                         <br/><br/><br/>
-                        <p style={{fontSize:'4rem',textAlign: 'center', margin:1, padding:1, fontFamily: 'default'}}>”</p>
+                        <p style={{fontSize:'4rem', margin:1, padding:1, fontFamily: 'default'}}>”</p>
                     </div>
                 </div>
             <br/><br/><br/><br/><br/><br/><br/>
@@ -464,6 +464,9 @@ const Feb29 = ({newTypeMusic}) => {
                         }}
                     />
                 
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                 {setRun()}
