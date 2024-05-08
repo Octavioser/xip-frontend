@@ -66,6 +66,8 @@ const OrderHistory = () => {
             
         } catch (error) {
             alert('Please try again.');
+            let resultData = await commonApi('/shop/shopR005', {});
+            setOrderList(resultData || [])
         } finally {
             commonHideLoading();
         }
@@ -130,7 +132,7 @@ const OrderHistory = () => {
                                         labelText='Track Order'
                                     />
                                 }
-                                {e.orderStatus === 'PURCHASED' &&   
+                                {e.orderStatus === 'PURCHASED' && e.cancelAble === '1' &&   
                                     <PBtn 
                                         className= 'pBtnNoRed'
                                         style={{ 
