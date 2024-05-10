@@ -52,7 +52,7 @@ export const XBTDataGrid = ({columnList, dataList, footer, onClick}) => {
     const columnListData = useMemo(() => { 
         return columnList;
         /* eslint-disable */
-    },[]);
+    },[columnList]);
 
     const dataListData = useMemo(() => { // 그리드 데이터가 바뀔시에만 렌더링
         return dataList;
