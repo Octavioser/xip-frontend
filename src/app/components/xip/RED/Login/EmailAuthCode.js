@@ -4,7 +4,7 @@ import { isMobile } from 'react-device-detect';
 
 const EmailAuthCode = (props) => {
 
-    const [seconds, setSeconds] = useState(180);
+    const [seconds, setSeconds] = useState(600);
 
     const [codeTimeOut, setCodeTimeOut] = useState(false);
 
