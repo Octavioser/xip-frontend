@@ -153,8 +153,8 @@ const XIP3010 = (props) => {
                         {name:'stockQty', header:'재고수량(총수량 - 판매수량)', type: 'text'},
                         {name:'prodQty', header:'주문수량(기간)', type: 'text'},
                         {name:'cancelQty', header:'취소수량(기간)', type: 'text'},
-                        {name:'krwSubTotal', header:'원화 판매금액(기간)', type: 'text',currency:'₩'},
-                        {name:'usdSubTotal', header:'달러 판매금액(기간)', type: 'text', currency:'$'}
+                        {name:'krwSubTotal', header:'원화 판매한 금액(기간)', type: 'text',currency:'₩'},
+                        {name:'usdSubTotal', header:'달러 판매한 금액(기간)', type: 'text', currency:'$'}
                     ]
 
     return (
