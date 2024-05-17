@@ -27,6 +27,7 @@ const EmailAuthCode = (props) => {
         // 타이머가 0이 되면 중단
         if (seconds === 0) {
             alert('Your verification code has timed out.');
+            props.loginModalBtn();
             setCodeTimeOut(true)
             return;
         }
@@ -37,6 +38,7 @@ const EmailAuthCode = (props) => {
         }, 1000);
         // Cleanup 함수 컴포넌트가 사라진 후에도 계속 실행되지 않도록 하여 메모리 누수를 방지
         return () => clearInterval(intervalId);
+        /* eslint-disable */
     }, [seconds]);
 
     useEffect(() => {
@@ -177,8 +179,11 @@ const EmailAuthCode = (props) => {
             </div>
             { !codeTimeOut &&
                 <>
+                    <br/><br/>
                     <p>Time Left: {seconds}s</p>
-                    <br></br>
+                    
+                    <p>Your email code may take up to 5 minutes to arrive (depending on your email service operator).</p>
+                    <br/>
                     <PBtn
                         labelText={'CONTINUE'}
                         alt='continue'

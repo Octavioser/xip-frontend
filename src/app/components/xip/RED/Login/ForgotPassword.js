@@ -181,7 +181,7 @@ const ForgotPassword = (props) => {
                     />
                 </>
             }
-            { authCdStatus && <EmailAuthCode checkAuthCodeBtn={checkAuthCodeBtn}/>}   {/*인증번호 보낸 상태 (확인전)*/ }
+            { authCdStatus && <EmailAuthCode checkAuthCodeBtn={checkAuthCodeBtn} loginModalBtn={props.loginModalBtn}/>}   {/*인증번호 보낸 상태 (확인전)*/ }
             { canChangePw && // 인증번호 보내고 확인한 상태
                 <>
                     <p style={{textAlign: 'left'}}>NEW PASSWORD</p>  

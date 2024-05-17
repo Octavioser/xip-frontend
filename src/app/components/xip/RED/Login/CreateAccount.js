@@ -214,7 +214,7 @@ const CreateAccount = (props) => {
                     </div>
                 }
                 { page2 && // 새로운 이메일한테 인증번호 보낸 상태
-                    <EmailAuthCode checkAuthCodeBtn={continueBtn}/>
+                    <EmailAuthCode checkAuthCodeBtn={continueBtn} loginModalBtn={props.loginModalBtn}/>
                 }
                 { page3 && // 회원가입이 가능한 이메일이면
                 <>
@@ -306,6 +306,7 @@ const CreateAccount = (props) => {
                             setTermsofuse(!termsofuse)
                         }}>
                         </input>
+                        <p>YES</p>
                     </div>
                     <p>PRIVACY POLICY</p>
                     <div style={{border: '1px solid #FFFFFF', height:'20vh', overflowY:'scroll'}}>
