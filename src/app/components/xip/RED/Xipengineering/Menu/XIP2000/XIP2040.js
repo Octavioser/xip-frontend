@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
 import {XBTDataGrid, XBTSearchFrame, XBTDatePicker, XBTTextField, XBTDropDown} from '../../XipengineeringXBTProvider'
 import XIP2040Dialog from './XIP2040Dialog';
@@ -61,21 +61,23 @@ const XIP2040 = (props) => {
         setDialog(true);
     }
 
-    let columnList = [{name:'orderCd', header:'주문번호', type: 'text'},
-                      {name:'orderStatus', header:'주문상태', type: 'text'},
-                      {name:'userNm', header:'유저이름', type: 'text'},
-                      {name:'email', header:'이메일', type: 'text'},
-                      {name:'orderDt', header:'주문날짜', type: 'text'},
-                      {name:'addNm', header:'주소성함', type: 'text'},
-                      {name:'totalAmount', header:'총금액', type: 'text'},
-                      {name:'shippingAmount', header:'배송비', type: 'text'},
-                      {name:'subTotal', header:'제품금액', type: 'text'},
-                      {name:'cancelBtn', header:'취소버튼', type:'button', labelText:'취소',
-                      onClick:(e)=>{
-                        openDialog(e.targetData)
-                      }}]
+    const columnList = useMemo(() => [
+        {name:'orderCd', header:'주문번호', type: 'text'},
+        {name:'orderStatus', header:'주문상태', type: 'text'},
+        {name:'userNm', header:'유저이름', type: 'text'},
+        {name:'email', header:'이메일', type: 'text'},
+        {name:'orderDt', header:'주문날짜', type: 'text'},
+        {name:'addNm', header:'주소성함', type: 'text'},
+        {name:'totalAmount', header:'총금액', type: 'text'},
+        {name:'shippingAmount', header:'배송비', type: 'text'},
+        {name:'subTotal', header:'제품금액', type: 'text'},
+        {name:'cancelBtn', header:'취소버튼', type:'button', labelText:'취소',
+        onClick:(e)=>{
+        openDialog(e.targetData)
+        }}
+    ],[])
 
-    let dropDownList = [{key:'배송전', name: '배송전', value:'1'},
+    const dropDownList = [{key:'배송전', name: '배송전', value:'1'},
                       {key:'배송후', name:'배송후', value:'2'},
                       {key:'취소요청', name:'취소요청', value:'0'}]
     return (

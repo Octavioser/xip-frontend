@@ -111,11 +111,11 @@ const XipengineeringMenu = () => {
                                 let data = openTab
                                 let item = data.filter((obj) => obj['key'] !== e.key)
                                 setOpenTab(item);
-                                let len = item.length;
 
                                 // 선택된 메뉴를 삭제시 제일 뒤에 있는 메뉴 선택
+                                let len = item.length;
                                 if(e.key === category && len >0) {
-                                    chooseMenu(item[i].key, item[i].name);
+                                    chooseMenu(item[len-1].key, item[len-1].name);
                                 }
                             }}
                         >

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
 import {XBTDataGrid, XBTSearchFrame, XBTDatePicker, XBTDropDown} from '../../XipengineeringXBTProvider'
 import XIP2020Dialog from './XIP2020Dialog';
@@ -58,16 +58,18 @@ const XIP2020 = (props) => {
     }
 
 
-    let columnList = [{name:'orderCd', header:'주문번호', type: 'text'},
-                      {name:'userNm', header:'유저이름', type: 'text'},
-                      {name:'email', header:'이메일', type: 'text'},
-                      {name:'orderDt', header:'주문날짜', type: 'text'},
-                      {name:'trackingInput', header:'운송장', type:'button', labelText:'운송장 등록', 
-                        onClick:(e)=>{
-                            openDialog(e.targetData)
-                        }}
-                    ]
-    let dropDownList = [{key:'배송전', name: '배송전', value:'1'},
+    const columnList = useMemo(()=>[
+        {name:'orderCd', header:'주문번호', type: 'text'},
+        {name:'userNm', header:'유저이름', type: 'text'},
+        {name:'email', header:'이메일', type: 'text'},
+        {name:'orderDt', header:'주문날짜', type: 'text'},
+        {name:'trackingInput', header:'운송장', type:'button', labelText:'운송장 등록', 
+        onClick:(e)=>{
+            openDialog(e.targetData)
+        }}
+    ],[])
+    
+    const dropDownList = [{key:'배송전', name: '배송전', value:'1'},
                         {key:'배송후', name:'배송후', value:'2'}]
 
     return (

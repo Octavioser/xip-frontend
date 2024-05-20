@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
 import {XBTDataGrid, XBTSearchFrame, XBTTextField, XBTDatePicker} from '../../XipengineeringXBTProvider'
 
@@ -48,10 +48,13 @@ const XIP1010 = (props) => {
     }                    
 
 
-    const columnList = [  {name:'firstNm', header:'이름', type: 'text'},
+    const columnList = useMemo(() => [
+        {name:'firstNm', header:'이름', type: 'text'},
         {name:'lastNm', header:'성', type: 'text'},
         {name:'email', header:'이메일', type: 'text'},
-        {name:'creatDt', header:'가입일시', type: 'text'}];
+        {name:'creatDt', header:'가입일시', type: 'text'}
+    ], []);
+    
     return (
         <>
             <XBTSearchFrame

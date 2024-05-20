@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
 import {XBTDataGrid, XBTSearchFrame, XBTDatePicker, XBTTextField} from '../../XipengineeringXBTProvider'
 
@@ -48,16 +48,17 @@ const XIP2050 = (props) => {
         }
     }                    
 
-    let columnList = [{name:'orderCd', header:'주문번호', type: 'text'},
-                      {name:'userNm', header:'유저이름', type: 'text'},
-                      {name:'email', header:'이메일', type: 'text'},
-                      {name:'orderDt', header:'주문날짜', type: 'text'},
-                      {name:'cancelDt', header:'취소날짜', type: 'text'},
-                      {name:'cancelAmount', header:'취소금액', type: 'text'},
-                      {name:'totalAmount', header:'총금액', type: 'text'},
-                      {name:'shippingAmount', header:'배송비', type: 'text'},
-                      {name:'subTotal', header:'제품금액', type: 'text'},
-                    ]
+    const columnList = useMemo(()=>[
+        {name:'orderCd', header:'주문번호', type: 'text'},
+        {name:'userNm', header:'유저이름', type: 'text'},
+        {name:'email', header:'이메일', type: 'text'},
+        {name:'orderDt', header:'주문날짜', type: 'text'},
+        {name:'cancelDt', header:'취소날짜', type: 'text'},
+        {name:'cancelAmount', header:'취소금액', type: 'text'},
+        {name:'totalAmount', header:'총금액', type: 'text'},
+        {name:'shippingAmount', header:'배송비', type: 'text'},
+        {name:'subTotal', header:'제품금액', type: 'text'}
+    ],[])
 
     return (
         <>

@@ -8,7 +8,7 @@ import {
     ProductList, Account, AccountDetails, DetailProduct, Cart, OrderHistory, Purchase, OrderDetails, Xipengineering, Service, 
     TermsOfUse, Privacy, ShipReturn, Success, Fail, NewtypeHome, Newtype, Fetus, Footer, NewtypeVideo, Feb29} from 'app/components/xip/RED'; //index.js
 import { useCookie } from 'app/components/xip/RED/Login/Cookie';
-import ComingSoon from 'app/components/xip/RED/Shop/ComingSoon';
+// import ComingSoon from 'app/components/xip/RED/Shop/ComingSoon';
 
 function preloadImage(url) { // 이미지 미리 불러오기
     const img = new Image();

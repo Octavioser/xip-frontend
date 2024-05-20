@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect, useMemo} from 'react';
 import {useCommon} from 'app/components/xip/REDCommon/Common'
 import {XBTDataGrid, XBTSearchFrame, XBTDatePicker,XBTDropDown, XBTTextField} from '../../XipengineeringXBTProvider'
 
@@ -143,19 +143,19 @@ const XIP3010 = (props) => {
         }
     }                    
 
-    let columnList = [
-                        {name:'prodCdD', header:'제품코드', type: 'text'},
-                        {name:'name', header:'제품이름', type: 'text'},
-                        {name:'prodSize', header:'사이즈', type: 'text'},
-                        {name:'sizeStatus', header:'사용여부(사이즈)', type:'text'},
-                        {name:'soldQty', header:'판매수량', type: 'number', editable:true},
-                        {name:'totalQty', header:'총 수량', type: 'number', editable:true},
-                        {name:'stockQty', header:'재고수량(총수량 - 판매수량)', type: 'text'},
-                        {name:'prodQty', header:'주문수량(기간)', type: 'text'},
-                        {name:'cancelQty', header:'취소수량(기간)', type: 'text'},
-                        {name:'krwSubTotal', header:'원화 판매한 금액(기간)', type: 'text',currency:'₩'},
-                        {name:'usdSubTotal', header:'달러 판매한 금액(기간)', type: 'text', currency:'$'}
-                    ]
+    const columnList = useMemo(()=>[
+        {name:'prodCdD', header:'제품코드', type: 'text'},
+        {name:'name', header:'제품이름', type: 'text'},
+        {name:'prodSize', header:'사이즈', type: 'text'},
+        {name:'sizeStatus', header:'사용여부(사이즈)', type:'text'},
+        {name:'soldQty', header:'판매수량', type: 'number', editable:true},
+        {name:'totalQty', header:'총 수량', type: 'number', editable:true},
+        {name:'stockQty', header:'재고수량(총수량 - 판매수량)', type: 'text'},
+        {name:'prodQty', header:'주문수량(기간)', type: 'text'},
+        {name:'cancelQty', header:'취소수량(기간)', type: 'text'},
+        {name:'krwSubTotal', header:'원화 판매한 금액(기간)', type: 'text',currency:'₩'},
+        {name:'usdSubTotal', header:'달러 판매한 금액(기간)', type: 'text', currency:'$'}
+    ],[])
 
     return (
         <>
