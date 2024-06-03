@@ -190,7 +190,12 @@ const Purchase = () => {
                             }}
                             labelText='CHECKOUT'
                             onClick={() => {
-                                clickCheckOut();
+                                if(commonRegion()  === 'KOR') {
+                                    clickCheckOut();
+                                }
+                                else {
+                                    alert('International payments are not supported.')
+                                }
                             }}
                         >
                         </PBtn>

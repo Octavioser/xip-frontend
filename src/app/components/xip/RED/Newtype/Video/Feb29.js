@@ -114,21 +114,21 @@ const Feb29 = ({newTypeMusic}) => {
         left: (key, width, url)  => {
             return (
                 <div style={{position: 'absolute', width:'99%', textAlign:'left', paddingLeft:'1%'}}>
-                    {setAd.default(key, width, url)};
+                    {setAd.default(key, width, url)}
                 </div>
             )
         }, 
         right: (key, width, url) => {
             return (
                 <div style={{position:'absolute',width:'99%', textAlign:'right'}}>
-                    {setAd.default(key, width, url)};
+                    {setAd.default(key, width, url)}
                 </div>
             )
         },
         center: (key, width, url) => {
             return (
                 <div style={{width:'100%', textAlign:'center'}}>
-                    {setAd.default(key, width, url)};
+                    {setAd.default(key, width, url)}
                 </div>
             )
         }
