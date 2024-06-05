@@ -45,7 +45,7 @@ const CheckoutPage = (props) => {
         paymentWidget.renderAgreement('#agreement', { variantKey: `AGREEMENT` })// 영문 이용약관 UI 렌더링
 
         paymentMethodsWidgetRef.current = paymentMethodsWidget;
-    }, [paymentWidget, price]);
+    }, [paymentWidget]);
 
     useEffect(() => {
         const paymentMethodsWidget = paymentMethodsWidgetRef.current;
@@ -71,7 +71,7 @@ const CheckoutPage = (props) => {
                 quantity: e.prodQty,
                 unitAmount: e.usPrice,
                 currency: 'USD',
-                description: e.prodSize
+                description: e.prodDesc || ''
             }
         });
         products.push({ // 배송비
@@ -117,9 +117,9 @@ const CheckoutPage = (props) => {
                       sender_first_name: props.userItem.firstNm,
                       sender_last_name: props.userItem.lastNm,
                       sender_email: props.userItem.lastNm,
-                    //   sender_phone: '(1) 562 254 5591',
-                    //   sender_country_code: 'US',
-                    //   sender_create_date: '2012-12-09T 19:14:55.277-0:00'
+                      sender_phone: props.userItem.phone,
+                      sender_country_code: props.userItem.iso2,
+                      sender_create_date: props.userItem.creatDt
                     }
                   }
                 }

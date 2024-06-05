@@ -49,6 +49,7 @@ const Purchase = () => {
             setSubOrderTotalUsPrice(subTotalUSPrice)
             setItemList(state['item'])
         }
+        /* eslint-disable */
     },[])
 
 
@@ -190,12 +191,7 @@ const Purchase = () => {
                             }}
                             labelText='CHECKOUT'
                             onClick={() => {
-                                if(commonRegion()  === 'KOR') {
-                                    clickCheckOut();
-                                }
-                                else {
-                                    alert('International payments are not supported.')
-                                }
+                                clickCheckOut();
                             }}
                         >
                         </PBtn>
